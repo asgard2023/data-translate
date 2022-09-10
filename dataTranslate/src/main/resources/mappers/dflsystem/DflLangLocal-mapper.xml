@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.org.opendfl.translate.dflsystem.mapper.TrTransDataMapper">
+    <resultMap id="trTransDataMap" type="cn.org.opendfl.translate.dflsystem.po.TrTransDataPo">
+        <id column="id" property="id" jdbcType="DECIMAL"/>
+        <result column="trans_type_id" property="transTypeId" jdbcType="NUMERIC"/>
+        <result column="data_nid" property="dataNid" jdbcType="DECIMAL"/>
+        <result column="data_sid" property="dataSid" jdbcType="VARCHAR"/>
+        <result column="code" property="code" jdbcType="VARCHAR"/>
+        <result column="lang" property="lang" jdbcType="VARCHAR"/>
+        <result column="content" property="content" jdbcType="VARCHAR"/>
+        <result column="remark" property="remark" jdbcType="VARCHAR"/>
+        <result column="status" property="status" jdbcType="INTEGER"/>
+        <result column="if_del" property="ifDel" jdbcType="INTEGER"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
+        <result column="create_user" property="createUser" jdbcType="INTEGER"/>
+        <result column="update_user" property="updateUser" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <sql id="field">
+        id,
+        trans_type_id,
+        data_nid,
+        data_sid,
+        code,
+        lang,
+        content,
+        remark,
+        status,
+        if_del,
+        create_time,
+        update_time,
+        create_user,
+        update_user
+    </sql>
+
+    <sql id="findByPage_where">
+        <where>
+            <trim suffixOverrides="and | or">
+                <if test="id != null">id = #{id, jdbcType = DECIMAL} and</if>
+                <if test="transTypeId != null">trans_type_id = #{transTypeId, jdbcType = NUMERIC}
+                    and
+                </if>
+                <if test="dataNid != null">data_nid = #{dataNid, jdbcType = DECIMAL} and</if>
+                <if test="dataSid != null">data_sid = #{dataSid, jdbcType = VARCHAR} and</if>
+                <if test="code != null">code = #{code, jdbcType = VARCHAR} and</if>
+                <if test="lang != null">lang = #{lang, jdbcType = VARCHAR} and</if>
+                <if test="content != null">content = #{content, jdbcType = VARCHAR} and</if>
+                <if test="remark != null">remark = #{remark, jdbcType = VARCHAR} and</if>
+                <if test="status != null">status = #{status, jdbcType = INTEGER} and</if>
+                <if test="ifDel != null">if_del = #{ifDel, jdbcType = INTEGER} and</if>
+                <if test="createTime != null">create_time = #{createTime, jdbcType = TIMESTAMP} and</if>
+                <if test="updateTime != null">update_time = #{updateTime, jdbcType = TIMESTAMP} and</if>
+                <if test="createUser != null">create_user = #{createUser, jdbcType = INTEGER} and</if>
+                <if test="updateUser != null">update_user = #{updateUser, jdbcType = INTEGER} and</if>
+                <if test="keywords != null and keywords != ''">
+                    and (
+                    id like concat(concat('%', #{keywords}),'%')
+                    or trans_type_id like concat(concat('%', #{keywords}),'%')
+                    or data_nid like concat(concat('%', #{keywords}),'%')
+                    or data_sid like concat(concat('%', #{keywords}),'%')
+                    or code like concat(concat('%', #{keywords}),'%')
+                    or lang like concat(concat('%', #{keywords}),'%')
+                    or content like concat(concat('%', #{keywords}),'%')
+                    or remark like concat(concat('%', #{keywords}),'%')
+                    or status like concat(concat('%', #{keywords}),'%')
+                    or if_del like concat(concat('%', #{keywords}),'%')
+                    or create_time like concat(concat('%', #{keywords}),'%')
+                    or update_time like concat(concat('%', #{keywords}),'%')
+                    or create_user like concat(concat('%', #{keywords}),'%')
+                    or update_user like concat(concat('%', #{keywords}),'%')
+                    )
+                </if>
+            </trim>
+        </where>
+    </sql>
+
+    <select id="findByPageXML" parameterType="java.util.Map" resultMap="trTransDataMap">
+        select
+        <include refid="field"></include>
+        from tr_trans_data
+        <include refid="findByPage_where"></include>
+        <choose>
+            <when test="sidx != null">
+                order by ${sidx} ${sord}, id desc
+            </when>
+            <otherwise>
+                order by id desc
+            </otherwise>
+        </choose>
+        <if test="page != null and rows != null">
+            limit ${startRows}, ${rows}
+        </if>
+    </select>
+
+    <select id="findCountXML" parameterType="java.util.Map" resultType="java.lang.Integer">
+        select
+        count(1)
+        from tr_trans_data
+        <include refid="findByPage_where"></include>
+    </select>
+
+    <select id="findAllXML" parameterType="java.util.Map" resultMap="trTransDataMap">
+        select
+        <include refid="field"></include>
+        from tr_trans_data
+        <where>
+            <trim suffixOverrides="and | or">
+                <if test="id != null">id = #{id, jdbcType = DECIMAL} and</if>
+                <if test="transTypeId != null">trans_type_id = #{transTypeId, jdbcType = NUMERIC}
+                    and
+                </if>
+                <if test="dataNid != null">data_nid = #{dataNid, jdbcType = DECIMAL} and</if>
+                <if test="dataSid != null">data_sid = #{dataSid, jdbcType = VARCHAR} and</if>
+                <if test="code != null">code = #{code, jdbcType = VARCHAR} and</if>
+                <if test="lang != null">lang = #{lang, jdbcType = VARCHAR} and</if>
+                <if test="content != null">content = #{content, jdbcType = VARCHAR} and</if>
+                <if test="remark != null">remark = #{remark, jdbcType = VARCHAR} and</if>
+                <if test="status != null">status = #{status, jdbcType = INTEGER} and</if>
+                <if test="ifDel != null">if_del = #{ifDel, jdbcType = INTEGER} and</if>
+                <if test="createTime != null">create_time = #{createTime, jdbcType = TIMESTAMP} and</if>
+                <if test="updateTime != null">update_time = #{updateTime, jdbcType = TIMESTAMP} and</if>
+                <if test="createUser != null">create_user = #{createUser, jdbcType = INTEGER} and</if>
+                <if test="updateUser != null">update_user = #{updateUser, jdbcType = INTEGER} and</if>
+            </trim>
+        </where>
+    </select>
+
+    <select id="findByIdXML" parameterType="java.lang.String" resultMap="trTransDataMap">
+        select
+        <include refid="field"></include>
+        from tr_trans_data
+        <where>
+            id = #{id}
+        </where>
+    </select>
+
+    <insert id="insertXML" parameterType="cn.org.opendfl.translate.dflsystem.po.TrTransDataPo" useGeneratedKeys="true"
+            keyProperty="id" flushCache="true">
+        insert tr_trans_data
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="transTypeId != null">trans_type_id,</if>
+            <if test="dataNid != null">data_nid,</if>
+            <if test="dataSid != null">data_sid,</if>
+            <if test="code != null">code,</if>
+            <if test="lang != null">lang,</if>
+            <if test="content != null">content,</if>
+            <if test="remark != null">remark,</if>
+            <if test="status != null">status,</if>
+            <if test="ifDel != null">if_del,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="createUser != null">create_user,</if>
+            <if test="updateUser != null">update_user,</if>
+        </trim>
+        values
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id, jdbcType = DECIMAL},</if>
+            <if test="transTypeId != null">#{transTypeId, jdbcType = NUMERIC},</if>
+            <if test="dataNid != null">#{dataNid, jdbcType = DECIMAL},</if>
+            <if test="dataSid != null">#{dataSid, jdbcType = VARCHAR},</if>
+            <if test="code != null">#{code, jdbcType = VARCHAR},</if>
+            <if test="lang != null">#{lang, jdbcType = VARCHAR},</if>
+            <if test="content != null">#{content, jdbcType = VARCHAR},</if>
+            <if test="remark != null">#{remark, jdbcType = VARCHAR},</if>
+            <if test="status != null">#{status, jdbcType = INTEGER},</if>
+            <if test="ifDel != null">#{ifDel, jdbcType = INTEGER},</if>
+            <if test="createTime != null">#{createTime, jdbcType = TIMESTAMP},</if>
+            <if test="updateTime != null">#{updateTime, jdbcType = TIMESTAMP},</if>
+            <if test="createUser != null">#{createUser, jdbcType = INTEGER},</if>
+            <if test="updateUser != null">#{updateUser, jdbcType = INTEGER},</if>
+        </trim>
+    </insert>
+
+    <update id="updateXML" parameterType="cn.org.opendfl.translate.dflsystem.po.TrTransDataPo" keyProperty="id">
+        update tr_trans_data
+        <set>
+            <trim suffixOverrides=",">
+                <if test="id != null">id = #{id},</if>
+                <if test="transTypeId != null">trans_type_id = #{transTypeId},</if>
+                <if test="dataNid != null">data_nid = #{dataNid},</if>
+                <if test="dataSid != null">data_sid = #{dataSid},</if>
+                <if test="code != null">code = #{code},</if>
+                <if test="lang != null">lang = #{lang},</if>
+                <if test="content != null">content = #{content},</if>
+                <if test="remark != null">remark = #{remark},</if>
+                <if test="status != null">status = #{status},</if>
+                <if test="ifDel != null">if_del = #{ifDel},</if>
+                <if test="createTime != null">create_time = #{createTime},</if>
+                <if test="updateTime != null">update_time = #{updateTime},</if>
+                <if test="createUser != null">create_user = #{createUser},</if>
+                <if test="updateUser != null">update_user = #{updateUser},</if>
+            </trim>
+        </set>
+        <where>
+            id = #{id}
+        </where>
+    </update>
+
+    <delete id="deleteXML" parameterType="java.lang.String">
+        delete from tr_trans_data
+        <where>
+            id = #{id}
+        </where>
+    </delete>
+</mapper>

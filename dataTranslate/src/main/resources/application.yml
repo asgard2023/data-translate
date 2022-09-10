@@ -1,0 +1,66 @@
+translate:
+  transLanguages: en,ja
+  transType: baidu
+  appid: 20220905001332382
+  securityKey: xxxx
+  apiUrl: https://fanyi-api.baidu.com/api/trans/vip/translate
+
+#  transType: google
+#  securityKey: xxxx
+
+
+spring:
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    url: jdbc:mysql://192.168.1.254:3306/generator?allowPublicKeyRetrieval=true&characterEncoding=utf-8&serverTimezone=GMT%2B8
+    username: generator
+    password: jh@123456
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    filters: stat,wall
+    initial-size: 3
+    min-idle: 1
+    max-active: 20
+    test-on-borrow: false
+    test-on-return: false
+    test-while-idle: true
+    validation-query: select 'x'
+    max-wait: 6000
+    pool-prepared-statements: true
+    time-between-eviction-runs-millis: 60000
+    min-evictable-idle-time-millis: 60000
+    web-stat-filter:
+      enabled: true
+      url-pattern: "/*"
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+
+mybatis:
+  configuration:
+    map-underscore-to-camel-case: true
+  type-aliases-package: cn.org.opendfl.translate
+  mapper-locations: classpath:mappers/*/*.xml
+
+# TkMapper
+mapper:
+  identity: MYSQL
+  mappers: tk.mybatis.mapper.common.BaseMapper
+  not-empty: true
+  enum-as-simple-type: true
+
+# PageHelper分页插件
+pagehelper:
+  helperDialect: mysql
+  reasonable: true
+  supportMethodsArguments: true
+  params: count=countSql
+
+logging:
+  level:
+    root: INFO
+    org:
+      ccs:
+        opendfl: DEBUG
+  pattern:
+    console: "%clr(%d{yyyy-MM-dd HH:mm:ss}){faint} %clr(${LOG_LEVEL_PATTERN:-%5p}) %clr(-){faint} %clr([%14.14t]){faint} %clr(%-40.40logger.%13.13M){cyan} %clr(%3.3L) %clr(:){faint} %msg%n${LOG_EXCEPTION_CONVERSION_WORD:-%wEx}"
+

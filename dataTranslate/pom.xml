@@ -10,7 +10,7 @@
     </parent>
     <groupId>cn.org.opendfl</groupId>
     <artifactId>data-translate</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>1</version>
     <name>data-translate</name>
     <packaging>jar</packaging>
     <description>springboot mysql data translate</description>

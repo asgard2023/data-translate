@@ -19,7 +19,15 @@ http://localhost:8080/index.html
 http://localhost:8080/doc.html
 
 ## 使用
-* 1,在要翻译的PO类，加上@TranslateType，@TranslateField快速上手
+* 1 maven引入依赖包
+```xml
+<dependency>
+    <groupId>cn.org.opendfl</groupId>
+    <artifactId>data-translate</artifactId>
+    <version>1</version>
+</dependency>
+```
+* 2,在要翻译的PO类，加上@TranslateType，@TranslateField快速上手
 ```java
 
 /**
@@ -44,7 +52,7 @@ public class DflUserPo implements Serializable {
     
 }
 ```
-* 2,在返回的list调用翻译功能
+* 3,在返回的list调用翻译功能
 ```java
 @RestController
 @RequestMapping("dflUser")
@@ -67,7 +75,7 @@ public class DflUserController{
     }
 }
 ```
-* 3,方法返回值注解@Translate
+* 4,方法返回值注解@Translate
 
 ```java
 import cn.org.opendfl.translate.dflsystem.translate.annotation.Translate;

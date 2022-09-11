@@ -19,7 +19,15 @@ http://localhost:8080/index.html
 http://localhost:8080/doc.html
 
 ## use
-* 1, in the PO class to be translated, add @TranslateType, @TranslateField to get started quickly
+* 1, import ddependency for maven
+```xml
+<dependency>
+    <groupId>cn.org.opendfl</groupId>
+    <artifactId>data-translate</artifactId>
+    <version>1</version>
+</dependency>
+```
+* 2, in the PO class to be translated, add @TranslateType, @TranslateField to get started quickly
 ```java
 
 /**
@@ -44,7 +52,7 @@ public class DflUserPo implements Serializable {
     
 }
 ```
-* 2, call the translation function on the returned list
+* 3, call the translation function on the returned list
 ```java
 @RestController
 @RequestMapping("dflUser")
@@ -67,7 +75,7 @@ public class DflUserController{
     }
 }
 ```
-* 3, method return value annotation @Translate
+* 4, method return value annotation @Translate
 
 ```java
 import cn.org.opendfl.translate.dflsystem.translate.annotation.Translate;

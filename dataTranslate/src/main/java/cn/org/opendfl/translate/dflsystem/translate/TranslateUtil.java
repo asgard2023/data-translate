@@ -166,7 +166,7 @@ public class TranslateUtil {
             return;
         }
 
-        List<Object> idLangList = idList.stream().map(id -> id + "_" + lang).collect(Collectors.toList());
+        List<String> idLangList = idList.stream().map(id -> id + "_" + lang).collect(Collectors.toList());
         Map<String, Map<String, String>> dataIdFieldMap = TranslateTrans.getDataIdFieldMap(idInfoVo, lang, idList, idLangList);
 
         int count = 0;

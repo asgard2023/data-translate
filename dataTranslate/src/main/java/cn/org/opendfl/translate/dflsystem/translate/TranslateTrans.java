@@ -44,7 +44,7 @@ public class TranslateTrans {
     private static Cache<String, Map<String, String>> dataIdFieldMap = CacheBuilder.newBuilder().expireAfterWrite(1, TimeUnit.MINUTES)
             .maximumSize(2000).build();
 
-    public static Map<String, Map<String, String>> getDataIdFieldMap(IdInfoVo idInfoVo, String lang, List<Object> idList, List<Object> idLangList) {
+    public static Map<String, Map<String, String>> getDataIdFieldMap(IdInfoVo idInfoVo, String lang, List<Object> idList, List<String> idLangList) {
         List<String> fields = idInfoVo.getTransFields();
         Map<String, Map<String, String>> dataIdFieldMap = null;
 

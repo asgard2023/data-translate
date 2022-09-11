@@ -137,18 +137,17 @@ public class DflRoleController extends BaseController {
      * 角色表 删除
      *
      * @param request
-     * @param dflRole
+     * @param id      数据id
      * @return ResultData
      * @author chenjh
      * @date 2022-5-3 20:25:42
      */
     @ApiOperation(value = "删除角色", notes = "根据传入id进行删除状态修改(即软删除)")
     @RequestMapping(value = "/delete", method = {RequestMethod.POST, RequestMethod.DELETE})
-    public ResultData delete(DflRolePo dflRole, HttpServletRequest request) {
-        String id = request.getParameter("id");
+    public ResultData delete(@RequestParam(name = "id", required = false) Integer id, HttpServletRequest request) {
         ValidateUtils.notNull(id, "id不能为空");
         String remark = request.getParameter("remark");
-        int v = dflRoleBiz.deleteDflRole(Integer.parseInt(id), this.getCurrentUserId(), remark);
+        int v = dflRoleBiz.deleteDflRole(id, this.getCurrentUserId(), remark);
         return ResultData.success(v);
     }
 }

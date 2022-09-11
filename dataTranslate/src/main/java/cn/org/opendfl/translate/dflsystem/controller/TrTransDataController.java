@@ -91,7 +91,7 @@ public class TrTransDataController extends BaseController {
     }
 
     @ApiOperation(value = "添加数据翻译", notes = "添加一个数据翻译")
-    @RequestMapping(value = "/saveJson")
+    @RequestMapping(value = "/saveJson", method = {RequestMethod.POST, RequestMethod.GET})
     public Object saveJson(@RequestBody TrTransDataPo tfLocalLanguage, HttpServletRequest request) {
         if (tfLocalLanguage.getTransTypeId() == null) {
             Integer transTypeId = this.trTransTypeBiz.getTransTypeId(tfLocalLanguage.getTransTypeCode());
@@ -157,16 +157,15 @@ public class TrTransDataController extends BaseController {
      * 数据翻译 删除
      *
      * @param request 请求req
-     * @param entity  数据翻译对象
+     * @param id      数据翻译对象
      * @return ResultData 返回数据
      * @date 2022年9月4日 下午7:43:53
      */
     @ApiOperation(value = "删除数据翻译 ", notes = "根据传入id进行删除状态修改(即软删除)")
-    @RequestMapping(value = "delete", method = {RequestMethod.POST, RequestMethod.GET})
-    public ResultData delete(TrTransDataPo entity, HttpServletRequest request) {
-        ValidateUtils.notNull(entity.getId(), "id不能为空");
+    public ResultData delete(@RequestParam(name = "id", required = false) Long id, HttpServletRequest request) {
+        ValidateUtils.notNull(id, "id不能为空");
         String remark = request.getParameter("remark");
-        int v = trTransDataBiz.deleteTrTransData(entity.getId(), this.getCurrentUserId(), remark);
+        int v = trTransDataBiz.deleteTrTransData(id, this.getCurrentUserId(), remark);
         return ResultData.success(v);
     }
 

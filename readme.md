@@ -1,5 +1,5 @@
 # springboot数据翻译组件
-springboot,springmvc数据翻译组件，即支持通过注解开启数据翻译数据属性功能，并把翻译结果存到数据库。
+springboot,springmvc数据翻译组件，即支持通过注解开启数据翻译数据属性功能，把翻译结果存到数据库，并支持翻译结果的修改保存。
 
 ## 功能特性
 * 支持springboot,springmvc

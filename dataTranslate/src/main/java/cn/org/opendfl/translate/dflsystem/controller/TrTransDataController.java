@@ -7,6 +7,8 @@ import cn.org.opendfl.translate.dflsystem.biz.ITrTransDataBiz;
 import cn.org.opendfl.translate.dflsystem.biz.ITrTransTypeBiz;
 import cn.org.opendfl.translate.dflsystem.po.TrTransDataPo;
 import cn.org.opendfl.translate.dflsystem.translate.TransDto;
+import cn.org.opendfl.translate.dflsystem.vo.TransCountVo;
+import cn.org.opendfl.translate.dflsystem.vo.TransRepeatVo;
 import cn.org.opendfl.translate.exception.FailedException;
 import cn.org.opendfl.translate.exception.ResultData;
 import cn.org.opendfl.translate.exception.ValidateUtils;
@@ -17,10 +19,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
@@ -52,7 +51,6 @@ public class TrTransDataController extends BaseController {
      * @param entity   数据翻译对象
      * @param pageInfo 翻页对象
      * @return MyPageInfo 带翻页的数据集
-     * @author Generator
      * @date 2022年9月4日 下午7:43:53
      */
     @ApiOperation(value = "数据翻译列表", notes = "数据翻译列表翻页查询")
@@ -112,7 +110,6 @@ public class TrTransDataController extends BaseController {
      * @param request 请求req
      * @param entity  数据翻译对象
      * @return ResultData 返回数据
-     * @author Generator
      * @date 2022年9月4日 下午7:43:53
      */
     @ApiOperation(value = "添加数据翻译", notes = "添加一个数据翻译")
@@ -146,7 +143,6 @@ public class TrTransDataController extends BaseController {
      * @param request 请求req
      * @param entity  数据翻译对象
      * @return ResultData 返回数据
-     * @author Generator
      * @date 2022年9月4日 下午7:43:53
      */
     @ApiOperation(value = "修改数据翻译", notes = "根据传入的角色信息修改")
@@ -163,7 +159,6 @@ public class TrTransDataController extends BaseController {
      * @param request 请求req
      * @param entity  数据翻译对象
      * @return ResultData 返回数据
-     * @author Generator
      * @date 2022年9月4日 下午7:43:53
      */
     @ApiOperation(value = "删除数据翻译 ", notes = "根据传入id进行删除状态修改(即软删除)")
@@ -173,5 +168,35 @@ public class TrTransDataController extends BaseController {
         String remark = request.getParameter("remark");
         int v = trTransDataBiz.deleteTrTransData(entity.getId(), this.getCurrentUserId(), remark);
         return ResultData.success(v);
+    }
+
+    /**
+     * 翻译数据个数统计
+     *
+     * @param request     请求req
+     * @param transTypeId 数据类型id
+     * @return ResultData 返回数据
+     * @date 2022年9月4日 下午7:43:53
+     */
+    @ApiOperation(value = "翻译数据个数统计", notes = "翻译数据个数统计")
+    @RequestMapping(value = "transCount", method = {RequestMethod.POST, RequestMethod.GET})
+    public ResultData findTransCount(@RequestParam("transTypeId") Integer transTypeId, HttpServletRequest request) {
+        List<TransCountVo> list = trTransDataBiz.findTransCount(transTypeId);
+        return ResultData.success(list);
+    }
+
+    /**
+     * 数据翻译重复查询
+     *
+     * @param request     请求req
+     * @param transTypeId 数据类型id
+     * @return ResultData 返回数据
+     * @date 2022年9月4日 下午7:43:53
+     */
+    @ApiOperation(value = "数据翻译重复查询", notes = "数据翻译重复查询")
+    @RequestMapping(value = "transRepeat", method = {RequestMethod.POST, RequestMethod.GET})
+    public ResultData findRepeatData(@RequestParam("transTypeId") Integer transTypeId, HttpServletRequest request) {
+        List<TransRepeatVo> list = trTransDataBiz.findRepeatData(transTypeId);
+        return ResultData.success(list);
     }
 }

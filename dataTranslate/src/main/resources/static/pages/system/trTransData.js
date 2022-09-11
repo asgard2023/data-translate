@@ -6,15 +6,15 @@ $('#reset-btn').click(function () {
 });
 var typeId;
 $(function () {
-    var beforeDay=7;
+    var beforeDay = 7;
     initStartEndTime(beforeDay)
     doSearch();
 });
 
 function doSearch() {
-    var url="/dflsystem/trTransData/list2";
+    var url = "/dflsystem/trTransData/list2";
     var jsonParam = $('#search-form').serializeJson();
-    $('#dg').datagrid({headers:app.headers, url: url, queryParams: jsonParam})
+    $('#dg').datagrid({headers: app.headers, url: url, queryParams: jsonParam})
 }
 
 
@@ -155,7 +155,7 @@ function onDestroy() {
                             });
                         }
                     },
-                    error(d, e){
+                    error(d, e) {
                         $.messager.show({    // show error message
                             title: 'Error',
                             msg: d.responseJSON.errorMsg
@@ -170,4 +170,44 @@ function onDestroy() {
             msg: '请先选择要删除的记录'
         });
     }
+}
+
+function transRepeat() {
+    if (!typeId) {
+        $.messager.show({
+            title: '系统提示',
+            msg: '请先点击左边的数据类型'
+        });
+        return;
+    }
+
+    var url = 'transRepeat.html?id=' + typeId;
+    $("#dialog").dialog({
+        title: '重复数据(为空表示正常，即没有数据重复)',
+        width: 600,
+        height: 400,
+        modal: true,
+        content: "<iframe scrolling='auto' frameborder='0' src='" + url + "' style='width:100%; height:100%; display:block;'></iframe>"
+    });
+    $("#dialog").dialog("open"); // 打开dialog
+}
+
+function transCount() {
+    if (!typeId) {
+        $.messager.show({
+            title: '系统提示',
+            msg: '请先点击左边的数据类型'
+        });
+        return;
+    }
+
+    var url = 'transCount.html?id=' + typeId;
+    $("#dialog").dialog({
+        title: '翻译数统计',
+        width: 600,
+        height: 400,
+        modal: true,
+        content: "<iframe scrolling='auto' frameborder='0' src='" + url + "' style='width:100%; height:100%; display:block;'></iframe>"
+    });
+    $("#dialog").dialog("open"); // 打开dialog
 }

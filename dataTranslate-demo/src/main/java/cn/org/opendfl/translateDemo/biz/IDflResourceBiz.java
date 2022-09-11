@@ -22,7 +22,7 @@ public interface IDflResourceBiz extends IBaseService<DflResourcePo> {
      *
      * @param entity
      * @return Integer
-     * @author Generator
+     
      * @date 2022-8-6 23:03:15
      */
     Integer saveDflResource(DflResourcePo entity);
@@ -32,7 +32,7 @@ public interface IDflResourceBiz extends IBaseService<DflResourcePo> {
      *
      * @param entity
      * @return Integer
-     * @author Generator
+     
      * @date 2022-8-6 23:03:15
      */
     Integer updateDflResource(DflResourcePo entity);
@@ -44,7 +44,7 @@ public interface IDflResourceBiz extends IBaseService<DflResourcePo> {
      * @param operUser 操作人
      * @param remark   备注
      * @return Integer
-     * @author Generator
+     
      * @date 2022-8-6 23:03:15
      */
     Integer deleteDflResource(Integer id, Integer operUser, String remark);

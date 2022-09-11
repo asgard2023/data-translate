@@ -2,6 +2,8 @@ package cn.org.opendfl.translate.dflsystem.biz;
 
 import cn.org.opendfl.translate.base.IBaseService;
 import cn.org.opendfl.translate.dflsystem.po.TrTransDataPo;
+import cn.org.opendfl.translate.dflsystem.vo.TransCountVo;
+import cn.org.opendfl.translate.dflsystem.vo.TransRepeatVo;
 
 import java.util.List;
 import java.util.Map;
@@ -26,7 +28,6 @@ public interface ITrTransDataBiz extends IBaseService<TrTransDataPo> {
      *
      * @param entity
      * @return Integer
-     * @author Generator
      * @date 2022年9月4日 下午7:43:53
      */
     Integer saveTrTransData(TrTransDataPo entity);
@@ -36,7 +37,6 @@ public interface ITrTransDataBiz extends IBaseService<TrTransDataPo> {
      *
      * @param entity
      * @return Integer
-     * @author Generator
      * @date 2022年9月4日 下午7:43:53
      */
     Integer updateTrTransData(TrTransDataPo entity);
@@ -48,8 +48,23 @@ public interface ITrTransDataBiz extends IBaseService<TrTransDataPo> {
      * @param operUser 操作人
      * @param remark   备注
      * @return Integer
-     * @author Generator
      * @date 2022年9月4日 下午7:43:53
      */
     Integer deleteTrTransData(Long id, Integer operUser, String remark);
+
+    /**
+     * 翻译数据个数统计
+     *
+     * @param transTypeId 类型id
+     * @return 统计结果
+     */
+    List<TransCountVo> findTransCount(Integer transTypeId);
+
+    /**
+     * 数据翻译重复查询
+     *
+     * @param transTypeId
+     * @return 重复的数据Id及属性
+     */
+    List<TransRepeatVo> findRepeatData(Integer transTypeId);
 }

@@ -22,7 +22,7 @@ public interface IDflUserBiz extends IBaseService<DflUserPo> {
      *
      * @param entity
      * @return Integer
-     * @author Generator
+     
      * @date 2022-8-6 6:06:51
      */
     Integer saveDflUser(DflUserPo entity);
@@ -32,7 +32,7 @@ public interface IDflUserBiz extends IBaseService<DflUserPo> {
      *
      * @param entity
      * @return Integer
-     * @author Generator
+     
      * @date 2022-8-6 6:06:51
      */
     Integer updateDflUser(DflUserPo entity);
@@ -44,7 +44,7 @@ public interface IDflUserBiz extends IBaseService<DflUserPo> {
      * @param operUser 操作人
      * @param remark   备注
      * @return Integer
-     * @author Generator
+     
      * @date 2022-8-6 6:06:51
      */
     Integer deleteDflUser(Integer id, Integer operUser, String remark);

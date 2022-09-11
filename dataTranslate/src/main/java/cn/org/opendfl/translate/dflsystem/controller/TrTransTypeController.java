@@ -41,7 +41,7 @@ public class TrTransTypeController extends BaseController {
      * @param entity   翻译类型对象
      * @param pageInfo 翻页对象
      * @return MyPageInfo 带翻页的数据集
-     * @author Generator
+     
      * @date 2022年9月4日 下午7:42:24
      */
     @ApiOperation(value = "翻译类型列表", notes = "翻译类型列表翻页查询")
@@ -74,7 +74,7 @@ public class TrTransTypeController extends BaseController {
      * @param request 请求req
      * @param entity  翻译类型对象
      * @return ResultData 返回数据
-     * @author Generator
+     
      * @date 2022年9月4日 下午7:42:24
      */
     @ApiOperation(value = "添加翻译类型", notes = "添加一个翻译类型")
@@ -95,7 +95,7 @@ public class TrTransTypeController extends BaseController {
      * @param request 请求req
      * @param entity  翻译类型对象
      * @return ResultData 返回数据
-     * @author Generator
+     
      * @date 2022年9月4日 下午7:42:24
      */
     @ApiOperation(value = "修改翻译类型", notes = "根据传入的角色信息修改")
@@ -112,7 +112,7 @@ public class TrTransTypeController extends BaseController {
      * @param request 请求req
      * @param entity  翻译类型对象
      * @return ResultData 返回数据
-     * @author Generator
+     
      * @date 2022年9月4日 下午7:42:24
      */
     @ApiOperation(value = "删除翻译类型 ", notes = "根据传入id进行删除状态修改(即软删除)")

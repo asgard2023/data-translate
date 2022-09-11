@@ -1,7 +1,9 @@
 package cn.org.opendfl.translateDemo;
 
+import cn.org.opendfl.translate.config.DataTranslateConfiguration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -9,6 +11,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.web.client.RestTemplate;
 import tk.mybatis.spring.annotation.MapperScan;
+
+import javax.annotation.PostConstruct;
 
 /**
  * @author chenjh
@@ -21,6 +25,16 @@ public class DataTranslateDemoApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(DataTranslateDemoApplication.class, args);
+    }
+
+    @Autowired
+    private DataTranslateConfiguration dataTranslateConfiguration;
+
+    @PostConstruct
+    public void init() {
+        logger.info("---translate.transType={}", dataTranslateConfiguration.getTransType());
+        logger.info("---translate.defaultLang={}", dataTranslateConfiguration.getDefaultLang());
+        logger.info("---translate.transLanguages={}", dataTranslateConfiguration.getTransLanguages());
     }
 
     //自创建RestTemplate

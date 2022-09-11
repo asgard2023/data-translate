@@ -1,27 +1,25 @@
-# springboot数据翻译组件
-即支持翻译数据属性，并把翻译结果存到数据库，加载时自动缓存翻译结果1分钟，以减少频繁调用数据库。
+# springboot data translation component
+springboot, the springmvc data translation component, supports the function of enabling data translation data attributes through annotations, and stores the translation results in the database.
+
+## Features
+* Support springboot, springmvc
+* Support mysql, postgresql, etc.
+* Support easyui, jqgrid, layui front-end modification of function translation
+* Support the use of java annotations
+* Support Baidu, Youdao, Google and other translation api
+* Support to use guava to cache translation results when querying
+
+## Relevant information
+* Baidu translation api https://fanyi-api.baidu.com/doc/21
+* google translate api https://cloud.google.com/translate/docs/quickstarts?csw=1
+* Other translation apis can be extended by yourself
 
 ## Quick Start
-
 http://localhost:8080/index.html  
 http://localhost:8080/doc.html
 
-## 功能特性
-
-* 支持springboot,springmvc
-* 支持mysql,postgresql等
-* 支持easyui,jqgrid,layui前端对功能翻译的修改
-* 支持java注解使用
-* 支持百度,有道，google等翻译api
-* 支持查询时用guava缓存翻译结果
-
-## 相关资料
-* 百度翻译api https://fanyi-api.baidu.com/doc/21
-* google翻译api https://cloud.google.com/translate/docs/quickstarts?csw=1
-* 其他翻译api 可自行扩展
-
-## 使用
-* 1,在要翻译的PO类，加上@TranslateType，@TranslateField快速上手
+## use
+* 1, in the PO class to be translated, add @TranslateType, @TranslateField to get started quickly
 ```java
 
 /**
@@ -46,7 +44,7 @@ public class DflUserPo implements Serializable {
     
 }
 ```
-* 2,在返回的list调用翻译功能
+* 2, call the translation function on the returned list
 ```java
 @RestController
 @RequestMapping("dflUser")
@@ -69,7 +67,7 @@ public class DflUserController{
     }
 }
 ```
-* 3,方法返回值注解@Translate
+* 3, method return value annotation @Translate
 
 ```java
 import cn.org.opendfl.translate.dflsystem.translate.annotation.Translate;

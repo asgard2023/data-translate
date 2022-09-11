@@ -60,7 +60,7 @@ public class DflUserController extends BaseController {
      * @param entity   dfl_user对象
      * @param pageInfo 翻页对象
      * @return MyPageInfo 带翻页的数据集
-     * @author Generator
+     
      * @date 2022-8-6 6:46:20
      */
     @ApiOperation(value = "dfl_user列表", notes = "dfl_user列表翻页查询")
@@ -121,7 +121,7 @@ public class DflUserController extends BaseController {
      * @param request 请求req
      * @param entity  dfl_user对象
      * @return ResultData 返回数据
-     * @author Generator
+     
      * @date 2022-8-6 6:46:20
      */
     @ApiOperation(value = "添加dfl_user", notes = "添加一个dfl_user")
@@ -142,7 +142,7 @@ public class DflUserController extends BaseController {
      * @param request 请求req
      * @param entity  dfl_user对象
      * @return ResultData 返回数据
-     * @author Generator
+     
      * @date 2022-8-6 6:46:20
      */
     @ApiOperation(value = "修改dfl_user", notes = "根据传入的角色信息修改")
@@ -159,7 +159,7 @@ public class DflUserController extends BaseController {
      * @param request 请求req
      * @param entity  dfl_user对象
      * @return ResultData 返回数据
-     * @author Generator
+     
      * @date 2022-8-6 6:46:20
      */
     @ApiOperation(value = "删除dfl_user ", notes = "根据传入id进行删除状态修改(即软删除)")

@@ -10,6 +10,8 @@ import cn.org.opendfl.translate.dflsystem.mapper.TrTransDataMapper;
 import cn.org.opendfl.translate.dflsystem.po.TrTransDataPo;
 import cn.org.opendfl.translate.dflsystem.translate.IdType;
 import cn.org.opendfl.translate.dflsystem.translate.TransDto;
+import cn.org.opendfl.translate.dflsystem.vo.TransCountVo;
+import cn.org.opendfl.translate.dflsystem.vo.TransRepeatVo;
 import com.github.pagehelper.PageHelper;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -234,5 +236,13 @@ public class TrTransDataBiz extends BaseService<TrTransDataPo> implements ITrTra
 
         example.selectProperties(selectFields.split(","));
         return this.mapper.selectByExample(example);
+    }
+
+    public List<TransCountVo> findTransCount(Integer transTypeId) {
+        return mapper.findTransCount(transTypeId);
+    }
+
+    public List<TransRepeatVo> findRepeatData(Integer transTypeId) {
+        return mapper.findRepeatData(transTypeId);
     }
 }

@@ -23,7 +23,7 @@ public interface ITrTransTypeBiz extends IBaseService<TrTransTypePo> {
      *
      * @param entity
      * @return Integer
-     * @author Generator
+     
      * @date 2022年9月4日 下午7:42:24
      */
     Integer saveTrTransType(TrTransTypePo entity);
@@ -33,7 +33,7 @@ public interface ITrTransTypeBiz extends IBaseService<TrTransTypePo> {
      *
      * @param entity
      * @return Integer
-     * @author Generator
+     
      * @date 2022年9月4日 下午7:42:24
      */
     Integer updateTrTransType(TrTransTypePo entity);
@@ -45,7 +45,7 @@ public interface ITrTransTypeBiz extends IBaseService<TrTransTypePo> {
      * @param operUser 操作人
      * @param remark   备注
      * @return Integer
-     * @author Generator
+     
      * @date 2022年9月4日 下午7:42:24
      */
     Integer deleteTrTransType(Integer id, Integer operUser, String remark);

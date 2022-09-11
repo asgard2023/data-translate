@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>翻译数据个数统计</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script type="text/javascript" src="../../assets/easyui/easyui1.7.0/jquery.min.js"></script>
+    <script type="text/javascript" src="../../assets/easyui/easyui1.7.0/jquery.easyui.min.js"></script>
+    <script type="text/javascript" src="../../assets/easyui/easyui1.7.0/easyui.comm.valid.js"></script>
+    <script type="text/javascript" src="../../assets/easyui/easyui1.7.0/locale/easyui-lang-zh_CN.js"></script>
+    <script type="text/javascript" src="../../assets/easyui/easyui.grid.hide.js"></script>
+    <script type="text/javascript" src="../../js/easyui/Common.js"></script>
+    <script type="text/javascript" src="../../js/easyui/comm.dict.js"></script>
+    <script type="text/javascript" src="../../js/easyui/DateUtils.js"></script>
+    <link rel="stylesheet" type="text/css" href="../../assets/easyui/easyui1.7.0/themes/bootstrap/easyui.css">
+    <link rel="stylesheet" type="text/css" href="../../assets/easyui/easyui1.7.0/themes/icon.css">
+
+    <style type="text/css">
+        #fm {
+            margin: 0;
+            padding: 10px 30px;
+        }
+
+        .ftitle {
+            font-size: 14px;
+            font-weight: bold;
+            padding: 5px 0;
+            margin-bottom: 10px;
+            border-bottom: 1px solid #ccc;
+        }
+
+        .fitem {
+            margin-bottom: 5px;
+        }
+
+        .fitem label {
+            display: inline-block;
+            width: 80px;
+        }
+
+        .input_query {
+            width: 100px;
+        }
+
+        input, textarea {
+            width: 160px;
+            border: 1px solid #ccc;
+            padding: 2px;
+        }
+    </style>
+</head>
+
+<body>
+
+<div id="mainWindow" class="easyui-layout" data-options="fit:true" style="display:none">
+    <!-- 查询结果 center -->
+    <div data-options="region:'center'" id="dataInfo">
+        <table id="dg" class="easyui-datagrid" data-options="onDblClickRow:onDblClick"
+               rownumbers="true" fitColumns="true" singleSelect="true">
+            <thead>
+            <tr>
+                <th field="lang" width="50" sortable="false">lang</th>
+                <th field="code" width="50" sortable="false">code</th>
+                <th field="cout" width="50" sortable="false">cout</th>
+                <th field="maxCreateTime" width="50" sortable="false">maxCreateTime</th>
+                <th field="maxUpdateTime" width="50" sortable="false">maxUpdateTime</th>
+            </tr>
+            </thead>
+        </table>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $('#mainWindow').css('display', 'block');//用于避免chrome下页面刚打开时，画面会有一小会的格式不好的问题
+    var lookupId;
+    var canModify;
+    $('#search-btn').click(function () {
+        doSearch();
+    });
+    $('#reset-btn').click(function () {
+        $('#search-form')[0].reset();
+    });
+
+    function gridLoadError(e, d) {
+        console.log('-----gridLoadError--e=' + e + ' d=' + d)
+    }
+
+    function gridLoadSuccess(e, d) {
+        console.log('-----gridLoadSuccess--e=' + e + ' d=' + d)
+    }
+
+    function doSearch() {
+        doSearchReload();
+    }
+
+    function loadData() {
+        var url = '/dflsystem/trTransData/transCount';
+        var id = app.getQueryString('id');
+        var jsonParam = $('#search-form').serializeJson();
+
+        jsonParam.transTypeId=id;
+        $.ajax({
+            method: 'get',
+            url: url,
+            data: jsonParam,
+            dataType: 'json',
+            async:false,
+            success: function (data) {
+                console.log(data);
+                if (data.success) {
+                    if (data.data) {
+                        var datas = data.data;
+                        $('#dg').datagrid('loadData',[]);
+                        for (var d in datas) {
+                            //console.log(d);
+                            $('#dg').datagrid('appendRow', datas[d]);
+                        }
+                    }
+                }
+                else{
+                    $.messager.show({
+                        title: 'warn',
+                        msg: data.errorMsg
+                    });
+                }
+            },
+            error: function () {
+                alert('error');
+            }
+        });
+    }
+
+    function doSearchReload() {
+        loadData();
+    }
+
+    function onDblClick(rowIndex, rowData) {
+        //alert('---onDblClick--rowIndex='+rowIndex+' row.id='+rowData.id);
+        onEdit();
+    }
+
+    function listenerName(ex) {
+        if (ex.keyCode == 13) {
+            doSearch();
+        }
+    }
+
+    $('#query_code').keydown(listenerName);
+    $('#query_name').keydown(listenerName);
+
+
+    function getRowData(entityName, row) {
+        var tmp;
+        var obj = {}
+        obj[entityName] = {};
+        for (i in row) {
+            tmp = row[i];
+            obj[i] = tmp;
+        }
+        return obj;
+    }
+
+    $(function () {
+        doSearch();
+        //if(parent)
+        //parent.iframeCenterSearch({lookupId:0});//刷新重置关联查询id
+    });
+</script>
+<script type="text/javascript">
+    //        $(top.hangge());
+</script>
+</body>
+</html>

@@ -16,6 +16,8 @@
     <description>springboot mysql data translate demo</description>
     <properties>
         <java.version>1.8</java.version>
+        <maven.deploy.skip>true</maven.deploy.skip>
+        <maven.javadoc.skip>true</maven.javadoc.skip>
     </properties>
     <dependencies>
         <dependency>

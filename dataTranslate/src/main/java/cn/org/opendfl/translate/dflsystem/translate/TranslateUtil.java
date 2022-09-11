@@ -176,17 +176,17 @@ public class TranslateUtil {
         for (int i = 0; i < list.size(); i++) {
             Object obj = list.get(i);
             Object id = idList.get(i);
-            if (id == null) {
-                continue;
+            String key=id + "_" + lang;
+            fieldMap = dataIdFieldMap.get(key);
+            if (fieldMap == null) {
+                fieldMap = new HashMap<>();
+                dataIdFieldMap.put(key, fieldMap);
             }
+
             if (idInfoVo.getIdType() == IdType.STRING.getType()) {
                 dataSid = (String) id;
             } else {
                 dataNid = CommUtils.getLong(id);
-            }
-            fieldMap = dataIdFieldMap.get(id + "_" + lang);
-            if (fieldMap == null) {
-                fieldMap = new HashMap<>();
             }
             for (String field : fields) {
                 try {

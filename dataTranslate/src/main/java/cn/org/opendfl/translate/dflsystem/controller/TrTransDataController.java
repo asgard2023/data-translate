@@ -77,7 +77,7 @@ public class TrTransDataController extends BaseController {
             pageInfo.setPageSize(getPageSize());
         }
         Map<String, Object> params = this.createAllParams(request);
-        pageInfo = trTransDataBiz.findPageBy((TransDto) transDto, pageInfo, params);
+        pageInfo = trTransDataBiz.findPageBy(transDto, pageInfo, params);
         return pageInfo;
     }
 

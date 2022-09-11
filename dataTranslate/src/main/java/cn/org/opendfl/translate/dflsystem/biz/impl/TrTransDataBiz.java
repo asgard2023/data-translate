@@ -1,6 +1,6 @@
 package cn.org.opendfl.translate.dflsystem.biz.impl;
 
-import cn.hutool.core.collection.CollectionUtil;
+import cn.hutool.core.collection.CollUtil;
 import cn.org.opendfl.translate.base.BaseService;
 import cn.org.opendfl.translate.base.BeanUtils;
 import cn.org.opendfl.translate.base.MyPageInfo;
@@ -102,9 +102,7 @@ public class TrTransDataBiz extends BaseService<TrTransDataPo> implements ITrTra
 
         if (entity instanceof TransDto) {
             TransDto transDto = (TransDto) entity;
-            if (transDto != null) {
-                this.searchCondition(transDto, criteria);
-            }
+            this.searchCondition(transDto, criteria);
         }
 
     }
@@ -183,7 +181,7 @@ public class TrTransDataBiz extends BaseService<TrTransDataPo> implements ITrTra
     }
 
     public Map<String, Map<String, String>> getValueMapCacheByIdNum(Integer dataTypeId, String lang, List<String> fields, List<Object> idList) {
-        if (CollectionUtil.isEmpty(idList)) {
+        if (CollUtil.isEmpty(idList)) {
             return new HashMap<>();
         }
         List<TrTransDataPo> list = findDataTransListByIds(dataTypeId, lang, IdType.NUM, fields, idList);
@@ -201,7 +199,7 @@ public class TrTransDataBiz extends BaseService<TrTransDataPo> implements ITrTra
     }
 
     public Map<String, Map<String, String>> getValueMapCacheByIdStr(Integer dataTypeId, String lang, List<String> fields, List<Object> idList) {
-        if (CollectionUtil.isEmpty(fields) || CollectionUtil.isEmpty(idList)) {
+        if (CollUtil.isEmpty(fields) || CollUtil.isEmpty(idList)) {
             return new HashMap<>();
         }
         List<TrTransDataPo> list = findDataTransListByIds(dataTypeId, lang, IdType.STRING, fields, idList);

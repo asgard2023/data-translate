@@ -13,5 +13,5 @@ public class IdInfoVo implements Serializable {
     private int idType;
     private String idField;
     private List<String> transFields;
-    private Integer langDataTypeId;
+    private Integer transTypeId;
 }

@@ -37,6 +37,15 @@ public @interface TranslateType {
     int idType() default IdType.TYPE_NUM;
 
     /**
+     * 类型编码
+     * 仅做分类用，比如模块分类，微服务分类等
+     * 仅在初始化时有用，数据库有了之后可以修改，不受此影响
+     *
+     * @return
+     */
+    String typeCode() default "";
+
+    /**
      * 表名，用于
      *
      * @return tableName

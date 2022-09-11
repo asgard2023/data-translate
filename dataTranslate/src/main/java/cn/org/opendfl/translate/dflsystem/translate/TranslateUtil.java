@@ -76,7 +76,7 @@ public class TranslateUtil {
                 }
                 List<String> fields = getTranslateFields(clazz);
                 idInfoVo = new IdInfoVo(code, translateType.idType(), translateType.idField(), fields, 0);
-                autoSaveTransType(idInfoVo);
+                autoSaveTransType(idInfoVo, translateType);
                 classTransTypes.put(className, idInfoVo);
                 return idInfoVo;
             }
@@ -84,19 +84,20 @@ public class TranslateUtil {
         return idInfoVo;
     }
 
-    private static void autoSaveTransType(IdInfoVo idInfoVo) {
+    private static void autoSaveTransType(IdInfoVo idInfoVo, TranslateType translateType) {
         Integer transTypeId = trTransTypeBiz.getTransTypeId(idInfoVo.getCode());
         if (transTypeId == null) {
             TrTransTypePo trTransTypePo = new TrTransTypePo();
             trTransTypePo.setCode(idInfoVo.getCode());
+            trTransTypePo.setTypeCode(translateType.typeCode());
             trTransTypePo.setIdType(idInfoVo.getIdType());
             trTransTypePo.setIdField(idInfoVo.getIdField());
             trTransTypePo.setIfDel(0);
             trTransTypePo.setStatus(1);
             trTransTypeBiz.saveTrTransType(trTransTypePo);
-            idInfoVo.setLangDataTypeId(trTransTypePo.getId());
+            idInfoVo.setTransTypeId(trTransTypePo.getId());
         } else {
-            idInfoVo.setLangDataTypeId(transTypeId);
+            idInfoVo.setTransTypeId(transTypeId);
         }
     }
 
@@ -134,15 +135,16 @@ public class TranslateUtil {
      * <p>
      * 支持翻译时自动保存到数据库
      *
-     * @param lang         目标语言
+     * @param langParam    目标语言
      * @param list         数据list
      * @param isTransField 是否翻译后修改属性值
      * @author chenjh
      */
-    public static void transform(String lang, List<?> list, boolean isTransField) {
-        if (StringUtils.isEmpty(lang) || CollectionUtils.isEmpty(list)) {
+    public static void transform(String langParam, List<?> list, boolean isTransField) {
+        if (StringUtils.isEmpty(langParam) || CollectionUtils.isEmpty(list)) {
             return;
         }
+        final String lang = langParam.trim();
         if (LangCodes.ZH.equals(lang)) {
             return;//默认中文不用翻译
         }
@@ -176,7 +178,7 @@ public class TranslateUtil {
         for (int i = 0; i < list.size(); i++) {
             Object obj = list.get(i);
             Object id = idList.get(i);
-            String key=id + "_" + lang;
+            String key = id + "_" + lang;
             fieldMap = dataIdFieldMap.get(key);
             if (fieldMap == null) {
                 fieldMap = new HashMap<>();
@@ -211,7 +213,7 @@ public class TranslateUtil {
                 content = translateBiz.getTransResult(value, lang);
                 fieldMap.put(field, content);
                 if (StringUtils.isNotBlank(content)) {
-                    TranslateTrans.autoSaveTransResult(idInfoVo.getLangDataTypeId(), dataNid, dataSid, field, lang, content);
+                    TranslateTrans.autoSaveTransResult(idInfoVo.getTransTypeId(), dataNid, dataSid, field, lang, content);
                 }
             }
         }

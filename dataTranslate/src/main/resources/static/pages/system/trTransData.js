@@ -181,12 +181,12 @@ function transRepeat() {
         return;
     }
 
-    var url = 'transRepeat.html?id=' + typeId;
+    var url = 'transDataRepeat.html?id=' + typeId;
     $("#dialog").dialog({
         title: '重复数据(为空表示正常，即没有数据重复)',
         width: 600,
         height: 400,
-        modal: true,
+        modal: false,
         content: "<iframe scrolling='auto' frameborder='0' src='" + url + "' style='width:100%; height:100%; display:block;'></iframe>"
     });
     $("#dialog").dialog("open"); // 打开dialog
@@ -201,12 +201,12 @@ function transCount() {
         return;
     }
 
-    var url = 'transCount.html?id=' + typeId;
+    var url = 'transDataCount.html?id=' + typeId;
     $("#dialog").dialog({
         title: '翻译数统计',
         width: 600,
         height: 400,
-        modal: true,
+        modal: false,
         content: "<iframe scrolling='auto' frameborder='0' src='" + url + "' style='width:100%; height:100%; display:block;'></iframe>"
     });
     $("#dialog").dialog("open"); // 打开dialog

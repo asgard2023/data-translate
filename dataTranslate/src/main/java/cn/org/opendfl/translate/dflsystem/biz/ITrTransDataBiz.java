@@ -2,7 +2,7 @@ package cn.org.opendfl.translate.dflsystem.biz;
 
 import cn.org.opendfl.translate.base.IBaseService;
 import cn.org.opendfl.translate.dflsystem.po.TrTransDataPo;
-import cn.org.opendfl.translate.dflsystem.vo.TransCountVo;
+import cn.org.opendfl.translate.dflsystem.vo.TransDataCountVo;
 import cn.org.opendfl.translate.dflsystem.vo.TransRepeatVo;
 
 import java.util.List;
@@ -58,7 +58,7 @@ public interface ITrTransDataBiz extends IBaseService<TrTransDataPo> {
      * @param transTypeId 类型id
      * @return 统计结果
      */
-    List<TransCountVo> findTransCount(Integer transTypeId);
+    List<TransDataCountVo> findTransCount(Integer transTypeId);
 
     /**
      * 数据翻译重复查询

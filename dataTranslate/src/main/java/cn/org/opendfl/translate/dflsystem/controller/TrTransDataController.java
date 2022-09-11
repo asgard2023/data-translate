@@ -7,7 +7,7 @@ import cn.org.opendfl.translate.dflsystem.biz.ITrTransDataBiz;
 import cn.org.opendfl.translate.dflsystem.biz.ITrTransTypeBiz;
 import cn.org.opendfl.translate.dflsystem.po.TrTransDataPo;
 import cn.org.opendfl.translate.dflsystem.translate.TransDto;
-import cn.org.opendfl.translate.dflsystem.vo.TransCountVo;
+import cn.org.opendfl.translate.dflsystem.vo.TransDataCountVo;
 import cn.org.opendfl.translate.dflsystem.vo.TransRepeatVo;
 import cn.org.opendfl.translate.exception.FailedException;
 import cn.org.opendfl.translate.exception.ResultData;
@@ -176,12 +176,11 @@ public class TrTransDataController extends BaseController {
      * @param request     请求req
      * @param transTypeId 数据类型id
      * @return ResultData 返回数据
-     * @date 2022年9月4日 下午7:43:53
      */
     @ApiOperation(value = "翻译数据个数统计", notes = "翻译数据个数统计")
     @RequestMapping(value = "transCount", method = {RequestMethod.POST, RequestMethod.GET})
     public ResultData findTransCount(@RequestParam("transTypeId") Integer transTypeId, HttpServletRequest request) {
-        List<TransCountVo> list = trTransDataBiz.findTransCount(transTypeId);
+        List<TransDataCountVo> list = trTransDataBiz.findTransCount(transTypeId);
         return ResultData.success(list);
     }
 
@@ -191,7 +190,6 @@ public class TrTransDataController extends BaseController {
      * @param request     请求req
      * @param transTypeId 数据类型id
      * @return ResultData 返回数据
-     * @date 2022年9月4日 下午7:43:53
      */
     @ApiOperation(value = "数据翻译重复查询", notes = "数据翻译重复查询")
     @RequestMapping(value = "transRepeat", method = {RequestMethod.POST, RequestMethod.GET})

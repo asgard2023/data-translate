@@ -44,6 +44,13 @@ public class TrTransTypePo implements Serializable {
     @Column(name = "name")
     @Length(message = "name超出最大长度100限制", max = 100)
     private String name;
+
+    /**
+     * 仅做分类用，比如模块分类，微服务分类
+     */
+    @Column(name = "type_code")
+    @Length(message = "typeCode超出最大长度32限制", max = 32)
+    private String typeCode;
     /**
      * id属性名
      */

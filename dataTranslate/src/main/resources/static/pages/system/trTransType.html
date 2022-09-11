@@ -51,7 +51,7 @@
 </head>
 
 <body>
-
+<div id="dialog"  class="easyui-dialog" closed="true"></div>
 <div class="easyui-layout" data-options="fit:true">
     <!-- 查询条件  -->
     <div data-options="region:'north', title:'多语言翻译类型-条件'"
@@ -75,6 +75,7 @@
             <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="onEdit()">修改</a>
             <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-remove" plain="true"
                onclick="onDestroy()">删除</a>
+            <a href="#" class="easyui-linkbutton" iconCls="icon-search"  onclick="transTypeCount()">翻译类型数统计</a>
         </div>
         <table id="dg" class="easyui-datagrid"
                data-options="onDblClickRow:onDblClick, onClickRow:onClick, onLoadError:loadError, onLoadSuccess:function(){$('.datagrid-btable').find('div.datagrid-cell').css('text-align','left');}"
@@ -83,8 +84,9 @@
             <thead>
             <tr>
                 <th align="center" field="id" width="50" sortable="true" hidden="true">主键</th>
-                <th align="center" field="code" width="50" sortable="true">类型</th>
-                <th align="center" field="name" width="50" sortable="true">编码</th>
+                <th align="center" field="code" width="50" sortable="true">编码</th>
+                <th align="center" field="name" width="50" sortable="true">名称</th>
+                <th align="center" field="typeCode" width="50" sortable="true">类型编码</th>
                 <th align="center" field="idField" width="50" sortable="true" hidden="true">id属性名</th>
                 <th align="center" field="idType" width="50" sortable="true" hidden="true">id属性类型</th>
                 <th align="center" field="remark" width="50" sortable="true" hidden="true">备注</th>
@@ -109,12 +111,16 @@
         <input type="hidden" name="id">
         <input type="hidden" name="ifDel">
         <div class="fitem">
-            <label>类型:</label>
+            <label>编码:</label>
             <input name="code" class="easyui-validatebox" required="true">
         </div>
         <div class="fitem">
-            <label>编码:</label>
+            <label>名称:</label>
             <input name="name" class="easyui-validatebox">
+        </div>
+        <div class="fitem">
+            <label>类型编码:</label>
+            <input name="typeCode" class="easyui-validatebox">
         </div>
         <div class="fitem">
             <label>id属性名:</label>

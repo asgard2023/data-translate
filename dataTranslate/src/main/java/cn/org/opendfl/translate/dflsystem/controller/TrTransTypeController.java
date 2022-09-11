@@ -5,6 +5,7 @@ import cn.org.opendfl.translate.base.MyPageInfo;
 import cn.org.opendfl.translate.base.PageVO;
 import cn.org.opendfl.translate.dflsystem.biz.ITrTransTypeBiz;
 import cn.org.opendfl.translate.dflsystem.po.TrTransTypePo;
+import cn.org.opendfl.translate.dflsystem.vo.TransTypeCountVo;
 import cn.org.opendfl.translate.exception.ResultData;
 import cn.org.opendfl.translate.exception.ValidateUtils;
 import io.swagger.annotations.Api;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -41,7 +43,6 @@ public class TrTransTypeController extends BaseController {
      * @param entity   翻译类型对象
      * @param pageInfo 翻页对象
      * @return MyPageInfo 带翻页的数据集
-     
      * @date 2022年9月4日 下午7:42:24
      */
     @ApiOperation(value = "翻译类型列表", notes = "翻译类型列表翻页查询")
@@ -74,7 +75,6 @@ public class TrTransTypeController extends BaseController {
      * @param request 请求req
      * @param entity  翻译类型对象
      * @return ResultData 返回数据
-     
      * @date 2022年9月4日 下午7:42:24
      */
     @ApiOperation(value = "添加翻译类型", notes = "添加一个翻译类型")
@@ -95,7 +95,6 @@ public class TrTransTypeController extends BaseController {
      * @param request 请求req
      * @param entity  翻译类型对象
      * @return ResultData 返回数据
-     
      * @date 2022年9月4日 下午7:42:24
      */
     @ApiOperation(value = "修改翻译类型", notes = "根据传入的角色信息修改")
@@ -112,7 +111,6 @@ public class TrTransTypeController extends BaseController {
      * @param request 请求req
      * @param entity  翻译类型对象
      * @return ResultData 返回数据
-     
      * @date 2022年9月4日 下午7:42:24
      */
     @ApiOperation(value = "删除翻译类型 ", notes = "根据传入id进行删除状态修改(即软删除)")
@@ -122,5 +120,18 @@ public class TrTransTypeController extends BaseController {
         String remark = request.getParameter("remark");
         int v = trTransTypeBiz.deleteTrTransType(entity.getId(), this.getCurrentUserId(), remark);
         return ResultData.success(v);
+    }
+
+    /**
+     * 数据翻译重复查询
+     *
+     * @param request 请求req
+     * @return ResultData 返回数据
+     */
+    @ApiOperation(value = "类型编码统计", notes = "类型编码统计")
+    @RequestMapping(value = "transTypeCount", method = {RequestMethod.POST, RequestMethod.GET})
+    public ResultData findTransTypeCount(HttpServletRequest request) {
+        List<TransTypeCountVo> list = trTransTypeBiz.findTransTypeCount();
+        return ResultData.success(list);
     }
 }

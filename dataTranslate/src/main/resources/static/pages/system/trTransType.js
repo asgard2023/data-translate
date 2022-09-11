@@ -165,3 +165,15 @@ function onDestroy() {
         });
     }
 }
+
+function transTypeCount() {
+    var url = 'transTypeCount.html';
+    $("#dialog").dialog({
+        title: '翻译类型数统计',
+        width: 600,
+        height: 400,
+        modal: false,
+        content: "<iframe scrolling='auto' frameborder='0' src='" + url + "' style='width:100%; height:100%; display:block;'></iframe>"
+    });
+    $("#dialog").dialog("open"); // 打开dialog
+}

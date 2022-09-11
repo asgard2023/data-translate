@@ -2,7 +2,7 @@ translate:
   transLanguages: en,ja
   transType: baidu
   appid: 20220905001332382
-  securityKey: 1IsDra
+  securityKey: xxxx
   apiUrl: https://fanyi-api.baidu.com/api/trans/vip/translate
 
 #  transType: google

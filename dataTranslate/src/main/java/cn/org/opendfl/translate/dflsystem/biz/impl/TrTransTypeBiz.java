@@ -6,6 +6,7 @@ import cn.org.opendfl.translate.base.MyPageInfo;
 import cn.org.opendfl.translate.dflsystem.biz.ITrTransTypeBiz;
 import cn.org.opendfl.translate.dflsystem.mapper.TrTransTypeMapper;
 import cn.org.opendfl.translate.dflsystem.po.TrTransTypePo;
+import cn.org.opendfl.translate.dflsystem.vo.TransTypeCountVo;
 import com.github.pagehelper.PageHelper;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
@@ -172,5 +173,9 @@ public class TrTransTypeBiz extends BaseService<TrTransTypePo> implements ITrTra
         po.setRemark(remark);
         po.setUpdateTime(new Date());
         return this.updateByPrimaryKeySelective(po);
+    }
+
+    public List<TransTypeCountVo> findTransTypeCount() {
+        return mapper.findTransTypeCount();
     }
 }

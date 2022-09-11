@@ -6,13 +6,13 @@ import java.util.Date;
 
 /**
  * 翻译数据统计
+ * TransTypePo的数据统计
  *
  * @author chenjh
  */
 @Data
-public class TransCountVo {
-    private String lang;
-    private String code;
+public class TransTypeCountVo {
+    private String typeCode;
     private Integer cout;
 
     private Date maxCreateTime;

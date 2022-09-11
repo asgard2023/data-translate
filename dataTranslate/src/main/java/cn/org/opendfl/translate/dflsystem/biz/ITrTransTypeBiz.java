@@ -2,6 +2,9 @@ package cn.org.opendfl.translate.dflsystem.biz;
 
 import cn.org.opendfl.translate.base.IBaseService;
 import cn.org.opendfl.translate.dflsystem.po.TrTransTypePo;
+import cn.org.opendfl.translate.dflsystem.vo.TransTypeCountVo;
+
+import java.util.List;
 
 /**
  * 翻译类型 业务接口
@@ -23,7 +26,6 @@ public interface ITrTransTypeBiz extends IBaseService<TrTransTypePo> {
      *
      * @param entity
      * @return Integer
-     
      * @date 2022年9月4日 下午7:42:24
      */
     Integer saveTrTransType(TrTransTypePo entity);
@@ -33,7 +35,6 @@ public interface ITrTransTypeBiz extends IBaseService<TrTransTypePo> {
      *
      * @param entity
      * @return Integer
-     
      * @date 2022年9月4日 下午7:42:24
      */
     Integer updateTrTransType(TrTransTypePo entity);
@@ -45,8 +46,14 @@ public interface ITrTransTypeBiz extends IBaseService<TrTransTypePo> {
      * @param operUser 操作人
      * @param remark   备注
      * @return Integer
-     
      * @date 2022年9月4日 下午7:42:24
      */
     Integer deleteTrTransType(Integer id, Integer operUser, String remark);
+
+    /**
+     * typeCode翻译类型统计
+     *
+     * @return
+     */
+    List<TransTypeCountVo> findTransTypeCount();
 }

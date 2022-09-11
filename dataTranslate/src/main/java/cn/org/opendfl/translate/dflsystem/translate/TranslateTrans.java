@@ -51,9 +51,9 @@ public class TranslateTrans {
         Map<String, Map<String, String>> dataIdCacheMap = TranslateTrans.dataIdFieldMap.getAllPresent(idLangList);
         List<Object> unexistIdList = idList.stream().filter(id -> !dataIdCacheMap.containsKey(id + "_" + lang)).collect(Collectors.toList());
         if (idInfoVo.getIdType() == IdType.STRING.getType()) {
-            dataIdFieldMap = getBiz().getValueMapCacheByIdStr(idInfoVo.getLangDataTypeId(), lang, fields, unexistIdList);
+            dataIdFieldMap = getBiz().getValueMapCacheByIdStr(idInfoVo.getTransTypeId(), lang, fields, unexistIdList);
         } else {
-            dataIdFieldMap = getBiz().getValueMapCacheByIdNum(idInfoVo.getLangDataTypeId(), lang, fields, unexistIdList);
+            dataIdFieldMap = getBiz().getValueMapCacheByIdNum(idInfoVo.getTransTypeId(), lang, fields, unexistIdList);
         }
         if (MapUtils.isNotEmpty(dataIdFieldMap)) {
             TranslateTrans.dataIdFieldMap.putAll(dataIdFieldMap);
@@ -65,8 +65,8 @@ public class TranslateTrans {
         return dataIdFieldMap;
     }
 
-    public static void putDataIdField(Object id, String lang, String field, String content) {
-        String key = id + "_" + lang;
+    public static void putDataIdField(Object dataId, String lang, String field, String content) {
+        String key = dataId + "_" + lang;
         Map<String, String> fieldMap = dataIdFieldMap.getIfPresent(key);
         if (fieldMap == null) {
             fieldMap = new HashMap<>();
@@ -85,8 +85,8 @@ public class TranslateTrans {
         trTransDataPo.setContent(content);
         trTransDataPo.setStatus(1);
         trTransDataPo.setIfDel(0);
-        Object id = dataNid != null ? dataNid : dataSid;
-        TranslateTrans.putDataIdField(id, lang, field, content);
+        Object dataId = dataNid != null ? dataNid : dataSid;
+        TranslateTrans.putDataIdField(dataId, lang, field, content);
         trTransDataBiz.saveTrTransData(trTransDataPo);
     }
 }

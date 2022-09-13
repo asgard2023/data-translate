@@ -138,7 +138,11 @@
 
     function onDblClick(rowIndex, rowData) {
         //alert('---onDblClick--rowIndex='+rowIndex+' row.id='+rowData.id);
-        onEdit();
+        var msgs=rowData.sourceCounter;
+        $.messager.show({
+            title: '翻译来源次数',
+            msg: JSON.stringify(msgs)
+        });
     }
 
     function listenerName(ex) {

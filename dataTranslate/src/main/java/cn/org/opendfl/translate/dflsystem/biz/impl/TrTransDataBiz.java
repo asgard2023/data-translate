@@ -185,14 +185,11 @@ public class TrTransDataBiz extends BaseService<TrTransDataPo> implements ITrTra
             return new HashMap<>();
         }
         List<TrTransDataPo> list = findDataTransListByIds(dataTypeId, lang, IdType.NUM, fields, idList);
-        Map<String, Map<String, String>> dataIdMap = new HashMap<>(list.size() / fields.size());
+        int fieldSie = fields.size();
+        Map<String, Map<String, String>> dataIdMap = new HashMap<>(list.size() / fieldSie);
         for (TrTransDataPo trTransDataPo : list) {
             String key = trTransDataPo.getDataNid() + "_" + lang;
-            Map<String, String> fieldValueMap = dataIdMap.get(key);
-            if (fieldValueMap == null) {
-                fieldValueMap = new HashMap<>(fields.size());
-                dataIdMap.put(key, fieldValueMap);
-            }
+            Map<String, String> fieldValueMap = dataIdMap.computeIfAbsent(key, k -> new HashMap<>(fieldSie));
             fieldValueMap.put(trTransDataPo.getCode(), trTransDataPo.getContent());
         }
         return dataIdMap;
@@ -203,15 +200,12 @@ public class TrTransDataBiz extends BaseService<TrTransDataPo> implements ITrTra
             return new HashMap<>();
         }
         List<TrTransDataPo> list = findDataTransListByIds(dataTypeId, lang, IdType.STRING, fields, idList);
-        Map<String, Map<String, String>> dataIdMap = new HashMap<>(list.size() / fields.size());
+        int fieldSie = fields.size();
+        Map<String, Map<String, String>> dataIdMap = new HashMap<>(list.size() / fieldSie);
         for (TrTransDataPo trTransDataPo : list) {
             String key = trTransDataPo.getDataSid() + "_" + lang;
-            Map<String, String> fieldValueMap = dataIdMap.get(key);
-            if (fieldValueMap == null) {
-                fieldValueMap = new HashMap<>(fields.size());
-                dataIdMap.put(key, fieldValueMap);
-                fieldValueMap.put(trTransDataPo.getCode(), trTransDataPo.getContent());
-            }
+            Map<String, String> fieldValueMap = dataIdMap.computeIfAbsent(key, k -> new HashMap<>(fieldSie));
+            fieldValueMap.put(trTransDataPo.getCode(), trTransDataPo.getContent());
         }
         return dataIdMap;
     }

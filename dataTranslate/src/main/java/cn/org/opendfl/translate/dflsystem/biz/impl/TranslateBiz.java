@@ -5,6 +5,7 @@ import cn.org.opendfl.translate.clients.TranslateGoogleApi;
 import cn.org.opendfl.translate.config.DataTranslateConfiguration;
 import cn.org.opendfl.translate.dflsystem.biz.ITranslateBiz;
 import cn.org.opendfl.translate.dflsystem.translate.TransType;
+import cn.org.opendfl.translate.exception.FailedException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -32,7 +33,7 @@ public class TranslateBiz implements ITranslateBiz {
         } else if (TransType.GOOGLE.getType().equals(transType)) {
             return translateGoogleApi.getTransResult(query, from, to);
         } else {
-            return query + ":invalid transType:" + dataTranslateConfiguration.getTransType();
+            throw new FailedException("invalid transType:" + dataTranslateConfiguration.getTransType());
         }
     }
 }

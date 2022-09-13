@@ -161,6 +161,10 @@ public class TranslateUtil {
         if (StringUtils.isNotBlank(errorMsg)) {
             transCountVo.setErrorMsg(errorMsg);
             transCountVo.setErrorTime(time);
+            if (transCountVo.getErrorCounter() == null) {
+                transCountVo.setErrorCounter(new AtomicInteger());
+            }
+            transCountVo.getErrorCounter().incrementAndGet();
         }
     }
 
@@ -203,14 +207,14 @@ public class TranslateUtil {
         }
         List<String> fields = idInfoVo.getTransFields();
         if (CollectionUtils.isEmpty(fields)) {
-            log.debug("----transform--className={} transFields empty", className);
+            log.warn("----transform--source={} className={} transFields empty", source, className);
             return;
         }
 
 
         List<Object> idList = getListIds(list, idInfoVo);
         if (CollectionUtils.isEmpty(idList)) {
-            log.debug("----transform--idList empty");
+            log.warn("----transform--source={} idList empty", source);
             return;
         }
 
@@ -218,56 +222,51 @@ public class TranslateUtil {
         Map<String, Map<String, String>> dataIdFieldMap = TranslateTrans.getDataIdFieldMap(idInfoVo, lang, idList, idLangList);
 
         int count = 0;
-        Long dataNid = null;
-        String dataSid = null;
         String errorMsg = null;
         Map<String, String> fieldMap = null;
         for (int i = 0; i < list.size(); i++) {
             Object obj = list.get(i);
             Object id = idList.get(i);
             String key = id + "_" + lang;
-            fieldMap = dataIdFieldMap.get(key);
-            if (fieldMap == null) {
-                fieldMap = new HashMap<>();
-                dataIdFieldMap.put(key, fieldMap);
-            }
+            fieldMap = dataIdFieldMap.computeIfAbsent(key, k -> new HashMap<>());
 
-            if (idInfoVo.getIdType() == IdType.STRING.getType()) {
-                dataSid = (String) id;
-            } else {
-                dataNid = CommUtils.getLong(id);
-            }
-            for (String field : fields) {
-                try {
-                    transUnexistField(lang, isTransField, idInfoVo, dataNid, dataSid, fieldMap, obj, field);
-                    count++;
-                } catch (Exception e) {
-                    errorMsg = e.getMessage();
-                    log.warn("----transform--lang={} className={} field={} id={} error={}", lang, className, field, id, e.getMessage());
-//                    throw new RuntimeException("field " + field + " error=" + e.getMessage());
-                }
+            try {
+                transUnexistField(lang, isTransField, idInfoVo, id, fieldMap, obj);
+                count++;
+            } catch (Exception e) {
+                errorMsg = lang + " " + e.getMessage();
+                log.warn("----transform--lang={} className={} field={} id={} error={}", lang, className, id, e.getMessage());
+                break;
             }
         }
         logCounter(source, lang, idInfoVo, errorMsg);
         log.debug("----transform--lang={} clazzName={} fields={} count={}", lang, className, fields, count);
     }
 
-    private static void transUnexistField(String lang, boolean isTransField, IdInfoVo idInfoVo, Long dataNid, String dataSid, Map<String, String> fieldMap, Object obj, String field)
+    private static void transUnexistField(String lang, boolean isTransField, IdInfoVo idInfoVo, Object id, Map<String, String> fieldMap, Object obj)
             throws IllegalAccessException, InvocationTargetException, NoSuchMethodException {
-        String content = fieldMap.get(field);
-//                    log.info("----transUnexistField--lang={} field={} fieldMap={}", lang, field, fieldMap);
-        if (StringUtils.isBlank(content)) {
-            String value = BeanUtils.getProperty(obj, field);
-            if (StringUtils.isNotBlank(value)) {
-                content = translateBiz.getTransResult(value, lang);
-                fieldMap.put(field, content);
-                if (StringUtils.isNotBlank(content)) {
-                    TranslateTrans.autoSaveTransResult(idInfoVo.getTransTypeId(), dataNid, dataSid, field, lang, content);
+        Long dataNid = null;
+        String dataSid = null;
+        if (idInfoVo.getIdType() == IdType.STRING.getType()) {
+            dataSid = (String) id;
+        } else {
+            dataNid = CommUtils.getLong(id);
+        }
+        for (String field : idInfoVo.getTransFields()) {
+            String content = fieldMap.get(field);
+            if (StringUtils.isBlank(content)) {
+                String value = BeanUtils.getProperty(obj, field);
+                if (StringUtils.isNotBlank(value)) {
+                    content = translateBiz.getTransResult(value, lang);
+                    fieldMap.put(field, content);
+                    if (StringUtils.isNotBlank(content)) {
+                        TranslateTrans.autoSaveTransResult(idInfoVo.getTransTypeId(), dataNid, dataSid, field, lang, content);
+                    }
                 }
             }
-        }
-        if (isTransField) {
-            BeanUtils.setProperty(obj, field, content);
+            if (isTransField) {
+                BeanUtils.setProperty(obj, field, content);
+            }
         }
     }
 

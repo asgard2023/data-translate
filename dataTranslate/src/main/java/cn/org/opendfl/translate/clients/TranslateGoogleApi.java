@@ -2,6 +2,7 @@ package cn.org.opendfl.translate.clients;
 
 import cn.org.opendfl.translate.config.DataTranslateConfiguration;
 import cn.org.opendfl.translate.dflsystem.translate.LangType;
+import cn.org.opendfl.translate.exception.ParamErrorException;
 import com.google.cloud.translate.Translate;
 import com.google.cloud.translate.TranslateOptions;
 import com.google.cloud.translate.Translation;
@@ -22,7 +23,7 @@ public class TranslateGoogleApi {
     public String getTransResult(String query, String from, String to) {
         LangType langType = LangType.parseGoogle(to);
         if (langType == null) {
-            return query + ":" + to + " invalid";
+            throw new ParamErrorException(to + " invalid");
         }
         //将语言编码转成google可识别的编码
         to = langType.googleCode;

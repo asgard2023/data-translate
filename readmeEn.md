@@ -1,5 +1,5 @@
-# springboot data translation component
-springboot, springmvc data translation component, supports the function of enabling data translation data attributes through annotations, storing translation results in the database, and supports modifying the translation results.
+# springboot data translation tool
+springboot, springmvc data translation tool, supports the function of enabling data translation data attributes through annotations, storing translation results in the database, and supports modifying the translation results.
 
 ## Features
 * Support springboot, springmvc

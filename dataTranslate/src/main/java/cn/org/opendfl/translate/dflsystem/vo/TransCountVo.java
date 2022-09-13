@@ -10,5 +10,7 @@ public class TransCountVo {
     private AtomicInteger totalCounter;
     private long maxTime;
     private long firstTime;
+    private String errorMsg;
+    private long errorTime;
     private Map<String, AtomicInteger> sourceCounter;
 }

@@ -135,7 +135,14 @@ public class TranslateUtil {
         return fieldNames;
     }
 
-    private static void logCounter(String source, String lang, IdInfoVo idInfoVo) {
+    /**
+     * 统计使用量，记录最后一次异常
+     * @param source
+     * @param lang
+     * @param idInfoVo
+     * @param errorMsg
+     */
+    private static void logCounter(String source, String lang, IdInfoVo idInfoVo, String errorMsg) {
         long time = System.currentTimeMillis();
         TransCountVo transCountVo = transCounterMap.get(idInfoVo.getCode());
         if (transCountVo == null) {
@@ -147,15 +154,23 @@ public class TranslateUtil {
         }
         transCountVo.setMaxTime(time);
         transCountVo.getTotalCounter().incrementAndGet();
-        AtomicInteger sourceCounter = transCountVo.getSourceCounter().get(source+"_"+lang);
+        AtomicInteger sourceCounter = transCountVo.getSourceCounter().get(source + "_" + lang);
         if (sourceCounter == null) {
             sourceCounter = new AtomicInteger();
-            transCountVo.getSourceCounter().put(source+"_"+lang, sourceCounter);
+            transCountVo.getSourceCounter().put(source + "_" + lang, sourceCounter);
         }
         sourceCounter.incrementAndGet();
+        if (StringUtils.isNotBlank(errorMsg)) {
+            transCountVo.setErrorMsg(errorMsg);
+            transCountVo.setErrorTime(time);
+        }
+        else{
+            transCountVo.setErrorMsg(null);
+            transCountVo.setErrorTime(0);
+        }
     }
 
-    public static Map<String, TransCountVo> getTransCounterMap(){
+    public static Map<String, TransCountVo> getTransCounterMap() {
         return transCounterMap;
     }
 
@@ -197,15 +212,14 @@ public class TranslateUtil {
             log.debug("----transform--idList empty");
             return;
         }
-        logCounter(source, lang, idInfoVo);
 
         List<String> idLangList = idList.stream().map(id -> id + "_" + lang).collect(Collectors.toList());
         Map<String, Map<String, String>> dataIdFieldMap = TranslateTrans.getDataIdFieldMap(idInfoVo, lang, idList, idLangList);
 
-
         int count = 0;
         Long dataNid = null;
         String dataSid = null;
+        String errorMsg = null;
         Map<String, String> fieldMap = null;
         for (int i = 0; i < list.size(); i++) {
             Object obj = list.get(i);
@@ -227,11 +241,13 @@ public class TranslateUtil {
                     transUnexistField(lang, isTransField, idInfoVo, dataNid, dataSid, fieldMap, obj, field);
                     count++;
                 } catch (Exception e) {
+                    errorMsg = e.getMessage();
                     log.warn("----transform--lang={} className={} field={} id={} error={}", lang, className, field, id, e.getMessage());
-                    throw new RuntimeException("field " + field + " error=" + e.getMessage());
+//                    throw new RuntimeException("field " + field + " error=" + e.getMessage());
                 }
             }
         }
+        logCounter(source, lang, idInfoVo, errorMsg);
         log.debug("----transform--lang={} clazzName={} fields={} count={}", lang, className, fields, count);
     }
 

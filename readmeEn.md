@@ -68,7 +68,7 @@ public class DflUserController{
         pageInfo = dflUserBiz.findPageBy(entity, pageInfo, this.createAllParams(request));
 
         if (StringUtils.isNotBlank(lang)) {
-            //翻译转换
+            //Method 1: invokes interface translation processing
             TranslateUtil.transform(lang, pageInfo.getList(), true);
         }
         return pageInfo.getList();
@@ -83,6 +83,7 @@ import cn.org.opendfl.translate.dflsystem.translate.annotation.Translate;
 @RestController
 @RequestMapping("dflUser")
 public class DflUserController {
+    //Method 2, through annotation translation processing
     @Translate
     @RequestMapping(value = "/listByLang2", method = {RequestMethod.POST, RequestMethod.GET})
     public List<DflUserPo> listByLang2(HttpServletRequest request, DflUserPo entity, MyPageInfo<DflUserPo> pageInfo) {

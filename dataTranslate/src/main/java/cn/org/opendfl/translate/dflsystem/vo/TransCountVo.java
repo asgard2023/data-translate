@@ -7,6 +7,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 @Data
 public class TransCountVo {
+    private String code;
     private AtomicInteger totalCounter;
     private long maxTime;
     private long firstTime;

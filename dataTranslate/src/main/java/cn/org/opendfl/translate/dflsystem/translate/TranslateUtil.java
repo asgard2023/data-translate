@@ -21,10 +21,7 @@ import org.springframework.stereotype.Component;
 import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -137,6 +134,7 @@ public class TranslateUtil {
 
     /**
      * 统计使用量，记录最后一次异常
+     *
      * @param source
      * @param lang
      * @param idInfoVo
@@ -166,8 +164,15 @@ public class TranslateUtil {
         }
     }
 
-    public static Map<String, TransCountVo> getTransCounterMap() {
-        return transCounterMap;
+    public static List<TransCountVo> getTransCounterMap() {
+        List<TransCountVo> list = new ArrayList<>(transCounterMap.size());
+        Set<Map.Entry<String, TransCountVo>> entirySet = transCounterMap.entrySet();
+        for (Map.Entry<String, TransCountVo> entry : entirySet) {
+            TransCountVo transCountVo = entry.getValue();
+            transCountVo.setCode(entry.getKey());
+            list.add(transCountVo);
+        }
+        return list;
     }
 
 

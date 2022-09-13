@@ -93,9 +93,10 @@ public class DflUserController extends BaseController {
         this.pageSortBy(pageInfo);
         pageInfo = dflUserBiz.findPageBy(entity, pageInfo, this.createAllParams(request));
 
+        String source = request.getRequestURI();
         if (StringUtils.isNotBlank(lang)) {
             //翻译转换
-            TranslateUtil.transform(lang, pageInfo.getList(), true);
+            TranslateUtil.transform(source, lang, pageInfo.getList(), true);
         }
         return pageInfo.getList();
     }

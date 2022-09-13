@@ -7,6 +7,7 @@ import cn.org.opendfl.translate.dflsystem.biz.ITranslateBiz;
 import cn.org.opendfl.translate.dflsystem.po.TrTransTypePo;
 import cn.org.opendfl.translate.dflsystem.translate.annotation.TranslateField;
 import cn.org.opendfl.translate.dflsystem.translate.annotation.TranslateType;
+import cn.org.opendfl.translate.dflsystem.vo.TransCountVo;
 import cn.org.opendfl.translate.utils.CommUtils;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
@@ -24,7 +25,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 /**
@@ -57,6 +60,9 @@ public class TranslateUtil {
     public void setTranslateBiz(ITranslateBiz translateBiz) {
         TranslateUtil.translateBiz = translateBiz;
     }
+
+    private static Map<String, TransCountVo> transCounterMap = new ConcurrentHashMap<>();
+
 
     /**
      * 获取类的注解@TranslateType信息
@@ -129,6 +135,30 @@ public class TranslateUtil {
         return fieldNames;
     }
 
+    private static void logCounter(String source, String lang, IdInfoVo idInfoVo) {
+        long time = System.currentTimeMillis();
+        TransCountVo transCountVo = transCounterMap.get(idInfoVo.getCode());
+        if (transCountVo == null) {
+            transCountVo = new TransCountVo();
+            transCountVo.setFirstTime(time);
+            transCountVo.setTotalCounter(new AtomicInteger());
+            transCountVo.setSourceCounter(new ConcurrentHashMap<>(10));
+            transCounterMap.put(idInfoVo.getCode(), transCountVo);
+        }
+        transCountVo.setMaxTime(time);
+        transCountVo.getTotalCounter().incrementAndGet();
+        AtomicInteger sourceCounter = transCountVo.getSourceCounter().get(source+"_"+lang);
+        if (sourceCounter == null) {
+            sourceCounter = new AtomicInteger();
+            transCountVo.getSourceCounter().put(source+"_"+lang, sourceCounter);
+        }
+        sourceCounter.incrementAndGet();
+    }
+
+    public static Map<String, TransCountVo> getTransCounterMap(){
+        return transCounterMap;
+    }
+
 
     /**
      * 翻译转换处理
@@ -140,7 +170,7 @@ public class TranslateUtil {
      * @param isTransField 是否翻译后修改属性值
      * @author chenjh
      */
-    public static void transform(String langParam, List<?> list, boolean isTransField) {
+    public static void transform(String source, String langParam, List<?> list, boolean isTransField) {
         if (StringUtils.isEmpty(langParam) || CollectionUtils.isEmpty(list)) {
             return;
         }
@@ -167,9 +197,11 @@ public class TranslateUtil {
             log.debug("----transform--idList empty");
             return;
         }
+        logCounter(source, lang, idInfoVo);
 
         List<String> idLangList = idList.stream().map(id -> id + "_" + lang).collect(Collectors.toList());
         Map<String, Map<String, String>> dataIdFieldMap = TranslateTrans.getDataIdFieldMap(idInfoVo, lang, idList, idLangList);
+
 
         int count = 0;
         Long dataNid = null;
@@ -246,7 +278,8 @@ public class TranslateUtil {
 
     public static void transform(HttpServletRequest request, List<?> list) {
         String lang = RequestUtils.getLang(request);
-        transform(lang, list, true);
+        String uri = request.getRequestURI();
+        transform(uri, lang, list, true);
     }
 
     /**
@@ -259,10 +292,11 @@ public class TranslateUtil {
     public static void transformLangsByTrnasType(HttpServletRequest request, List<?> list) {
         String transTypeDist = request.getParameter("transTypeDist");
         log.info("----transformLangsByTrnasType--uri={} transTypeDist={}", request.getRequestURI(), transTypeDist);
+        String uri = request.getRequestURI();
         if (StringUtils.isNotBlank(transTypeDist)) {
             String[] langs = transTypeDist.split(",");
             for (String lang : langs) {
-                TranslateUtil.transform(lang, list, false);
+                TranslateUtil.transform(uri, lang, list, false);
             }
         }
     }

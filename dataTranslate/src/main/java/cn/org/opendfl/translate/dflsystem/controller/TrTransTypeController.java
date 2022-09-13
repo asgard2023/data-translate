@@ -3,13 +3,17 @@ package cn.org.opendfl.translate.dflsystem.controller;
 import cn.org.opendfl.translate.base.BaseController;
 import cn.org.opendfl.translate.base.MyPageInfo;
 import cn.org.opendfl.translate.base.PageVO;
+import cn.org.opendfl.translate.config.DataTranslateConfiguration;
 import cn.org.opendfl.translate.dflsystem.biz.ITrTransTypeBiz;
 import cn.org.opendfl.translate.dflsystem.po.TrTransTypePo;
+import cn.org.opendfl.translate.dflsystem.translate.TranslateUtil;
 import cn.org.opendfl.translate.dflsystem.vo.TransTypeCountVo;
+import cn.org.opendfl.translate.exception.PermissionDeniedException;
 import cn.org.opendfl.translate.exception.ResultData;
 import cn.org.opendfl.translate.exception.ValidateUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,6 +40,9 @@ public class TrTransTypeController extends BaseController {
 
     @Autowired
     private ITrTransTypeBiz trTransTypeBiz;
+
+    @Autowired
+    private DataTranslateConfiguration dataTranslateConfiguration;
 
     /**
      * 翻译类型列表查询
@@ -134,5 +141,15 @@ public class TrTransTypeController extends BaseController {
     public ResultData findTransTypeCount(HttpServletRequest request) {
         List<TransTypeCountVo> list = trTransTypeBiz.findTransTypeCount();
         return ResultData.success(list);
+    }
+
+    @ApiOperation(value = "翻译使用量统计", notes = "翻译使用量统计")
+    @RequestMapping(value = "transCounts", method = {RequestMethod.POST, RequestMethod.GET})
+    public ResultData transCounts(HttpServletRequest request) {
+        String auth = request.getParameter("auth");
+        if (!StringUtils.equals(dataTranslateConfiguration.getTransCountAuth(), auth)) {
+            throw new PermissionDeniedException("auth错误");
+        }
+        return ResultData.success(TranslateUtil.getTransCounterMap());
     }
 }

@@ -59,10 +59,14 @@ public class TranslateAspect {
             lang = firstStringParam;
         }
 
+        String source = uri;
         try {
-            translateResultByLang(lang, result);
+            if (source == null) {
+                source = joinPoint.getSignature().getName();
+            }
+            translateResultByLang(source, lang, result);
         } catch (Exception e) {
-            log.warn("-----translateResultByLang--lang={} uri={} error={}", lang, uri, e.getMessage());
+            log.warn("-----translateResultByLang--lang={} uri={} error={}", lang, source, e.getMessage());
         }
     }
 
@@ -70,7 +74,7 @@ public class TranslateAspect {
      * @param result
      * @param lang
      */
-    private static void translateResultByLang(String lang, Object result) {
+    private static void translateResultByLang(String source, String lang, Object result) {
         if (StringUtils.isNotBlank(lang)) {
             List list = null;
             if (result instanceof MyPageInfo) {
@@ -83,7 +87,7 @@ public class TranslateAspect {
             } else {
                 list = Arrays.asList(result);
             }
-            TranslateUtil.transform(lang, list, true);
+            TranslateUtil.transform(source, lang, list, true);
         }
     }
 }

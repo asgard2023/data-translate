@@ -15,6 +15,10 @@ import org.springframework.context.annotation.Configuration;
 @ConfigurationProperties(prefix = "translate")
 public class DataTranslateConfiguration {
     /**
+     * 用于/dflsystem/trTransType/transCounts接口的密码验证
+     */
+    private String transCountAuth = "chenjhtest";
+    /**
      * 主语言，遇到此编码的，不进行翻译，直接显示
      */
     private String defaultLang = "zh";

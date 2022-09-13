@@ -164,10 +164,6 @@ public class TranslateUtil {
             transCountVo.setErrorMsg(errorMsg);
             transCountVo.setErrorTime(time);
         }
-        else{
-            transCountVo.setErrorMsg(null);
-            transCountVo.setErrorTime(0);
-        }
     }
 
     public static Map<String, TransCountVo> getTransCounterMap() {

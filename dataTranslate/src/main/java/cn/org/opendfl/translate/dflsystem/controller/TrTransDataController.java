@@ -16,6 +16,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.Validate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -92,16 +93,20 @@ public class TrTransDataController extends BaseController {
 
     @ApiOperation(value = "添加数据翻译", notes = "添加一个数据翻译")
     @RequestMapping(value = "/saveJson", method = {RequestMethod.POST, RequestMethod.GET})
-    public Object saveJson(@RequestBody TrTransDataPo tfLocalLanguage, HttpServletRequest request) {
-        if (tfLocalLanguage.getTransTypeId() == null) {
-            Integer transTypeId = this.trTransTypeBiz.getTransTypeId(tfLocalLanguage.getTransTypeCode());
+    public Object saveJson(@RequestBody TrTransDataPo transDataPo, HttpServletRequest request) {
+        Validate.notNull(transDataPo.getCode(), "code is not null");
+        Validate.notNull(transDataPo.getContent(), "content is not null");
+        transDataPo.setCode(transDataPo.getCode().trim());
+        transDataPo.setContent(transDataPo.getContent().trim());
+        if (transDataPo.getTransTypeId() == null) {
+            Integer transTypeId = this.trTransTypeBiz.getTransTypeId(transDataPo.getTransTypeCode());
             if (transTypeId == null) {
-                throw new FailedException("transTypeCode:" + tfLocalLanguage.getTransTypeCode() + " invalid");
+                throw new FailedException("transTypeCode:" + transDataPo.getTransTypeCode() + " invalid");
             }
-            tfLocalLanguage.setTransTypeId(transTypeId);
-            tfLocalLanguage.setStatus(1);
+            transDataPo.setTransTypeId(transTypeId);
+            transDataPo.setStatus(1);
         }
-        return edit(tfLocalLanguage, request);
+        return edit(transDataPo, request);
     }
 
     /**

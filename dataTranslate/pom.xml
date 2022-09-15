@@ -79,11 +79,14 @@
             <artifactId>knife4j-spring-boot-starter</artifactId>
             <version>3.0.3</version>
         </dependency>
-        <dependency>
-            <groupId>com.google.cloud</groupId>
-            <artifactId>google-cloud-translate</artifactId>
-            <version>2.3.3</version>
-        </dependency>
+<!--     暂时停用这个包，因为它引入了google云全家桶，加载多过jar，造成包体增加38M
+        如果需要用到google翻译api再开启这个依赖
+   -->
+<!--        <dependency>-->
+<!--            <groupId>com.google.cloud</groupId>-->
+<!--            <artifactId>google-cloud-translate</artifactId>-->
+<!--            <version>2.3.3</version>-->
+<!--        </dependency>-->
 
         <dependency>
             <groupId>org.apache.commons</groupId>

@@ -5,8 +5,7 @@ import cn.org.opendfl.translate.dflsystem.translate.TranslateTrans;
 import cn.org.opendfl.translate.dflsystem.translate.TranslateUtil;
 import cn.org.opendfl.translateDemo.DataTranslateDemoApplication;
 import cn.org.opendfl.translateDemo.po.DflUserPo;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+import com.alibaba.fastjson.JSON;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -21,12 +20,12 @@ import java.util.stream.Collectors;
 @ActiveProfiles(value = "test")
 @Slf4j
 public class TranslateUtilTest {
-    private Gson gson = new GsonBuilder().create();
+
 
     @Test
     void getTranslateType() {
         IdInfoVo idInfoVo = TranslateUtil.getTranslateType(DflUserPo.class);
-        System.out.println(gson.toJson(idInfoVo));
+        System.out.println(JSON.toJSONString(idInfoVo));
     }
 
     @Test
@@ -36,12 +35,12 @@ public class TranslateUtilTest {
         List<Object> idList = Arrays.asList(5, 7);
         List<String> idLangList = idList.stream().map(id -> id + "_" + lang).collect(Collectors.toList());
         Map<String, Map<String, String>> dataIdFieldMap = TranslateTrans.getDataIdFieldMap(idInfoVo, lang, idList, idLangList);
-        System.out.println(gson.toJson(dataIdFieldMap));
+        System.out.println(JSON.toJSONString(dataIdFieldMap));
 
         dataIdFieldMap = TranslateTrans.getDataIdFieldMap(idInfoVo, lang, idList, idLangList);
-        System.out.println(gson.toJson(dataIdFieldMap));
+        System.out.println(JSON.toJSONString(dataIdFieldMap));
 
         dataIdFieldMap = TranslateTrans.getDataIdFieldMap(idInfoVo, lang, idList, idLangList);
-        System.out.println(gson.toJson(dataIdFieldMap));
+        System.out.println(JSON.toJSONString(dataIdFieldMap));
     }
 }

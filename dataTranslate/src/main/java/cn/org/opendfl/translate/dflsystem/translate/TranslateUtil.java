@@ -208,7 +208,6 @@ public class TranslateUtil {
         String className = z.getSimpleName();
         IdInfoVo idInfoVo = getTranslateType(z);
         if (idInfoVo == null) {
-            log.debug("----transform--className={} idInfoVo is null", className);
             return;
         }
         List<String> fields = idInfoVo.getTransFields();

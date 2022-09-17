@@ -201,7 +201,7 @@ public class TranslateUtil {
         final LangType langType = translateBiz.getLangType(source, langParam.trim());
         final String lang = langType.code;
 
-        if (LangType.ZH == langType) {
+        if (LangType.getDefault() == langType) {
             return;//默认中文不用翻译
         }
         Class<?> z = list.get(0).getClass();

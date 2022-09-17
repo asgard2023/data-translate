@@ -8,6 +8,9 @@ springboot,springmvc数据翻译工具，即支持通过注解开启数据翻译
 * 支持java注解使用
 * 支持百度,有道，google等翻译api
 * 支持查询时用guava缓存翻译结果
+* 支持用翻译api进行初始翻译，并保存到数据库。
+* 支持对翻译结果进行修改，并以修改后的结果为准。
+* 建议使用数字做id
 
 ## 相关资料
 * 百度翻译api https://fanyi-api.baidu.com/doc/21

@@ -51,6 +51,7 @@ function trans_getTransFields(className) {
             success: function (res) {
                 if (res.data) {
                     transFields = res.data;
+                    console.log('----suport className='+className+' transFields=' + transFields);
                 }
             },
             error: function (returndata) {

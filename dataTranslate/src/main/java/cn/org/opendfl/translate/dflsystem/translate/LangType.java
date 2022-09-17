@@ -14,9 +14,21 @@ import java.util.stream.Collectors;
  * @author chenjh
  */
 public enum LangType {
+    /**
+     * 中文简体
+     */
     ZH(LangCodes.ZH, "zh", "zh-CN", "中文", true, Locale.SIMPLIFIED_CHINESE),
+    /**
+     * 中文繁体
+     */
     TW(LangCodes.TW, "cht", "zh-TW", "繁体", false, Locale.TRADITIONAL_CHINESE),
+    /**
+     * 日语
+     */
     JA(LangCodes.JA, "jp", "ja", "日语", false, Locale.JAPAN),
+    /**
+     * 英语
+     */
     EN(LangCodes.EN, "en", "en", "英语", false, Locale.ENGLISH);
     protected static final List<String> LANG_TYPES = Arrays.asList(LangType.values()).stream().map(t -> t.code).collect(Collectors.toList());
     public static final String SUPPORT_LANG = "zh,cht,jp,tw,ja,";

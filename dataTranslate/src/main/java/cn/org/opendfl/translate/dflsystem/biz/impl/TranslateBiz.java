@@ -11,6 +11,11 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+/**
+ * 翻译接口
+ *
+ * @author chenjh
+ */
 @Service
 public class TranslateBiz implements ITranslateBiz {
     @Autowired

@@ -32,8 +32,8 @@ public class TranslateBiz implements ITranslateBiz {
     @Autowired
     private DataTranslateConfiguration dataTranslateConfiguration;
 
-    private static int TIME_MINUTE_IN_MILLIS = 60000;
-    private static Map<String, Long> logTimeMap = new ConcurrentHashMap<>();
+    private static final int TIME_MINUTE_IN_MILLIS = 60000;
+    private static final Map<String, Long> logTimeMap = new ConcurrentHashMap<>();
 
     public LangType getLangType(String source, String lang) {
         LangType langType = null;

@@ -61,6 +61,10 @@ public class TranslateUtil {
     private static Map<String, TransCountVo> transCounterMap = new ConcurrentHashMap<>();
 
 
+    public static IdInfoVo getTranslateType(String classSimipleName) {
+        return classTransTypes.getIfPresent(classSimipleName);
+    }
+
     /**
      * 获取类的注解@TranslateType信息
      *
@@ -68,7 +72,7 @@ public class TranslateUtil {
      * @return
      */
     public static IdInfoVo getTranslateType(Class<?> clazz) {
-        String className = clazz.getName();
+        String className = clazz.getSimpleName();
         IdInfoVo idInfoVo = classTransTypes.getIfPresent(className);
         if (idInfoVo == null) {
             TranslateType translateType = clazz.getAnnotation(TranslateType.class);
@@ -194,8 +198,10 @@ public class TranslateUtil {
         if (StringUtils.isEmpty(langParam) || CollectionUtils.isEmpty(list)) {
             return;
         }
-        final String lang = langParam.trim();
-        if (LangCodes.ZH.equals(lang)) {
+        final LangType langType = translateBiz.getLangType(langParam.trim());
+        final String lang = langType.code;
+
+        if (LangType.ZH == langType) {
             return;//默认中文不用翻译
         }
         Class<?> z = list.get(0).getClass();

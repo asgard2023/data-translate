@@ -8,13 +8,15 @@ $('#reset-btn').click(function () {
 var rowIds = '';
 var transTypeCode = 'DflRolePo';
 //定义支持国际化的属性
-var transFields = 'name';
+transFields = 'name';
 $(function () {
     // doSearch();
 });
 
 function dataLoader(param, success, error) {
     trans_getTypeDists();
+    //自动获取对象的翻译属性，以覆盖transFields
+    trans_getTransFields(transTypeCode);
     var url = "/dflRole/list2";
     if (transTypeDist) {
         url += '?transTypeDist=' + transTypeDist;

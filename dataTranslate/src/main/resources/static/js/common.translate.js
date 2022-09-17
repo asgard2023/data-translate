@@ -1,21 +1,25 @@
 //定义支持国际化的语言
 var transTypeDist = 'en,tw,ja';
+var isLoadTransType = false;
 
-var isLoadTransType=false;
+var transFields;
+var isLoadFields = false;
+
 
 (function () {
-    if(typeof jQuery != 'undefined') {
+    if (typeof jQuery != 'undefined') {
         trans_getTypeDists();
     }
 })();
+
 
 /**
  * 支持的翻译语言
  * @returns {*}
  */
 function trans_getTypeDists() {
-    if(!isLoadTransType){
-        isLoadTransType=true;
+    if (!isLoadTransType) {
+        isLoadTransType = true;
         $.ajax({
             url: '/dflsystem/trTransType/typeDists',
             type: 'GET',
@@ -23,7 +27,31 @@ function trans_getTypeDists() {
             cache: false,
             success: function (res) {
                 transTypeDist = res.data;
-                console.log('----suport trans dist types='+transTypeDist);
+                console.log('----suport trans dist types=' + transTypeDist);
+            },
+            error: function (returndata) {
+                alert(JSON.stringify(returndata));
+            }
+        });
+    }
+}
+
+/**
+ * 支持翻译的属性
+ * @returns {*}
+ */
+function trans_getTransFields(className) {
+    if (!isLoadFields) {
+        isLoadFields = true;
+        $.ajax({
+            url: '/dflsystem/trTransType/transFields?className=' + className,
+            type: 'GET',
+            async: false,
+            cache: false,
+            success: function (res) {
+                if (res.data) {
+                    transFields = res.data;
+                }
             },
             error: function (returndata) {
                 alert(JSON.stringify(returndata));
@@ -73,7 +101,7 @@ function trans_extDataFields(obj, transFields) {
             var fieldName = field + uppercaseFirst(lang);
             var fieldValue = trans_getLangItemContent(field, langDicts, obj.id, null, lang);
             obj[fieldName] = fieldValue;
-            console.log('fieldName=' + fieldName + ' fieldValue=' + fieldValue + ' ' + obj[fieldName]);
+            //console.log('fieldName=' + fieldName + ' fieldValue=' + fieldValue + ' ' + obj[fieldName]);
         }
     }
 }

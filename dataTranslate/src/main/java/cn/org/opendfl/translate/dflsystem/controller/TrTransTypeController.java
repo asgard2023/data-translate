@@ -6,6 +6,7 @@ import cn.org.opendfl.translate.base.PageVO;
 import cn.org.opendfl.translate.config.DataTranslateConfiguration;
 import cn.org.opendfl.translate.dflsystem.biz.ITrTransTypeBiz;
 import cn.org.opendfl.translate.dflsystem.po.TrTransTypePo;
+import cn.org.opendfl.translate.dflsystem.translate.IdInfoVo;
 import cn.org.opendfl.translate.dflsystem.translate.TranslateUtil;
 import cn.org.opendfl.translate.dflsystem.vo.TransTypeCountVo;
 import cn.org.opendfl.translate.exception.PermissionDeniedException;
@@ -25,6 +26,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * 翻译类型 Controller
@@ -157,5 +159,16 @@ public class TrTransTypeController extends BaseController {
     @RequestMapping(value = "typeDists", method = {RequestMethod.POST, RequestMethod.GET})
     public ResultData typeDists(HttpServletRequest request) {
         return ResultData.success(dataTranslateConfiguration.getTypeDists());
+    }
+
+    @ApiOperation(value = "支持翻译的属性查询", notes = "支持翻译的属性查询")
+    @RequestMapping(value = "transFields", method = {RequestMethod.POST, RequestMethod.GET})
+    public ResultData getTransFields(@RequestParam("className") String className, HttpServletRequest request) {
+        IdInfoVo idInfoVo = TranslateUtil.getTranslateType(className);
+        String transFields = null;
+        if (idInfoVo != null) {
+            transFields = idInfoVo.getTransFields().stream().collect(Collectors.joining(","));
+        }
+        return ResultData.success(transFields);
     }
 }

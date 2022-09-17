@@ -1,10 +1,12 @@
 var rowIds = '';
 var transTypeCode = 'DflUserPo';
 //定义支持国际化的属性
-var transFields = 'nickname';
+transFields = 'nickname';
 
 $(function() {
 	trans_getTypeDists();
+	//自动获取对象的翻译属性，以覆盖transFields
+	trans_getTransFields(transTypeCode);
 	var beforeDay=100;
 	initStartEndTime(beforeDay);
 	pageInit();
@@ -43,14 +45,14 @@ function pageInit() {
 		datatype: "json",
 		styleUI: 'Bootstrap',
 		postData: queryObj,
-		colNames: ['id', '昵称','昵称en','昵称cht', '个人描述','个人描述En','个人描述Cht', '用户名', '电话', 'sys_type', '邮箱', '密码', '是否删除', '状态:是否有效0无效，1有效', 'remark', 'create_time', 'modify_time', 'create_user', 'modify_user', 'register_ip'],
+		colNames: ['id', '昵称','昵称en','昵称Tw', '个人描述','个人描述En','个人描述Tw', '用户名', '电话', 'sys_type', '邮箱', '密码', '是否删除', '状态:是否有效0无效，1有效', 'remark', 'create_time', 'modify_time', 'create_user', 'modify_user', 'register_ip'],
         colModel: [{name: 'id', index: 'id', editable:true, hidden: true,key:true},
             {name: 'nickname', index: 'nickname',editable:true, width: 100, editrules:{required:true} },
             {name: 'nicknameEn', index: 'nicknameEn',editable:true, width: 100, editrules:{required:true}},
-            {name: 'nicknameCht', index: 'nicknameCht',editable:true, width: 100, editrules:{required:true}},
+            {name: 'nicknameTw', index: 'nicknameTw',editable:true, width: 100, editrules:{required:true}},
 			{name: 'descs', index: 'descs',editable:true, width: 100, editrules:{required:true} },
 			{name: 'descsEn', index: 'descsEn',editable:true, width: 100, editrules:{required:true}},
-			{name: 'descsCht', index: 'descsCht',editable:true, width: 100, editrules:{required:true}},
+			{name: 'descsTw', index: 'descsTw',editable:true, width: 100, editrules:{required:true}},
             {name: 'username', index: 'username',editable:true, width: 100, editrules:{required:true} },
             {name: 'telephone', index: 'telephone',editable:true, width: 100 },
 			{name: 'sysType', index: 'sysType',editable:true, width: 100 },

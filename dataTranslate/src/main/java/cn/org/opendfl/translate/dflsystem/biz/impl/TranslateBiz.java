@@ -4,8 +4,10 @@ import cn.org.opendfl.translate.clients.TranslateBaiduRest;
 import cn.org.opendfl.translate.clients.TranslateGoogleApi;
 import cn.org.opendfl.translate.config.DataTranslateConfiguration;
 import cn.org.opendfl.translate.dflsystem.biz.ITranslateBiz;
+import cn.org.opendfl.translate.dflsystem.translate.LangType;
 import cn.org.opendfl.translate.dflsystem.translate.TransType;
 import cn.org.opendfl.translate.exception.FailedException;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +21,17 @@ public class TranslateBiz implements ITranslateBiz {
 
     @Autowired
     private DataTranslateConfiguration dataTranslateConfiguration;
+
+    public LangType getLangType(String lang) {
+        LangType langType = null;
+        if (StringUtils.equals(TransType.BAIDU.getType(), dataTranslateConfiguration.getTransType())) {
+            langType = LangType.parseBaidu(lang);
+        } else if (StringUtils.equals(TransType.GOOGLE.getType(), dataTranslateConfiguration.getTransType())) {
+            langType = LangType.parseGoogle(lang);
+        }
+        langType = LangType.parse(lang);
+        return langType;
+    }
 
     @Override
     public String getTransResult(String query, String to) {

@@ -48,7 +48,7 @@
                             <th lay-data="{field:'id', sort: true, align:'center', hide:true}">id</th>
                             <th lay-data="{field:'name', sort: true, align:'center'}">name</th>
                             <th lay-data="{field:'nameEn', sort: true, align:'center'}">nameEn</th>
-                            <th lay-data="{field:'nameCht', sort: true, align:'center'}">nameTw</th>
+                            <th lay-data="{field:'nameTw', sort: true, align:'center'}">nameTw</th>
                             <th lay-data="{field:'uri', sort: true, align:'center'}">接口uri</th>
                             <th lay-data="{field:'uriId', sort: true, align:'center'}">uri_id</th>
                             <th lay-data="{field:'method', sort: true, align:'center'}">请求类型(GET/POST/PUT)</th>
@@ -91,13 +91,15 @@
     var rowIds = '';
     var transTypeCode = 'DflResourcePo';
     //定义支持国际化的属性
-    var transFields = 'name';
+    transFields = 'name';
     var $;
     function doneFn(res, curr, count){
 
     }
     function doSearch(form, table){
         trans_getTypeDists();
+        //自动获取对象的翻译属性，以覆盖transFields
+        trans_getTransFields(transTypeCode);
         var jsonParam = form.val('searchForm');
         jsonParam.transTypeDist=transTypeDist;
         table.reload('dataList', {url:'/dflResource/list3',

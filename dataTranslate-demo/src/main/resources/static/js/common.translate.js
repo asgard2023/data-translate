@@ -1,15 +1,16 @@
 //定义支持国际化的语言
 var transTypeDist = 'en,tw,ja';
-var isLoadTransType=false;
+var isLoadTransType = false;
+
+var transFields;
+var isLoadFields = false;
 
 
 (function () {
-    if(typeof jQuery != 'undefined') {
+    if (typeof jQuery != 'undefined') {
         trans_getTypeDists();
     }
 })();
-
-
 
 
 /**
@@ -17,8 +18,8 @@ var isLoadTransType=false;
  * @returns {*}
  */
 function trans_getTypeDists() {
-    if(!isLoadTransType){
-        isLoadTransType=true;
+    if (!isLoadTransType) {
+        isLoadTransType = true;
         $.ajax({
             url: '/dflsystem/trTransType/typeDists',
             type: 'GET',
@@ -26,7 +27,31 @@ function trans_getTypeDists() {
             cache: false,
             success: function (res) {
                 transTypeDist = res.data;
-                console.log('----suport trans dist types='+transTypeDist);
+                console.log('----suport trans dist types=' + transTypeDist);
+            },
+            error: function (returndata) {
+                alert(JSON.stringify(returndata));
+            }
+        });
+    }
+}
+
+/**
+ * 支持翻译的属性
+ * @returns {*}
+ */
+function trans_getTransFields(className) {
+    if (!isLoadFields) {
+        isLoadFields = true;
+        $.ajax({
+            url: '/dflsystem/trTransType/transFields?className=' + className,
+            type: 'GET',
+            async: false,
+            cache: false,
+            success: function (res) {
+                if (res.data) {
+                    transFields = res.data;
+                }
             },
             error: function (returndata) {
                 alert(JSON.stringify(returndata));
@@ -61,7 +86,7 @@ function trans_loadSuccessIds(rows, transTypeCode) {
 
 function trans_loadSuccessId(obj, transTypeCode) {
     console.log('-----loadSuccessId--');
-    rowIds = ''+obj.id;
+    rowIds = '' + obj.id;
     langDicts = trans_getFieldDictsByDataId(transTypeCode, transTypeDist, rowIds, null);
     trans_extDataFields(obj, transFields);
 }
@@ -76,7 +101,7 @@ function trans_extDataFields(obj, transFields) {
             var fieldName = field + uppercaseFirst(lang);
             var fieldValue = trans_getLangItemContent(field, langDicts, obj.id, null, lang);
             obj[fieldName] = fieldValue;
-            console.log('fieldName=' + fieldName + ' fieldValue=' + fieldValue + ' ' + obj[fieldName]);
+            //console.log('fieldName=' + fieldName + ' fieldValue=' + fieldValue + ' ' + obj[fieldName]);
         }
     }
 }
@@ -88,7 +113,7 @@ function trans_extDataFields(obj, transFields) {
  * @param transTypeCode
  */
 function trans_jqGridCells(jqId, rows, transTypeCode) {
-    console.log('-----jqGridCells--');
+    console.log('-----jqGridCells--transTypeDist=' + transTypeDist + ' transTypeCode=' + transTypeCode + ' transFields=' + transFields);
     rowIds = '';
     var obj;
     for (var i = 0; i < rows.length; i++) {
@@ -113,14 +138,14 @@ function trans_jqGridSetCell(jqId, obj, transFields) {
             var fieldValue = trans_getLangItemContent(field, langDicts, obj.id, null, lang);
             obj[fieldName] = fieldValue;
             $('#' + jqId).jqGrid('setCell', obj.id, fieldName, fieldValue);
-            // console.log('fieldName=' + fieldName + ' fieldValue=' + fieldValue + ' ' + obj[fieldName]);
+            //console.log('--trans_jqGridSetCell--fieldName=' + fieldName + ' fieldValue=' + fieldValue + ' ' + obj[fieldName]);
         }
     }
 }
 
 
 function trans_saveLocalLanguage(id, postdata, transFields) {
-    if(!id){
+    if (!id) {
         console.warn('仅支持数据修改，即id不为空');
         return;
     }

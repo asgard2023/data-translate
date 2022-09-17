@@ -71,7 +71,7 @@ function uppercaseFirst(str) {
  * @param transTypeCode
  */
 function trans_loadSuccessIds(rows, transTypeCode) {
-    console.log('-----loadSuccessIds--');
+    console.log('-----loadSuccessIds--transTypeCode='+transTypeCode);
     rowIds = '';
     var obj;
     for (var i = 0; i < rows.length; i++) {
@@ -86,7 +86,7 @@ function trans_loadSuccessIds(rows, transTypeCode) {
 }
 
 function trans_loadSuccessId(obj, transTypeCode) {
-    console.log('-----loadSuccessId--');
+    console.log('-----loadSuccessId--transTypeCode='+transTypeCode);
     rowIds = '' + obj.id;
     langDicts = trans_getFieldDictsByDataId(transTypeCode, transTypeDist, rowIds, null);
     trans_extDataFields(obj, transFields);

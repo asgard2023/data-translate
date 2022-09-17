@@ -27,7 +27,7 @@ function trans_getTypeDists() {
             cache: false,
             success: function (res) {
                 transTypeDist = res.data;
-                console.log('----suport trans dist types=' + transTypeDist);
+                console.log('----support trans dist types=' + transTypeDist);
             },
             error: function (returndata) {
                 alert(JSON.stringify(returndata));
@@ -51,7 +51,7 @@ function trans_getTransFields(className) {
             success: function (res) {
                 if (res.data) {
                     transFields = res.data;
-                    console.log('----suport className='+className+' transFields=' + transFields);
+                    console.log('----support className='+className+' transFields=' + transFields);
                 }
             },
             error: function (returndata) {
@@ -71,7 +71,7 @@ function uppercaseFirst(str) {
  * @param transTypeCode
  */
 function trans_loadSuccessIds(rows, transTypeCode) {
-    console.log('-----loadSuccessIds--');
+    console.log('-----loadSuccessIds--transTypeCode='+transTypeCode);
     rowIds = '';
     var obj;
     for (var i = 0; i < rows.length; i++) {
@@ -86,7 +86,7 @@ function trans_loadSuccessIds(rows, transTypeCode) {
 }
 
 function trans_loadSuccessId(obj, transTypeCode) {
-    console.log('-----loadSuccessId--');
+    console.log('-----loadSuccessId--transTypeCode='+transTypeCode);
     rowIds = '' + obj.id;
     langDicts = trans_getFieldDictsByDataId(transTypeCode, transTypeDist, rowIds, null);
     trans_extDataFields(obj, transFields);

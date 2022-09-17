@@ -29,7 +29,12 @@ public class TranslateBiz implements ITranslateBiz {
         } else if (StringUtils.equals(TransType.GOOGLE.getType(), dataTranslateConfiguration.getTransType())) {
             langType = LangType.parseGoogle(lang);
         }
-        langType = LangType.parse(lang);
+        else {
+            langType = LangType.parse(lang);
+        }
+        if(langType == null){
+            langType=LangType.getDefault();
+        }
         return langType;
     }
 

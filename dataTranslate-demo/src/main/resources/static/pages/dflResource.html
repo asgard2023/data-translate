@@ -41,7 +41,7 @@
             <div class="layui-card">
                 <div class="layui-card-body">
                     <table class="layui-table"
-                           lay-data="{url:'/dflResource/list3', page:true, id:'dataList',toolbar:'#toolbar',parseData:parseDataFn}"
+                           lay-data="{page:true, id:'dataList',toolbar:'#toolbar',parseData:parseDataFn}"
                            lay-filter="dataList">
                         <thead>
                         <tr>
@@ -96,6 +96,14 @@
     function doneFn(res, curr, count){
 
     }
+    function doSearch(form, table){
+        trans_getTypeDists();
+        var jsonParam = form.val('searchForm');
+        jsonParam.transTypeDist=transTypeDist;
+        table.reload('dataList', {url:'/dflResource/list3',
+            where: jsonParam
+        });
+    }
     function parseDataFn(res){
         console.log('parseDataFn');
         trans_loadSuccessIds(res.data, transTypeCode);
@@ -104,17 +112,16 @@
         $ = layui.$;
         var table = layui.table;
         var form = layui.form;
+
         tableInitResponseType(table);
 
-        initStartEndTime(7);
+        initStartEndTime(100);
 
         form.on('submit(btnSearch)', function (data) {
-            var jsonParam = form.val('searchForm');
-            jsonParam.transTypeDist=transTypeDist;
-            table.reload('dataList', {
-                where: jsonParam
-            });
+            doSearch(form, table);
         });
+
+        doSearch(form, table);
 
         //监听行工具事件
         table.on('tool(dataList)', function (obj) {

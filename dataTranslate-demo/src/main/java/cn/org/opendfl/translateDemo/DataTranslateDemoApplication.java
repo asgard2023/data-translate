@@ -34,7 +34,7 @@ public class DataTranslateDemoApplication {
     public void init() {
         logger.info("---translate.transType={}", dataTranslateConfiguration.getTransType());
         logger.info("---translate.defaultLang={}", dataTranslateConfiguration.getDefaultLang());
-        logger.info("---translate.transLanguages={}", dataTranslateConfiguration.getTransLanguages());
+        logger.info("---translate.typeDists={}", dataTranslateConfiguration.getTypeDists());
     }
 
     //自创建RestTemplate

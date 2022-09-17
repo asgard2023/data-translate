@@ -1,5 +1,36 @@
 //定义支持国际化的语言
-var transTypeDist = 'en,cht';
+var transTypeDist = 'en,tw,ja';
+
+var isLoadTransType=false;
+
+(function () {
+    if(typeof jQuery != 'undefined') {
+        trans_getTypeDists();
+    }
+})();
+
+/**
+ * 支持的翻译语言
+ * @returns {*}
+ */
+function trans_getTypeDists() {
+    if(!isLoadTransType){
+        isLoadTransType=true;
+        $.ajax({
+            url: '/dflsystem/trTransType/typeDists',
+            type: 'GET',
+            async: false,
+            cache: false,
+            success: function (res) {
+                transTypeDist = res.data;
+                console.log('----suport trans dist types='+transTypeDist);
+            },
+            error: function (returndata) {
+                alert(JSON.stringify(returndata));
+            }
+        });
+    }
+}
 
 function uppercaseFirst(str) {
     return str.slice(0, 1).toUpperCase() + str.slice(1).toLowerCase();
@@ -27,7 +58,7 @@ function trans_loadSuccessIds(rows, transTypeCode) {
 
 function trans_loadSuccessId(obj, transTypeCode) {
     console.log('-----loadSuccessId--');
-    rowIds = ''+obj.id;
+    rowIds = '' + obj.id;
     langDicts = trans_getFieldDictsByDataId(transTypeCode, transTypeDist, rowIds, null);
     trans_extDataFields(obj, transFields);
 }
@@ -86,7 +117,7 @@ function trans_jqGridSetCell(jqId, obj, transFields) {
 
 
 function trans_saveLocalLanguage(id, postdata, transFields) {
-    if(!id){
+    if (!id) {
         console.warn('仅支持数据修改，即id不为空');
         return;
     }

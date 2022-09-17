@@ -23,9 +23,9 @@ public class DataTranslateConfiguration {
      */
     private String defaultLang = "zh";
     /**
-     * 未用
+     * 支持的目标语言
      */
-    private String transLanguages = "en,jp";
+    private String typeDists = "en,jp,tw";
     private String transType = TransType.BAIDU.getType();
     private String appid;
     private String securityKey;

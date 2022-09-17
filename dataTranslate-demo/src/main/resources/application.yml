@@ -1,5 +1,6 @@
 translate:
-  transLanguages: en,ja
+  #支持的目标语言
+  typeDists: en,ja,tw
   transType: baidu
   appid: 20220905001332382
   securityKey: xxxx

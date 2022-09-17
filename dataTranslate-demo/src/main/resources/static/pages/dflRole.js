@@ -14,6 +14,7 @@ $(function () {
 });
 
 function dataLoader(param, success, error) {
+    trans_getTypeDists();
     var url = "/dflRole/list2";
     if (transTypeDist) {
         url += '?transTypeDist=' + transTypeDist;

@@ -152,4 +152,10 @@ public class TrTransTypeController extends BaseController {
         }
         return ResultData.success(TranslateUtil.getTransCounterMap());
     }
+
+    @ApiOperation(value = "支持的目标语言", notes = "支持的目标语言")
+    @RequestMapping(value = "typeDists", method = {RequestMethod.POST, RequestMethod.GET})
+    public ResultData typeDists(HttpServletRequest request) {
+        return ResultData.success(dataTranslateConfiguration.getTypeDists());
+    }
 }

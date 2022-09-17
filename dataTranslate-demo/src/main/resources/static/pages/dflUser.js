@@ -4,6 +4,7 @@ var transTypeCode = 'DflUserPo';
 var transFields = 'nickname';
 
 $(function() {
+	trans_getTypeDists();
 	var beforeDay=100;
 	initStartEndTime(beforeDay);
 	pageInit();

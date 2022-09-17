@@ -1,5 +1,39 @@
 //定义支持国际化的语言
-var transTypeDist = 'en,cht';
+var transTypeDist = 'en,tw,ja';
+var isLoadTransType=false;
+
+
+(function () {
+    if(typeof jQuery != 'undefined') {
+        trans_getTypeDists();
+    }
+})();
+
+
+
+
+/**
+ * 支持的翻译语言
+ * @returns {*}
+ */
+function trans_getTypeDists() {
+    if(!isLoadTransType){
+        isLoadTransType=true;
+        $.ajax({
+            url: '/dflsystem/trTransType/typeDists',
+            type: 'GET',
+            async: false,
+            cache: false,
+            success: function (res) {
+                transTypeDist = res.data;
+                console.log('----suport trans dist types='+transTypeDist);
+            },
+            error: function (returndata) {
+                alert(JSON.stringify(returndata));
+            }
+        });
+    }
+}
 
 function uppercaseFirst(str) {
     return str.slice(0, 1).toUpperCase() + str.slice(1).toLowerCase();

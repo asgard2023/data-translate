@@ -198,7 +198,7 @@ public class TranslateUtil {
         if (StringUtils.isEmpty(langParam) || CollectionUtils.isEmpty(list)) {
             return;
         }
-        final LangType langType = translateBiz.getLangType(langParam.trim());
+        final LangType langType = translateBiz.getLangType(source, langParam.trim());
         final String lang = langType.code;
 
         if (LangType.ZH == langType) {

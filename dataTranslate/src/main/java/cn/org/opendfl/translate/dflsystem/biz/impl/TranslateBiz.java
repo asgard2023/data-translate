@@ -7,15 +7,20 @@ import cn.org.opendfl.translate.dflsystem.biz.ITranslateBiz;
 import cn.org.opendfl.translate.dflsystem.translate.LangType;
 import cn.org.opendfl.translate.dflsystem.translate.TransType;
 import cn.org.opendfl.translate.exception.FailedException;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * 翻译接口
  *
  * @author chenjh
  */
+@Slf4j
 @Service
 public class TranslateBiz implements ITranslateBiz {
     @Autowired
@@ -27,18 +32,28 @@ public class TranslateBiz implements ITranslateBiz {
     @Autowired
     private DataTranslateConfiguration dataTranslateConfiguration;
 
-    public LangType getLangType(String lang) {
+    private static int TIME_MINUTE_IN_MILLIS = 60000;
+    private static Map<String, Long> logTimeMap = new ConcurrentHashMap<>();
+
+    public LangType getLangType(String source, String lang) {
         LangType langType = null;
         if (StringUtils.equals(TransType.BAIDU.getType(), dataTranslateConfiguration.getTransType())) {
             langType = LangType.parseBaidu(lang);
         } else if (StringUtils.equals(TransType.GOOGLE.getType(), dataTranslateConfiguration.getTransType())) {
             langType = LangType.parseGoogle(lang);
-        }
-        else {
+        } else {
             langType = LangType.parse(lang);
         }
-        if(langType == null){
-            langType=LangType.getDefault();
+        if (langType == null) {
+            long curTime = System.currentTimeMillis();
+            String key = source + "_" + lang;
+            Long langTypeLogTime = logTimeMap.get(key);
+            //用于减少日志输出量，即每1分钟只输出一次
+            if (langTypeLogTime == null || curTime - langTypeLogTime > TIME_MINUTE_IN_MILLIS) {
+                logTimeMap.put(key, curTime);
+                log.warn("---getLangType--source={} lang={} invalid, use default", source, lang);
+            }
+            langType = LangType.getDefault();
         }
         return langType;
     }

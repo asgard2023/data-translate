@@ -13,12 +13,12 @@ import cn.org.opendfl.translate.utils.TransApiBaidu;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
+import javax.annotation.Resource;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -32,7 +32,7 @@ import java.util.Map;
 @Service
 @Slf4j
 public class TranslateBaiduRest {
-    @Autowired
+    @Resource
     private DataTranslateConfiguration dataTranslateConfiguration;
 
     private Map<String, String> buildParams(String query, String from, String to) {
@@ -57,7 +57,7 @@ public class TranslateBaiduRest {
     }
 
 
-    @Autowired
+    @Resource
     private RestTemplate restTemplate;
 
     public Object getTransResultApi(String query, String from, String to) {

@@ -9,11 +9,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
+import javax.annotation.Resource;
+
 @SpringBootTest(classes = DataTranslateDemoApplication.class)
 @ActiveProfiles(value = "test")
 @Slf4j
 public class TranslateBaiduRestTest {
-    @Autowired
+    @Resource
     private TranslateBaiduRest translateBaiduRest;
 
     @Test

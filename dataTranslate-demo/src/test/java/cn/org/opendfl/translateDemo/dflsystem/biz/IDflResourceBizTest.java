@@ -7,17 +7,17 @@ import cn.org.opendfl.translateDemo.po.DflResourcePo;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
+import javax.annotation.Resource;
 import java.util.Date;
 
 @SpringBootTest(classes = DataTranslateDemoApplication.class)
 @ActiveProfiles(value = "test")
 @Slf4j
 public class IDflResourceBizTest {
-    @Autowired
+    @Resource
     private IDflResourceBiz dflResourceBiz;
 
     @Test

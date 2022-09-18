@@ -16,9 +16,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -49,12 +49,12 @@ public class TranslateUtil {
             .maximumSize(1000).build();
 
 
-    @Autowired
+    @Resource
     public void setTransTypeBiz(ITrTransTypeBiz trTransTypeBiz) {
         TranslateUtil.trTransTypeBiz = trTransTypeBiz;
     }
 
-    @Autowired
+    @Resource
     public void setTranslateBiz(ITranslateBiz translateBiz) {
         TranslateUtil.translateBiz = translateBiz;
     }

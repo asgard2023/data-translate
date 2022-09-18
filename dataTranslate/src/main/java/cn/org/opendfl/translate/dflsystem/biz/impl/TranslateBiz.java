@@ -9,9 +9,9 @@ import cn.org.opendfl.translate.dflsystem.translate.TransType;
 import cn.org.opendfl.translate.exception.FailedException;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -23,13 +23,13 @@ import java.util.concurrent.ConcurrentHashMap;
 @Slf4j
 @Service
 public class TranslateBiz implements ITranslateBiz {
-    @Autowired
+    @Resource
     private TranslateBaiduRest translateBaiduRest;
 
-    @Autowired
+    @Resource
     private TranslateGoogleApi translateGoogleApi;
 
-    @Autowired
+    @Resource
     private DataTranslateConfiguration dataTranslateConfiguration;
 
     private static final int TIME_MINUTE_IN_MILLIS = 60000;

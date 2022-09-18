@@ -4,8 +4,9 @@ import cn.org.opendfl.translate.config.DataTranslateConfiguration;
 import cn.org.opendfl.translate.dflsystem.translate.LangType;
 import cn.org.opendfl.translate.exception.FailedException;
 import cn.org.opendfl.translate.exception.ParamErrorException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import javax.annotation.Resource;
 
 /**
  * google翻译
@@ -15,7 +16,7 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class TranslateGoogleApi {
-    @Autowired
+    @Resource
     private DataTranslateConfiguration dataTranslateConfiguration;
 
     public String getTransResult(String query, String from, String to) {

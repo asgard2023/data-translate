@@ -6,9 +6,9 @@ import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.MapUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.Resource;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -31,7 +31,7 @@ public class TranslateTrans {
 
     private static ITrTransDataBiz trTransDataBiz;
 
-    @Autowired
+    @Resource
     public void setTrTransDataBiz(ITrTransDataBiz trTransDataBiz) {
         TranslateTrans.trTransDataBiz = trTransDataBiz;
     }

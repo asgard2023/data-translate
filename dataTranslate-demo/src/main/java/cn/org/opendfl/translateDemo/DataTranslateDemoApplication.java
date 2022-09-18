@@ -3,7 +3,6 @@ package cn.org.opendfl.translateDemo;
 import cn.org.opendfl.translate.config.DataTranslateConfiguration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -13,6 +12,7 @@ import org.springframework.web.client.RestTemplate;
 import tk.mybatis.spring.annotation.MapperScan;
 
 import javax.annotation.PostConstruct;
+import javax.annotation.Resource;
 
 /**
  * @author chenjh
@@ -27,7 +27,7 @@ public class DataTranslateDemoApplication {
         SpringApplication.run(DataTranslateDemoApplication.class, args);
     }
 
-    @Autowired
+    @Resource
     private DataTranslateConfiguration dataTranslateConfiguration;
 
     @PostConstruct

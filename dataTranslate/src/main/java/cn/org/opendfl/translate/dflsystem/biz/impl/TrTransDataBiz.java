@@ -16,7 +16,6 @@ import com.github.pagehelper.PageHelper;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.common.Mapper;
 import tk.mybatis.mapper.entity.Example;
@@ -43,7 +42,7 @@ public class TrTransDataBiz extends BaseService<TrTransDataPo> implements ITrTra
         return mapper;
     }
 
-    @Autowired
+    @Resource
     private ITrTransTypeBiz trTransTypeBiz;
 
     public TrTransDataPo getDataById(Long id) {

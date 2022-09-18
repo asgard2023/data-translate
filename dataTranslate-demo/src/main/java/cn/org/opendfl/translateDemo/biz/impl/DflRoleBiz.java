@@ -1,22 +1,22 @@
 package cn.org.opendfl.translateDemo.biz.impl;
 
+import cn.org.opendfl.translate.base.BaseService;
+import cn.org.opendfl.translate.base.BeanUtils;
+import cn.org.opendfl.translate.base.MyPageInfo;
 import cn.org.opendfl.translateDemo.biz.IDflRoleBiz;
 import cn.org.opendfl.translateDemo.mapper.DflRoleMapper;
 import cn.org.opendfl.translateDemo.po.DflRolePo;
 import com.github.pagehelper.page.PageMethod;
 import org.apache.commons.lang3.StringUtils;
-import cn.org.opendfl.translate.base.BaseService;
-import cn.org.opendfl.translate.base.BeanUtils;
-import cn.org.opendfl.translate.base.MyPageInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import tk.mybatis.mapper.common.Mapper;
 import tk.mybatis.mapper.entity.Example;
 import tk.mybatis.mapper.util.StringUtil;
 
+import javax.annotation.Resource;
 import java.util.*;
 
 /**
@@ -28,7 +28,7 @@ import java.util.*;
  */
 @Service(value = "dflRoleBiz")
 public class DflRoleBiz extends BaseService<DflRolePo> implements IDflRoleBiz {
-    @Autowired
+    @Resource
     private DflRoleMapper mapper;
 
     static Logger logger = LoggerFactory.getLogger(DflRoleBiz.class);

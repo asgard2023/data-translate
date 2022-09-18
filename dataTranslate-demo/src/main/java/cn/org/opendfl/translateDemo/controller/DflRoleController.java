@@ -13,10 +13,10 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.List;
@@ -35,7 +35,7 @@ public class DflRoleController extends BaseController {
 
     static Logger logger = LoggerFactory.getLogger(DflRoleController.class);
 
-    @Autowired
+    @Resource
     private IDflRoleBiz dflRoleBiz;
 
     /**

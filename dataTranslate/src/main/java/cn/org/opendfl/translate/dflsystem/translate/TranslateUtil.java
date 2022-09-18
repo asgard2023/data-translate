@@ -317,7 +317,7 @@ public class TranslateUtil {
         if (StringUtils.isNotBlank(transTypeDist)) {
             String[] langs = transTypeDist.split(",");
             for (String lang : langs) {
-                TranslateUtil.transform(uri, lang, list, false);
+                TranslateUtil.transform(uri, lang, list, true);
             }
         }
     }

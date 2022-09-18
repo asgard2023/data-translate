@@ -4,9 +4,23 @@ var transTypeCode = 'DflUserPo';
 transFields = 'nickname';
 
 $(function() {
-	trans_getTypeDists();
-	//自动获取对象的翻译属性，以覆盖transFields
-	trans_getTransFields(transTypeCode);
+    var transTypeDistsParam=getQueryString('transTypeDists');
+	//方便演示测试，支持参数输入
+    if(transTypeDistsParam){
+        transTypeDist=transTypeDistsParam;
+    }
+    else{
+        trans_getTypeDists();
+    }
+	//方便演示测试，支持参数输入
+    //自动获取对象的翻译属性，以覆盖transFields
+	var transFieldParam=getQueryString('transFields');
+	if(transFieldParam){
+		transFields = transFieldParam;
+	}
+	else{
+		trans_getTransFields(transTypeCode);
+	}
 	var beforeDay=100;
 	initStartEndTime(beforeDay);
 	pageInit();

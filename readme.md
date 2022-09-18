@@ -27,7 +27,7 @@ http://localhost:8080/doc.html
 <dependency>
     <groupId>cn.org.opendfl</groupId>
     <artifactId>data-translate</artifactId>
-    <version>1</version>
+    <version>1.2</version>
 </dependency>
 ```
 * 2,在要翻译的PO类，加上@TranslateType，@TranslateField快速上手

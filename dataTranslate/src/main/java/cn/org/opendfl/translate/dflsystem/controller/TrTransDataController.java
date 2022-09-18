@@ -135,6 +135,7 @@ public class TrTransDataController extends BaseController {
                 if (!StringUtils.equals(exist.getContent(), entity.getContent())) {
                     return this.update(entity, request);
                 }
+                return ResultData.success();
             }
         }
 

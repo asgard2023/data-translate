@@ -1,6 +1,7 @@
 package cn.org.opendfl.translate.dflsystem.translate;
 
 
+import cn.hutool.core.util.ReflectUtil;
 import cn.org.opendfl.translate.base.RequestUtils;
 import cn.org.opendfl.translate.dflsystem.biz.ITrTransTypeBiz;
 import cn.org.opendfl.translate.dflsystem.biz.ITranslateBiz;
@@ -260,7 +261,7 @@ public class TranslateUtil {
         for (String field : idInfoVo.getTransFields()) {
             String content = fieldMap.get(field);
             if (StringUtils.isBlank(content)) {
-                String value = BeanUtils.getProperty(obj, field);
+                String value = (String) ReflectUtil.getFieldValue(obj, field);
                 if (StringUtils.isNotBlank(value)) {
                     content = translateBiz.getTransResult(value, lang);
                     fieldMap.put(field, content);
@@ -268,13 +269,9 @@ public class TranslateUtil {
                         TranslateTrans.autoSaveTransResult(idInfoVo.getTransTypeId(), dataNid, dataSid, field, lang, content);
                     }
                 }
-                //数据相同，不走下面的属性赋值
-                else if(StringUtils.equals(content, value)){
-                    continue;
-                }
             }
             if (isTransField) {
-                BeanUtils.setProperty(obj, field, content);
+                ReflectUtil.setFieldValue(obj, field, content);
             }
         }
     }

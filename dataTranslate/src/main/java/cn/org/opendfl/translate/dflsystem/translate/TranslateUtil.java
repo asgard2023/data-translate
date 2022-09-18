@@ -268,6 +268,10 @@ public class TranslateUtil {
                         TranslateTrans.autoSaveTransResult(idInfoVo.getTransTypeId(), dataNid, dataSid, field, lang, content);
                     }
                 }
+                //数据相同，不走下面的属性赋值
+                else if(StringUtils.equals(content, value)){
+                    continue;
+                }
             }
             if (isTransField) {
                 BeanUtils.setProperty(obj, field, content);

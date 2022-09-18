@@ -120,25 +120,28 @@ public class TrTransDataController extends BaseController {
     @ApiOperation(value = "添加数据翻译", notes = "添加一个数据翻译")
     @RequestMapping(value = "save", method = {RequestMethod.POST, RequestMethod.GET})
     public ResultData edit(TrTransDataPo entity, HttpServletRequest request) {
-        TrTransDataPo search = new TrTransDataPo();
-        search.setCode(entity.getCode());
-        search.setLang(entity.getLang());
-        search.setTransTypeId(entity.getTransTypeId());
-        search.setDataNid(entity.getDataNid());
-        search.setDataSid(entity.getDataSid());
-        List<TrTransDataPo> list = this.trTransDataBiz.findBy(search);
-        if (CollectionUtils.isNotEmpty(list)) {
-            TrTransDataPo exist = list.get(0);
-            entity.setId(exist.getId());
-            //如果值没变不保存
-            if (!StringUtils.equals(exist.getContent(), entity.getContent())) {
-                this.update(entity, request);
+        if(entity.getId() == null){
+            TrTransDataPo search = new TrTransDataPo();
+            search.setCode(entity.getCode());
+            search.setLang(entity.getLang());
+            search.setTransTypeId(entity.getTransTypeId());
+            search.setDataNid(entity.getDataNid());
+            search.setDataSid(entity.getDataSid());
+            List<TrTransDataPo> list = this.trTransDataBiz.findBy(search);
+            if (CollectionUtils.isNotEmpty(list)) {
+                TrTransDataPo exist = list.get(0);
+                entity.setId(exist.getId());
+                //如果值没变不保存
+                if (!StringUtils.equals(exist.getContent(), entity.getContent())) {
+                    return this.update(entity, request);
+                }
             }
-        } else {
-            entity.setCreateTime(new Date());
-            entity.setUpdateTime(new Date());
-            trTransDataBiz.saveTrTransData(entity);
         }
+
+
+        entity.setCreateTime(new Date());
+        entity.setUpdateTime(new Date());
+        trTransDataBiz.saveTrTransData(entity);
         return ResultData.success();
     }
 

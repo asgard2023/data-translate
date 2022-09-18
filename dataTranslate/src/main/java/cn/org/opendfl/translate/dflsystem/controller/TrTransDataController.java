@@ -131,11 +131,12 @@ public class TrTransDataController extends BaseController {
             if (CollectionUtils.isNotEmpty(list)) {
                 TrTransDataPo exist = list.get(0);
                 entity.setId(exist.getId());
-                //如果值没变不保存
+                //如果值有变化保存
                 if (!StringUtils.equals(exist.getContent(), entity.getContent())) {
                     return this.update(entity, request);
                 }
-                return ResultData.success();
+                //没变化，不保存
+                return ResultData.success(0);
             }
         }
 

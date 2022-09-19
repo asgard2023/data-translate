@@ -97,6 +97,10 @@ public enum LangType {
         return defaultLang;
     }
 
+    public static void setDefaultLang(LangType defaultLang){
+        LangType.defaultLang=defaultLang;
+    }
+
     public static Locale getLocale(String lang) {
         LangType langType = LangType.parse(lang);
         if (langType == null) {

@@ -17,6 +17,7 @@ import org.springframework.context.annotation.Configuration;
 @ConfigurationProperties(prefix = "translate")
 @Slf4j
 public class DataTranslateConfiguration {
+    private String version = "1.3";
     /**
      * 用于/dflsystem/trTransType/transCounts接口的密码验证
      */

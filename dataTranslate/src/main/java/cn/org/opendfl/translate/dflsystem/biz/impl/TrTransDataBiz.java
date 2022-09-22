@@ -13,6 +13,7 @@ import cn.org.opendfl.translate.dflsystem.translate.TransDto;
 import cn.org.opendfl.translate.dflsystem.vo.TransDataCountVo;
 import cn.org.opendfl.translate.dflsystem.vo.TransRepeatVo;
 import com.github.pagehelper.PageHelper;
+import org.apache.commons.collections.MapUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -179,9 +180,9 @@ public class TrTransDataBiz extends BaseService<TrTransDataPo> implements ITrTra
         return this.updateByPrimaryKeySelective(po);
     }
 
-    public Map<String, Map<String, String>> getValueMapCacheByIdNum(Integer dataTypeId, String lang, List<String> fields, List<Object> idList) {
+    public Map<String, Map<String, String>> getValueMapCacheByIdNum(final Integer dataTypeId, final String lang, final List<String> fields, final List<Object> idList) {
         if (CollUtil.isEmpty(idList)) {
-            return new HashMap<>();
+            return MapUtils.EMPTY_MAP;
         }
         List<TrTransDataPo> list = findDataTransListByIds(dataTypeId, lang, IdType.NUM, fields, idList);
         int fieldSie = fields.size();
@@ -194,9 +195,9 @@ public class TrTransDataBiz extends BaseService<TrTransDataPo> implements ITrTra
         return dataIdMap;
     }
 
-    public Map<String, Map<String, String>> getValueMapCacheByIdStr(Integer dataTypeId, String lang, List<String> fields, List<Object> idList) {
+    public Map<String, Map<String, String>> getValueMapCacheByIdStr(final Integer dataTypeId, final String lang, final List<String> fields, final List<Object> idList) {
         if (CollUtil.isEmpty(fields) || CollUtil.isEmpty(idList)) {
-            return new HashMap<>();
+            return MapUtils.EMPTY_MAP;
         }
         List<TrTransDataPo> list = findDataTransListByIds(dataTypeId, lang, IdType.STRING, fields, idList);
         int fieldSie = fields.size();
@@ -209,7 +210,7 @@ public class TrTransDataBiz extends BaseService<TrTransDataPo> implements ITrTra
         return dataIdMap;
     }
 
-    private List<TrTransDataPo> findDataTransListByIds(Integer dataTypeId, String lang, IdType idType, List<String> fields, List<Object> idList) {
+    private List<TrTransDataPo> findDataTransListByIds(final Integer dataTypeId, String lang, final IdType idType, final List<String> fields, final List<Object> idList) {
         Example example = new Example(TrTransDataPo.class);
         String selectFields = "code,content,lang";
         Example.Criteria criteria = example.createCriteria();
@@ -221,7 +222,7 @@ public class TrTransDataBiz extends BaseService<TrTransDataPo> implements ITrTra
             selectFields += ",dataSid";
         }
         criteria.andIn("code", fields);
-        if(StringUtils.isNotBlank(lang)) {
+        if (StringUtils.isNotBlank(lang)) {
             criteria.andEqualTo("lang", lang);
         }
         criteria.andEqualTo("transTypeId", dataTypeId);

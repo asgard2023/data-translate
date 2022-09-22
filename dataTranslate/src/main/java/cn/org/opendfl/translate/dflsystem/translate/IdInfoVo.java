@@ -9,9 +9,9 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 public class IdInfoVo implements Serializable {
-    private String code;
-    private int idType;
-    private String idField;
-    private List<String> transFields;
+    private final String code;
+    private final int idType;
+    private final String idField;
+    private final List<String> transFields;
     private Integer transTypeId;
 }

@@ -195,7 +195,7 @@ public class TranslateUtil {
      * @param isTransField 是否翻译后修改属性值
      * @author chenjh
      */
-    public static void transform(String source, String langParam, List<?> list, boolean isTransField) {
+    public static void transform(final String source,final String langParam,final List<?> list, final boolean isTransField) {
         if (StringUtils.isEmpty(langParam) || CollectionUtils.isEmpty(list)) {
             return;
         }
@@ -205,13 +205,13 @@ public class TranslateUtil {
         if (LangType.getDefault() == langType) {
             return;//默认中文不用翻译
         }
-        Class<?> z = list.get(0).getClass();
-        String className = z.getSimpleName();
+        final Class<?> z = list.get(0).getClass();
+        final String className = z.getSimpleName();
         IdInfoVo idInfoVo = getTranslateType(z);
         if (idInfoVo == null) {
             return;
         }
-        List<String> fields = idInfoVo.getTransFields();
+        final List<String> fields = idInfoVo.getTransFields();
         if (CollectionUtils.isEmpty(fields)) {
             log.warn("----transform--source={} className={} transFields empty", source, className);
             return;

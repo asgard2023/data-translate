@@ -187,7 +187,7 @@ public class TrTransDataBiz extends BaseService<TrTransDataPo> implements ITrTra
         int fieldSie = fields.size();
         Map<String, Map<String, String>> dataIdMap = new HashMap<>(list.size() / fieldSie);
         for (TrTransDataPo trTransDataPo : list) {
-            String key = trTransDataPo.getDataNid() + "_" + lang;
+            String key = trTransDataPo.getDataNid() + "_" + trTransDataPo.getLang();
             Map<String, String> fieldValueMap = dataIdMap.computeIfAbsent(key, k -> new HashMap<>(fieldSie));
             fieldValueMap.put(trTransDataPo.getCode(), trTransDataPo.getContent());
         }
@@ -202,7 +202,7 @@ public class TrTransDataBiz extends BaseService<TrTransDataPo> implements ITrTra
         int fieldSie = fields.size();
         Map<String, Map<String, String>> dataIdMap = new HashMap<>(list.size() / fieldSie);
         for (TrTransDataPo trTransDataPo : list) {
-            String key = trTransDataPo.getDataSid() + "_" + lang;
+            String key = trTransDataPo.getDataSid() + "_" + trTransDataPo.getLang();
             Map<String, String> fieldValueMap = dataIdMap.computeIfAbsent(key, k -> new HashMap<>(fieldSie));
             fieldValueMap.put(trTransDataPo.getCode(), trTransDataPo.getContent());
         }
@@ -211,7 +211,7 @@ public class TrTransDataBiz extends BaseService<TrTransDataPo> implements ITrTra
 
     private List<TrTransDataPo> findDataTransListByIds(Integer dataTypeId, String lang, IdType idType, List<String> fields, List<Object> idList) {
         Example example = new Example(TrTransDataPo.class);
-        String selectFields = "code,content";
+        String selectFields = "code,content,lang";
         Example.Criteria criteria = example.createCriteria();
         if (idType == IdType.NUM) {
             criteria.andIn("dataNid", idList);
@@ -221,7 +221,9 @@ public class TrTransDataBiz extends BaseService<TrTransDataPo> implements ITrTra
             selectFields += ",dataSid";
         }
         criteria.andIn("code", fields);
-        criteria.andEqualTo("lang", lang);
+        if(StringUtils.isNotBlank(lang)) {
+            criteria.andEqualTo("lang", lang);
+        }
         criteria.andEqualTo("transTypeId", dataTypeId);
         criteria.andEqualTo("ifDel", 0);
 

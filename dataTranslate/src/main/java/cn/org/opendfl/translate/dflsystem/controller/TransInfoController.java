@@ -21,14 +21,14 @@ import javax.servlet.http.HttpServletRequest;
 @Api(tags = "appInfo")
 @Slf4j
 @RestController
-@RequestMapping("api")
-public class AppInfoController {
+@RequestMapping("transInfo")
+public class TransInfoController {
     @Resource
     private DataTranslateConfiguration dataTranslateConfiguration;
 
-    @ApiOperation(value = "appInfo", notes = "appInfo")
-    @RequestMapping(value = "info", method = {RequestMethod.GET})
-    public AppInfoVo getAppInfo(HttpServletRequest request) {
+    @ApiOperation(value = "baseInfo", notes = "baseInfo")
+    @RequestMapping(value = "baseInfo", method = {RequestMethod.GET})
+    public AppInfoVo getBaseInfo(HttpServletRequest request) {
         AppInfoVo appInfoVo = new AppInfoVo();
         appInfoVo.setVersion(dataTranslateConfiguration.getVersion());
         appInfoVo.setTransType(dataTranslateConfiguration.getTransType());

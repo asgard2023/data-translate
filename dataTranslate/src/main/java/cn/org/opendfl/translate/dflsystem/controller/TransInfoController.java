@@ -14,11 +14,11 @@ import javax.servlet.http.HttpServletRequest;
 
 
 /**
- * appInfo
+ * transInfo服务信息
  *
  * @author chenjh
  */
-@Api(tags = "appInfo")
+@Api(tags = "transInfo")
 @Slf4j
 @RestController
 @RequestMapping("transInfo")

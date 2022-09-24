@@ -45,9 +45,9 @@ public class TranslateUtilTest {
     }
 
     @Test
-    public void time(){
+    public void getTimeValue(){
         Long timeMinute = System.currentTimeMillis()/TranslateTrans.TIME_MINUTE_IN_MILLIS%60;
-        int timeValue=timeMinute.intValue()%60/10;
+        int timeValue=timeMinute.intValue()%60/TranslateTrans.REDIS_KEY_TRANS_DATA_EXPIRE_MINUTE;
         System.out.println(timeValue+" "+TranslateTrans.getTimeValue(System.currentTimeMillis()));
 
 

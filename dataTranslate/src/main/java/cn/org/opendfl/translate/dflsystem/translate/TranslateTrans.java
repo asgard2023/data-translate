@@ -56,9 +56,10 @@ public class TranslateTrans {
 
 
     /**
-     * 翻译数据redis缓存时间10分钟
+     * 翻译数据redis缓存时间20分钟
+     * exp: 5,10,20,30,60，可以10分钟，20分1趾，30分钟的缓存
      */
-    public static final int REDIS_KEY_TRANS_DATA_EXPIRE_MINUTE = 10;
+    public static final int REDIS_KEY_TRANS_DATA_EXPIRE_MINUTE = 20;
     public static final Cache<String, Long> redisKeyMap = CacheBuilder.newBuilder().expireAfterWrite(REDIS_KEY_TRANS_DATA_EXPIRE_MINUTE, TimeUnit.MINUTES)
             .maximumSize(300).build();
 
@@ -72,9 +73,9 @@ public class TranslateTrans {
      * @return
      */
     public static int getTimeValue(long curTime) {
-        //算出每小时的分钟数对应的10分钟数，以便于使redisKey按10分钟缓存一份
+        //算出每小时的分钟数对应的10分钟数，以便于使redisKey按20分钟缓存一份
         Long timeMinute = curTime / TIME_MINUTE_IN_MILLIS % 60;
-        return timeMinute.intValue() % 60 / 10;
+        return timeMinute.intValue() % 60 / REDIS_KEY_TRANS_DATA_EXPIRE_MINUTE;
     }
 
 
@@ -198,17 +199,17 @@ public class TranslateTrans {
 
             //数据库查到后，同时更新本地缓存，redis缓存
             if (MapUtils.isNotEmpty(dataIdFieldDbMap)) {
-                dataIdFieldResultMap.putAll(dataIdFieldDbMap);
+                putDataIdFieldAll(dataIdFieldResultMap, dataIdFieldDbMap);
                 putDataIdFieldCache(idInfoVo, field, lang, timeValue, unexistIdList, dataIdFieldDbMap);
                 putDataIdFieldAll(dataIdFieldDbMap);
             }
             if (MapUtils.isNotEmpty(dataIdFieldLocalMap)) {
-                dataIdFieldResultMap.putAll(dataIdFieldLocalMap);
+                putDataIdFieldAll(dataIdFieldResultMap, dataIdFieldLocalMap);
             }
 
             //redis查到后，更新本地缓存
             if (MapUtils.isNotEmpty(dataIdFieldRedisMap)) {
-                dataIdFieldResultMap.putAll(dataIdFieldRedisMap);
+                putDataIdFieldAll(dataIdFieldResultMap, dataIdFieldRedisMap);
                 putDataIdFieldAll(dataIdFieldRedisMap);
             }
         }
@@ -227,6 +228,20 @@ public class TranslateTrans {
                 fieldMap = entity.getValue();
             }
             dataIdFieldMap.put(key, fieldMap);
+        }
+    }
+
+    public static void putDataIdFieldAll(Map<String, Map<String, String>> dataIdFieldDbMap, Map<String, Map<String, String>> dataIdFieldDbMapNew) {
+        Set<Map.Entry<String, Map<String, String>>> sets = dataIdFieldDbMapNew.entrySet();
+        for (Map.Entry<String, Map<String, String>> entity : sets) {
+            String key = entity.getKey();
+            Map<String, String> fieldMap = dataIdFieldDbMap.get(key);
+            if (fieldMap != null) {
+                fieldMap.putAll(entity.getValue());
+            } else {
+                fieldMap = entity.getValue();
+            }
+            dataIdFieldDbMap.put(key, fieldMap);
         }
     }
 

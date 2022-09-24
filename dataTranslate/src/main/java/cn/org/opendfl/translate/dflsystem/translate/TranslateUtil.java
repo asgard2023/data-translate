@@ -311,7 +311,7 @@ public class TranslateUtil {
      */
     public static void transformLangsByTrnasType(HttpServletRequest request, List<?> list) {
         String transTypeDist = request.getParameter("transTypeDist");
-        log.info("----transformLangsByTrnasType--uri={} transTypeDist={}", request.getRequestURI(), transTypeDist);
+        log.debug("----transformLangsByTrnasType--uri={} transTypeDist={}", request.getRequestURI(), transTypeDist);
         String uri = request.getRequestURI();
         if (StringUtils.isNotBlank(transTypeDist)) {
             String[] langs = transTypeDist.split(",");

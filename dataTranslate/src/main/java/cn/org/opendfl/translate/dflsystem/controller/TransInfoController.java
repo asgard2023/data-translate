@@ -1,6 +1,7 @@
 package cn.org.opendfl.translate.dflsystem.controller;
 
 import cn.org.opendfl.translate.config.DataTranslateConfiguration;
+import cn.org.opendfl.translate.dflsystem.translate.TranslateTrans;
 import cn.org.opendfl.translate.dflsystem.vo.AppInfoVo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -34,6 +35,7 @@ public class TransInfoController {
         appInfoVo.setTransType(dataTranslateConfiguration.getTransType());
         appInfoVo.setTypeDists(dataTranslateConfiguration.getTypeDists());
         appInfoVo.setDefaultLang(dataTranslateConfiguration.getDefaultLang());
+        appInfoVo.setTransDataCacheSize(TranslateTrans.getTransDataCacheSize());
         return appInfoVo;
     }
 

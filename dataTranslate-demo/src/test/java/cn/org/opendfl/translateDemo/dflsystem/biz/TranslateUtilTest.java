@@ -43,4 +43,13 @@ public class TranslateUtilTest {
         dataIdFieldMap = TranslateTrans.getDataIdFieldMap(idInfoVo, lang, idList, idLangList);
         System.out.println(JSON.toJSONString(dataIdFieldMap));
     }
+
+    @Test
+    public void time(){
+        Long timeMinute = System.currentTimeMillis()/TranslateTrans.TIME_MINUTE_IN_MILLIS%60;
+        int timeValue=timeMinute.intValue()%60/10;
+        System.out.println(timeValue+" "+TranslateTrans.getTimeValue(System.currentTimeMillis()));
+
+
+    }
 }

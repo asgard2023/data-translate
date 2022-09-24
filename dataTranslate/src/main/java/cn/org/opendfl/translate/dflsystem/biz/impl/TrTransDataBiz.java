@@ -1,6 +1,7 @@
 package cn.org.opendfl.translate.dflsystem.biz.impl;
 
 import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.map.MapUtil;
 import cn.org.opendfl.translate.base.BaseService;
 import cn.org.opendfl.translate.base.BeanUtils;
 import cn.org.opendfl.translate.base.MyPageInfo;
@@ -10,10 +11,10 @@ import cn.org.opendfl.translate.dflsystem.mapper.TrTransDataMapper;
 import cn.org.opendfl.translate.dflsystem.po.TrTransDataPo;
 import cn.org.opendfl.translate.dflsystem.translate.IdType;
 import cn.org.opendfl.translate.dflsystem.translate.TransDto;
+import cn.org.opendfl.translate.dflsystem.translate.TranslateTrans;
 import cn.org.opendfl.translate.dflsystem.vo.TransDataCountVo;
 import cn.org.opendfl.translate.dflsystem.vo.TransRepeatVo;
 import com.github.pagehelper.PageHelper;
-import org.apache.commons.collections.MapUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -161,11 +162,15 @@ public class TrTransDataBiz extends BaseService<TrTransDataPo> implements ITrTra
 
     @Override
     public Integer updateTrTransData(TrTransDataPo entity) {
+        TrTransDataPo exist = this.findById(entity.getId());
         entity.setUpdateTime(new Date());
         if (entity.getIfDel() == null) {
             entity.setIfDel(0);
         }
-        return this.updateByPrimaryKeySelective(entity);
+        int v = this.updateByPrimaryKeySelective(entity);
+        String transTypeCode = trTransTypeBiz.getTypeCode(entity.getTransTypeId());
+        TranslateTrans.evictDataIdFieldCache(transTypeCode, exist.getCode(), exist.getLang(), entity.getId());
+        return v;
 
     }
 
@@ -182,7 +187,7 @@ public class TrTransDataBiz extends BaseService<TrTransDataPo> implements ITrTra
 
     public Map<String, Map<String, String>> getValueMapCacheByIdNum(final Integer dataTypeId, final String lang, final List<String> fields, final List<Object> idList) {
         if (CollUtil.isEmpty(idList)) {
-            return MapUtils.EMPTY_MAP;
+            return MapUtil.empty();
         }
         List<TrTransDataPo> list = findDataTransListByIds(dataTypeId, lang, IdType.NUM, fields, idList);
         int fieldSie = fields.size();
@@ -197,7 +202,7 @@ public class TrTransDataBiz extends BaseService<TrTransDataPo> implements ITrTra
 
     public Map<String, Map<String, String>> getValueMapCacheByIdStr(final Integer dataTypeId, final String lang, final List<String> fields, final List<Object> idList) {
         if (CollUtil.isEmpty(fields) || CollUtil.isEmpty(idList)) {
-            return MapUtils.EMPTY_MAP;
+            return new HashMap<>();
         }
         List<TrTransDataPo> list = findDataTransListByIds(dataTypeId, lang, IdType.STRING, fields, idList);
         int fieldSie = fields.size();

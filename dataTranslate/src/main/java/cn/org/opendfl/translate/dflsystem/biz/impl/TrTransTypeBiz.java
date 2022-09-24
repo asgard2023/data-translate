@@ -13,6 +13,7 @@ import com.google.common.cache.CacheBuilder;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.common.Mapper;
 import tk.mybatis.mapper.entity.Example;
@@ -34,6 +35,8 @@ import java.util.concurrent.TimeUnit;
 public class TrTransTypeBiz extends BaseService<TrTransTypePo> implements ITrTransTypeBiz {
     @Resource
     private TrTransTypeMapper mapper;
+    @Resource(name = "redisTemplateString")
+    private RedisTemplate<String, String> redisTemplateString;
 
     static Logger logger = LoggerFactory.getLogger(TrTransTypeBiz.class);
 
@@ -42,8 +45,29 @@ public class TrTransTypeBiz extends BaseService<TrTransTypePo> implements ITrTra
         return mapper;
     }
 
+    public String getTypeCode(Integer id) {
+        String redisKey = "transTypeCode:" + id;
+        String code = redisTemplateString.opsForValue().get("transTypeCode:" + id);
+        if (code == null) {
+            TrTransTypePo trTransTypePo = this.getDataById(id);
+            if (trTransTypePo != null) {
+                code = trTransTypePo.getCode();
+                redisTemplateString.opsForValue().set(redisKey, code, 1, TimeUnit.HOURS);
+            } else {
+                logger.warn("-----getTypeCode id={} unexist", id);
+            }
+        }
+        return code;
+    }
+
+    public void getTypeCode_evict(Integer id) {
+        String redisKey = "transTypeCode:" + id;
+        redisTemplateString.delete(redisKey);
+    }
+
+
     public TrTransTypePo getDataById(Integer id) {
-        return getDataById(id, null);
+        return getDataById(id, "ifDel,createTime,createUser,updateTime,updateUser");
     }
 
     /**
@@ -160,8 +184,9 @@ public class TrTransTypeBiz extends BaseService<TrTransTypePo> implements ITrTra
         if (entity.getIfDel() == null) {
             entity.setIfDel(0);
         }
-        return this.updateByPrimaryKeySelective(entity);
-
+        int v = this.updateByPrimaryKeySelective(entity);
+        getTypeCode_evict(entity.getId());
+        return v;
     }
 
     @Override

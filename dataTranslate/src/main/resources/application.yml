@@ -12,6 +12,14 @@ translate:
 
 
 spring:
+  redis:
+    host: 192.168.1.254
+    port: 6379
+    database: 1
+    jedis:
+      pool:
+        max-idle: 100
+        max-wait: 1000ms
   datasource:
     type: com.alibaba.druid.pool.DruidDataSource
     url: jdbc:mysql://192.168.1.254:3306/generator?allowPublicKeyRetrieval=true&characterEncoding=utf-8&serverTimezone=GMT%2B8

@@ -21,6 +21,8 @@ public interface ITrTransTypeBiz extends IBaseService<TrTransTypePo> {
 
     public Integer getTransTypeId(String code);
 
+    public String getTypeCode(Integer id);
+
     /**
      * 翻译类型 保存
      *

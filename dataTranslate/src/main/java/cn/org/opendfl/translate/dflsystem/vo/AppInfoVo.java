@@ -9,4 +9,6 @@ public class AppInfoVo {
     private String typeDists;
     private String transType;
     private long startTime = System.currentTimeMillis();
+
+    private long transDataCacheSize;
 }

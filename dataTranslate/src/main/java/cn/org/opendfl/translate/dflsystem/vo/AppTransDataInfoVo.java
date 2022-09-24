@@ -15,11 +15,6 @@ public class AppTransDataInfoVo {
     private long localCacheSize;
 
     /**
-     * 翻译内容redis缓存时间
-     */
-    private int redisCacheMinute;
-
-    /**
      * 翻译内容本地缓存时间
      */
     private int localCacheMinute;
@@ -27,6 +22,10 @@ public class AppTransDataInfoVo {
      * 本地guava缓存最大个数
      */
     private int localCacheMaxCount;
+    /**
+     * 翻译内容redis缓存时间
+     */
+    private int redisCacheMinute;
 
     private int timeValue;
 }

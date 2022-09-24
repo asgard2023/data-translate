@@ -66,13 +66,14 @@ public class DflResourceController extends BaseController {
             pageInfo.setPageSize(getPageSize());
         }
         pageInfo = dflResourceBiz.findPageBy(entity, pageInfo, this.createAllParams(request));
+        pageInfo.setDicts(TranslateUtil.dictMap(DflResourcePo.class));
         TranslateUtil.transformLangsByTrnasType(request, pageInfo.getList());
         return pageInfo;
     }
 
     @ApiOperation(value = "菜单资源管理列表(easyui)", notes = "菜单资源管理列表翻页查询，用于兼容easyui的rows方式")
     @RequestMapping(value = "/list2", method = {RequestMethod.POST, RequestMethod.GET})
-    public PageVO<DflResourcePo> findByPage(HttpServletRequest request, DflResourcePo entity, MyPageInfo<DflResourcePo> pageInfo) {
+    public PageVO<DflResourcePo> findByPage2(HttpServletRequest request, DflResourcePo entity, MyPageInfo<DflResourcePo> pageInfo) {
         logger.debug("-------findByPage-------");
         this.pageSortBy(pageInfo);
         pageInfo = queryPage(request, entity, pageInfo);
@@ -146,8 +147,8 @@ public class DflResourceController extends BaseController {
      *
      * @return String
      */
-    @GetMapping("/view")
-    public ResultData view(int id) {
+    @RequestMapping(value = "view", method = {RequestMethod.POST, RequestMethod.GET})
+    public ResultData view(@RequestParam(name = "id", required = false) Integer id) {
         return ResultData.success(this.dflResourceBiz.getDataById(id));
     }
 

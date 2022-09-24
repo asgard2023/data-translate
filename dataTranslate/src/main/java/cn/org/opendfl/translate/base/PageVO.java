@@ -2,7 +2,7 @@ package cn.org.opendfl.translate.base;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
-import com.github.pagehelper.PageInfo;
+import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 
@@ -12,6 +12,7 @@ import java.util.*;
 
 @JsonInclude(Include.NON_NULL)
 @Slf4j
+@Data
 public class PageVO<T> implements IPageVO<T>, java.io.Serializable {
     public static final int MAX_PAGE_SIZE = 50000;
     /**
@@ -23,6 +24,8 @@ public class PageVO<T> implements IPageVO<T>, java.io.Serializable {
     private int totalPage;
     private int currentPage;
     private Collection<T> datas;
+
+    private Map<String, Object> dicts;
     private String sort;
     private String order;
     protected static final List<String> commParamList = Arrays.asList("sort", "order", "page", "rows", "startDate", "endDate");
@@ -128,7 +131,7 @@ public class PageVO<T> implements IPageVO<T>, java.io.Serializable {
         this.totalPage = this.calcTotalPage();
     }
 
-    public PageVO(PageInfo<T> pageInfo) {
+    public PageVO(MyPageInfo<T> pageInfo) {
         if (pageInfo == null) {
             return;
         }
@@ -136,6 +139,7 @@ public class PageVO<T> implements IPageVO<T>, java.io.Serializable {
         Long total = pageInfo.getTotal();
         this.totalSize = total.intValue();
         this.currentPage = pageInfo.getPageNum();
+        this.dicts = pageInfo.getDicts();
     }
 
     public int getTotal() {
@@ -144,6 +148,14 @@ public class PageVO<T> implements IPageVO<T>, java.io.Serializable {
 
     public int getPageSize() {
         return this.pageSize;
+    }
+
+    public Map<String, Object> getDicts() {
+        return dicts;
+    }
+
+    public void setDicts(Map<String, Object> dicts) {
+        this.dicts = dicts;
     }
 
     public String getParameter(String paramName) {

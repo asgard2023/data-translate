@@ -29,9 +29,9 @@
         </div>
         <div class="fitem">
             <div class="layui-form-item">
-                <label class="layui-form-label">nameCht:</label>
+                <label class="layui-form-label">nameTw:</label>
                 <div class="layui-input-block">
-                    <input name="nameCht" class="layui-input" lay-verify="required">
+                    <input name="nameTw" class="layui-input" lay-verify="required">
                 </div>
             </div>
         </div>
@@ -135,12 +135,13 @@
         var form = layui.form;
         $ = layui.$;
         var id = getQueryString('id');
+        transFields=getQueryString('transFields');
 
         selectOptions(layui, dict_status, 'status');
         form.render('select');
 
         if (id) {
-            $.post("/dflResource/view", {id: id}, function (data) {
+            $.get("/dflResource/view", {id: id}, function (data) {
                 if (data.success) {
                     trans_loadSuccessId(data.data, transTypeCode);
                     form.val('fm', data.data);

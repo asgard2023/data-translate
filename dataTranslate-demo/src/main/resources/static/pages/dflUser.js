@@ -1,7 +1,5 @@
 var rowIds = '';
 var transTypeCode = 'DflUserPo';
-//定义支持国际化的属性
-transFields = 'nickname,descs';
 
 $(function() {
     var transTypeDistsParam=getQueryString('transTypeDists');
@@ -17,9 +15,6 @@ $(function() {
 	var transFieldParam=getQueryString('transFields');
 	if(transFieldParam){
 		transFields = transFieldParam;
-	}
-	else{
-		trans_getTransFields(transTypeCode);
 	}
 	var beforeDay=100;
 	initStartEndTime(beforeDay);
@@ -100,6 +95,7 @@ function pageInit() {
 			page: "pageNum",    // json中代表当前页码的数据
 			total: "pages",    // json中代表页码总数的数据
 			records: "total", // json中代表数据行总数的数据
+			dicts: 'dicts'
 		 },
 		autowidth:true,
 		shrinkToFit:true,
@@ -110,7 +106,12 @@ function pageInit() {
 		hidegrid: false,
 		loadComplete: function (r){
             var list=r.list;
-			trans_jqGridCells('table_list_1', list, transTypeCode);
+			var dicts=r.dicts;
+			var typeInfo;
+			if(dicts){
+				typeInfo=dicts.typeInfo;
+			}
+			trans_jqGridCells('table_list_1', list, transTypeCode, typeInfo);
 		},
 		onSortCol: function(name, index) {
 		  //alert("Column Name: " + name + " Column Index: " + index);

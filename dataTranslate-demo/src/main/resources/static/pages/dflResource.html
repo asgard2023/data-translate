@@ -90,16 +90,12 @@
 <script>
     var rowIds = '';
     var transTypeCode = 'DflResourcePo';
-    //定义支持国际化的属性
-    transFields = 'name';
     var $;
     function doneFn(res, curr, count){
 
     }
     function doSearch(form, table){
         trans_getTypeDists();
-        //自动获取对象的翻译属性，以覆盖transFields
-        trans_getTransFields(transTypeCode);
         var jsonParam = form.val('searchForm');
         jsonParam.transTypeDist=transTypeDist;
         table.reload('dataList', {url:'/dflResource/list3',
@@ -108,7 +104,11 @@
     }
     function parseDataFn(res){
         console.log('parseDataFn');
-        trans_loadSuccessIds(res.data, transTypeCode);
+        var typeInfo;
+        if(res.dicts && res.dicts.typeInfo){
+            typeInfo=res.dicts.typeInfo;
+        }
+        trans_loadSuccessIds(res.data, transTypeCode, typeInfo);
     }
     layui.use(['form', 'table', 'laydate'], function () {
         $ = layui.$;
@@ -152,7 +152,7 @@
                 title: '编辑',
                 shadeClose: true,
                 maxmin: true,
-                content: 'dflResourceEdit.html?id=' + obj.data.id
+                content: 'dflResourceEdit.html?id=' + obj.data.id+'&transFields='+transFields
             });
         }
 

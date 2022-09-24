@@ -70,7 +70,12 @@ function uppercaseFirst(str) {
  * @param rows
  * @param transTypeCode
  */
-function trans_loadSuccessIds(rows, transTypeCode) {
+function trans_loadSuccessIds(rows, transTypeCode, typeInfo) {
+    //transFields以url参数为优先
+    var transFieldParam=getQueryString('transFields');
+    if(!transFieldParam && typeInfo && typeInfo.transFields){
+        transFields=typeInfo.transFields.join(',');
+    }
     console.log('-----loadSuccessIds--transTypeCode='+transTypeCode);
     rowIds = '';
     var obj;
@@ -113,7 +118,12 @@ function trans_extDataFields(obj, transFields) {
  * @param rows
  * @param transTypeCode
  */
-function trans_jqGridCells(jqId, rows, transTypeCode) {
+function trans_jqGridCells(jqId, rows, transTypeCode, typeInfo) {
+    //transFields以url参数为优先
+    var transFieldParam=getQueryString('transFields');
+    if(!transFieldParam && typeInfo && typeInfo.transFields){
+        transFields=typeInfo.transFields.join(',');
+    }
     console.log('-----jqGridCells--');
     rowIds = '';
     var obj;

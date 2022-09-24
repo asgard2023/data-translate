@@ -1,6 +1,7 @@
 package cn.org.opendfl.translate.dflsystem.translate;
 
 
+import cn.hutool.core.map.MapUtil;
 import cn.hutool.core.util.ReflectUtil;
 import cn.org.opendfl.translate.base.RequestUtils;
 import cn.org.opendfl.translate.dflsystem.biz.ITrTransTypeBiz;
@@ -318,6 +319,16 @@ public class TranslateUtil {
                 TranslateUtil.transform(uri, lang, list, false);
             }
         }
+    }
+
+    /**
+     * 用于向前端返回transFields
+     *
+     * @param clazz
+     * @return
+     */
+    public static Map<String, Object> dictMap(Class<?> clazz) {
+        return MapUtil.of("typeInfo", getTranslateType(clazz));
     }
 
 }

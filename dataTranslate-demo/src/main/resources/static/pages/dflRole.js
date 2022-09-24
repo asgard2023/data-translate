@@ -7,16 +7,12 @@ $('#reset-btn').click(function () {
 
 var rowIds = '';
 var transTypeCode = 'DflRolePo';
-//定义支持国际化的属性
-transFields = 'name';
 $(function () {
     // doSearch();
 });
 
 function dataLoader(param, success, error) {
     trans_getTypeDists();
-    //自动获取对象的翻译属性，以覆盖transFields
-    trans_getTransFields(transTypeCode);
     var url = "/dflRole/list2";
     if (transTypeDist) {
         url += '?transTypeDist=' + transTypeDist;
@@ -27,7 +23,11 @@ function dataLoader(param, success, error) {
         method: 'get',
         dataType: "json",
         success: function (data) {
-            trans_loadSuccessIds(data.rows, transTypeCode);
+            var typeInfo;
+            if(data.dicts && data.dicts.typeInfo){
+                typeInfo=data.dicts.typeInfo;
+            }
+            trans_loadSuccessIds(data.rows, transTypeCode, typeInfo);
             success(data);
         },
         error: function (e) {

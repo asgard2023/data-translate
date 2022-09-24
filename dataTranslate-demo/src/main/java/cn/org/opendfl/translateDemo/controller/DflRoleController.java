@@ -69,13 +69,14 @@ public class DflRoleController extends BaseController {
             pageInfo.setPageSize(getPageSize());
         }
         pageInfo = dflRoleBiz.findPageBy(entity, pageInfo, this.createAllParams(request));
+        pageInfo.setDicts(TranslateUtil.dictMap(DflRolePo.class));
         TranslateUtil.transformLangsByTrnasType(request, pageInfo.getList());
         return pageInfo;
     }
 
     @ApiOperation(value = "角色列表(easyui)", notes = "角色列表翻页查询，用于兼容easyui的rows方式")
     @RequestMapping(value = "/list2", method = {RequestMethod.POST, RequestMethod.GET})
-    public PageVO<DflRolePo> findByPage(HttpServletRequest request, DflRolePo entity, MyPageInfo<DflRolePo> pageInfo) {
+    public PageVO<DflRolePo> findByPage2(HttpServletRequest request, DflRolePo entity, MyPageInfo<DflRolePo> pageInfo) {
         logger.debug("-------findByPage-------");
         this.pageSortBy(pageInfo);
         pageInfo = queryPage(request, entity, pageInfo);

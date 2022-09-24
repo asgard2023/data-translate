@@ -69,13 +69,14 @@ public class DflUserController extends BaseController {
             pageInfo.setPageSize(getPageSize());
         }
         pageInfo = dflUserBiz.findPageBy(entity, pageInfo, this.createAllParams(request));
+        pageInfo.setDicts(TranslateUtil.dictMap(DflUserPo.class));
         TranslateUtil.transformLangsByTrnasType(request, pageInfo.getList());
         return pageInfo;
     }
 
     @ApiOperation(value = "dfl_user列表(easyui)", notes = "dfl_user列表翻页查询，用于兼容easyui的rows方式")
     @RequestMapping(value = "/list2", method = {RequestMethod.POST, RequestMethod.GET})
-    public PageVO<DflUserPo> findByPage(HttpServletRequest request, DflUserPo entity, MyPageInfo<DflUserPo> pageInfo) {
+    public PageVO<DflUserPo> findByPage2(HttpServletRequest request, DflUserPo entity, MyPageInfo<DflUserPo> pageInfo) {
         logger.debug("-------findByPage-------");
         this.pageSortBy(pageInfo);
         pageInfo = queryPage(request, entity, pageInfo);

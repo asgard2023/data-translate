@@ -47,7 +47,7 @@ public class TrTransTypeBiz extends BaseService<TrTransTypePo> implements ITrTra
 
     public String getTypeCode(Integer id) {
         String redisKey = "transTypeCode:" + id;
-        String code = redisTemplateString.opsForValue().get("transTypeCode:" + id);
+        String code = redisTemplateString.opsForValue().get(redisKey);
         if (code == null) {
             TrTransTypePo trTransTypePo = this.getDataById(id);
             if (trTransTypePo != null) {

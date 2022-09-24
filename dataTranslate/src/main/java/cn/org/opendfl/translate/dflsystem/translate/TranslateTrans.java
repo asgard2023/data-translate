@@ -51,16 +51,17 @@ public class TranslateTrans {
         return dataIdFieldMap.size();
     }
 
-    private static final Cache<String, Map<String, String>> dataIdFieldMap = CacheBuilder.newBuilder().expireAfterWrite(1, TimeUnit.MINUTES)
-            .maximumSize(3000).build();
-
+    public static final int TRANS_DATA_LOCAL_CACHE_MINUTE = 1;
+    public static final int TRANS_DATA_LOCAL_CACHE_MAX = 3000;
+    private static final Cache<String, Map<String, String>> dataIdFieldMap = CacheBuilder.newBuilder().expireAfterWrite(TRANS_DATA_LOCAL_CACHE_MINUTE, TimeUnit.MINUTES)
+            .maximumSize(TRANS_DATA_LOCAL_CACHE_MAX).build();
 
     /**
      * 翻译数据redis缓存时间20分钟
      * exp: 5,10,20,30,60，可以10分钟，20分1趾，30分钟的缓存
      */
-    public static final int REDIS_KEY_TRANS_DATA_EXPIRE_MINUTE = 20;
-    public static final Cache<String, Long> redisKeyMap = CacheBuilder.newBuilder().expireAfterWrite(REDIS_KEY_TRANS_DATA_EXPIRE_MINUTE, TimeUnit.MINUTES)
+    public static final int TRANS_DATA_REDIS_CACHE_MINUTE = 20;
+    public static final Cache<String, Long> redisKeyMap = CacheBuilder.newBuilder().expireAfterWrite(TRANS_DATA_REDIS_CACHE_MINUTE, TimeUnit.MINUTES)
             .maximumSize(300).build();
 
     public static final int TIME_MINUTE_IN_MILLIS = 60000;
@@ -75,7 +76,7 @@ public class TranslateTrans {
     public static int getTimeValue(long curTime) {
         //算出每小时的分钟数对应的10分钟数，以便于使redisKey按20分钟缓存一份
         Long timeMinute = curTime / TIME_MINUTE_IN_MILLIS % 60;
-        return timeMinute.intValue() % 60 / REDIS_KEY_TRANS_DATA_EXPIRE_MINUTE;
+        return timeMinute.intValue() % 60 / TRANS_DATA_REDIS_CACHE_MINUTE;
     }
 
 
@@ -130,7 +131,7 @@ public class TranslateTrans {
 
         if (MapUtils.isNotEmpty(idContentMap)) {
             redisTemplateString.opsForHash().putAll(redisKeyField, idContentMap);
-            expireTimeHashCache(redisKeyField, REDIS_KEY_TRANS_DATA_EXPIRE_MINUTE);
+            expireTimeHashCache(redisKeyField, TRANS_DATA_REDIS_CACHE_MINUTE);
         }
     }
 

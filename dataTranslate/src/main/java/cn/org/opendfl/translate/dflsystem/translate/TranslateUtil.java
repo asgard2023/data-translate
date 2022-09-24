@@ -122,7 +122,6 @@ public class TranslateUtil {
         String fieldName = null;
         for (int i = 0; i < fields.length; i++) {
             try {
-                fields[i].setAccessible(true);
                 fieldName = fields[i].getName();
                 field = classz.getDeclaredField(fieldName);
                 TranslateField column = field.getAnnotation(TranslateField.class); // 获取指定类型注解

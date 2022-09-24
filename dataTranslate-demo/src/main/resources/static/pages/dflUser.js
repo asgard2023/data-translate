@@ -1,7 +1,7 @@
 var rowIds = '';
 var transTypeCode = 'DflUserPo';
 //定义支持国际化的属性
-transFields = 'nickname';
+transFields = 'nickname,descs';
 
 $(function() {
     var transTypeDistsParam=getQueryString('transTypeDists');

@@ -169,7 +169,8 @@ public class TrTransDataBiz extends BaseService<TrTransDataPo> implements ITrTra
         }
         int v = this.updateByPrimaryKeySelective(entity);
         String transTypeCode = trTransTypeBiz.getTypeCode(entity.getTransTypeId());
-        TranslateTrans.evictDataIdFieldCache(transTypeCode, exist.getCode(), exist.getLang(), entity.getId());
+        Object dataId = entity.getDataNid() == null ? entity.getDataNid() : entity.getDataSid();
+        TranslateTrans.evictDataIdFieldCache(transTypeCode, exist.getCode(), exist.getLang(), dataId);
         return v;
 
     }

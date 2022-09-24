@@ -21,7 +21,6 @@ import org.springframework.stereotype.Component;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
@@ -195,7 +194,7 @@ public class TranslateUtil {
      * @param isTransField 是否翻译后修改属性值
      * @author chenjh
      */
-    public static void transform(final String source,final String langParam,final List<?> list, final boolean isTransField) {
+    public static void transform(final String source, final String langParam, final List<?> list, final boolean isTransField) {
         if (StringUtils.isEmpty(langParam) || CollectionUtils.isEmpty(list)) {
             return;
         }
@@ -249,8 +248,7 @@ public class TranslateUtil {
         log.debug("----transform--lang={} clazzName={} fields={} count={}", lang, className, fields, count);
     }
 
-    private static void transUnexistField(String lang, boolean isTransField, IdInfoVo idInfoVo, Object id, Map<String, String> fieldMap, Object obj)
-            throws IllegalAccessException, InvocationTargetException, NoSuchMethodException {
+    private static void transUnexistField(String lang, boolean isTransField, IdInfoVo idInfoVo, Object id, Map<String, String> fieldMap, Object obj) {
         Long dataNid = null;
         String dataSid = null;
         if (idInfoVo.getIdType() == IdType.STRING.getType()) {

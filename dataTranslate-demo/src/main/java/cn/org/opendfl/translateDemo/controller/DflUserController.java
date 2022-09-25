@@ -69,7 +69,9 @@ public class DflUserController extends BaseController {
             pageInfo.setPageSize(getPageSize());
         }
         pageInfo = dflUserBiz.findPageBy(entity, pageInfo, this.createAllParams(request));
+        //用于返回typeInfo(主要是翻译的属性名transFields)
         pageInfo.setDicts(TranslateUtil.dictMap(DflUserPo.class));
+        //启动内容未翻译自动翻译
         TranslateUtil.transformLangsByTrnasType(request, pageInfo.getList());
         return pageInfo;
     }

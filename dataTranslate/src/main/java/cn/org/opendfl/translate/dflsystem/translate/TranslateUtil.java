@@ -23,7 +23,9 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.Field;
 import java.util.*;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.Executor;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
@@ -44,6 +46,8 @@ public class TranslateUtil {
 
     private static ITranslateBiz translateBiz;
 
+    private static Executor asyncExecutor;
+
 
     private static Cache<String, IdInfoVo> classTransTypes = CacheBuilder.newBuilder().expireAfterWrite(24, TimeUnit.HOURS)
             .maximumSize(1000).build();
@@ -57,6 +61,11 @@ public class TranslateUtil {
     @Resource
     public void setTranslateBiz(ITranslateBiz translateBiz) {
         TranslateUtil.translateBiz = translateBiz;
+    }
+
+    @Resource
+    public void setAsyncExecutor(Executor asyncExecutor) {
+        TranslateUtil.asyncExecutor = asyncExecutor;
     }
 
     private static Map<String, TransCountVo> transCounterMap = new ConcurrentHashMap<>();
@@ -205,71 +214,124 @@ public class TranslateUtil {
             return;//默认中文不用翻译
         }
         final Class<?> z = list.get(0).getClass();
-        final String className = z.getSimpleName();
         IdInfoVo idInfoVo = getTranslateType(z);
         if (idInfoVo == null) {
             return;
         }
         final List<String> fields = idInfoVo.getTransFields();
         if (CollectionUtils.isEmpty(fields)) {
-            log.warn("----transform--source={} className={} transFields empty", source, className);
+            log.warn("----transform--source={} className={} transFields empty", source, idInfoVo.getCode());
             return;
         }
 
 
-        List<Object> idList = getListIds(list, idInfoVo);
+        final List<Object> idList = getListIds(list, idInfoVo);
         if (CollectionUtils.isEmpty(idList)) {
             log.warn("----transform--source={} idList empty", source);
             return;
         }
 
-        List<String> idLangList = idList.stream().map(id -> id + "_" + lang).collect(Collectors.toList());
-        Map<String, Map<String, String>> dataIdFieldMap = TranslateTrans.getDataIdFieldMap(idInfoVo, lang, idList, idLangList);
+        final List<String> idLangList = idList.stream().map(id -> id + "_" + lang).collect(Collectors.toList());
+        final Map<String, Map<String, String>> dataIdFieldMap = TranslateTrans.getDataIdFieldMap(idInfoVo, lang, idList, idLangList);
 
-        int count = 0;
-        String errorMsg = null;
-        Map<String, String> fieldMap = null;
+        List<TransFieldVo> transFieldList = new ArrayList<>(list.size());
         for (int i = 0; i < list.size(); i++) {
             Object obj = list.get(i);
             Object id = idList.get(i);
             String key = id + "_" + lang;
-            fieldMap = dataIdFieldMap.computeIfAbsent(key, k -> new HashMap<>());
-
-            try {
-                transUnexistField(lang, isTransField, idInfoVo, id, fieldMap, obj);
-                count++;
-            } catch (Exception e) {
-                errorMsg = lang + " " + e.getMessage();
-                log.warn("----transform--lang={} className={} field={} id={} error={}", lang, className, id, e.getMessage());
-                break;
-            }
+            Map<String, String> fieldMap = dataIdFieldMap.computeIfAbsent(key, k -> new HashMap<>());
+            List<TransFieldVo> transFieldVos = needTransField(idInfoVo, id, fieldMap, obj);
+            transFieldList.addAll(transFieldVos);
         }
-        logCounter(source, lang, idInfoVo, errorMsg);
-        log.debug("----transform--lang={} clazzName={} fields={} count={}", lang, className, fields, count);
+
+        TransErrorVo transErrorVo = translateFieldContentAsync(isTransField, lang, idInfoVo, dataIdFieldMap, transFieldList);
+        logCounter(source, lang, idInfoVo, transErrorVo.getErrorMsg());
+        log.debug("----transform--lang={} clazzName={} fields={}", lang, idInfoVo.getCode(), fields);
     }
 
-    private static void transUnexistField(String lang, boolean isTransField, IdInfoVo idInfoVo, Object id, Map<String, String> fieldMap, Object obj) {
-        Long dataNid = null;
-        String dataSid = null;
-        if (idInfoVo.getIdType() == IdType.STRING.getType()) {
-            dataSid = (String) id;
-        } else {
-            dataNid = CommUtils.getLong(id);
-        }
+    /**
+     * 找出要进行翻译的数据
+     *
+     * @param idInfoVo
+     * @param id
+     * @param fieldMap
+     * @param obj
+     * @return
+     */
+    private static List<TransFieldVo> needTransField(IdInfoVo idInfoVo, Object id, Map<String, String> fieldMap, Object obj) {
+        List<TransFieldVo> needTransFieldList = new ArrayList<>();
+        TransFieldVo transFieldVo = null;
         for (String field : idInfoVo.getTransFields()) {
             String content = fieldMap.get(field);
             if (StringUtils.isBlank(content)) {
                 String value = (String) ReflectUtil.getFieldValue(obj, field);
                 if (StringUtils.isNotBlank(value)) {
-                    content = translateBiz.getTransResult(value, lang);
-                    fieldMap.put(field, content);
-                    if (StringUtils.isNotBlank(content)) {
-                        TranslateTrans.autoSaveTransResult(idInfoVo.getTransTypeId(), dataNid, dataSid, field, lang, content);
-                    }
+                    transFieldVo = new TransFieldVo(obj, id, field, value, null);
+                    needTransFieldList.add(transFieldVo);
                 }
             }
+        }
+        return needTransFieldList;
+    }
+
+    /**
+     * 异步并发翻译属内容
+     *
+     * @param isTransField   是否替换属性
+     * @param lang           要翻译的语言
+     * @param idInfoVo       数据类型
+     * @param dataIdFieldMap 数据ID对应的属性map
+     * @param transFieldList 要翻译的属性list
+     * @return 返回一个异常信息
+     */
+    private static TransErrorVo translateFieldContentAsync(boolean isTransField, String lang, IdInfoVo idInfoVo, Map<String, Map<String, String>> dataIdFieldMap, List<TransFieldVo> transFieldList) {
+        final TransErrorVo transErrorVo = new TransErrorVo();
+        CompletableFuture[] futureArray = transFieldList.stream()
+                .map(data -> CompletableFuture
+                        .runAsync(() -> {
+                            try {
+                                String key = data.getId() + "_" + lang;
+                                Map<String, String> fieldMap = dataIdFieldMap.computeIfAbsent(key, k -> new HashMap<>());
+                                transFieldContent(lang, isTransField, idInfoVo, fieldMap, data);
+                            } catch (Exception e) {
+                                log.warn("----transform--lang={} className={} field={} id={} error={}", lang, idInfoVo.getCode(), data.getId(), e.getMessage());
+                                if (transErrorVo.getErrorMsg() == null) {
+                                    transErrorVo.setErrorMsg(lang + ":" + data.getField() + ":" + e.getMessage());
+                                }
+                                transErrorVo.setErrorTime(System.currentTimeMillis());
+                            }
+                        }, asyncExecutor)).toArray(CompletableFuture[]::new);
+        CompletableFuture.allOf(futureArray).join();
+        return transErrorVo;
+    }
+
+    /**
+     * 翻译属性内容
+     *
+     * @param lang         要翻译的语言
+     * @param isTransField 是否替换属性
+     * @param idInfoVo     数据类型
+     * @param fieldMap     fieldMap
+     * @param transFieldVo 翻译属性对象
+     */
+    private static void transFieldContent(String lang, boolean isTransField, IdInfoVo idInfoVo, Map<String, String> fieldMap, TransFieldVo transFieldVo) {
+        Long dataNid = null;
+        String dataSid = null;
+        Object id = transFieldVo.getId();
+        if (idInfoVo.getIdType() == IdType.STRING.getType()) {
+            dataSid = (String) id;
+        } else {
+            dataNid = CommUtils.getLong(id);
+        }
+
+
+        String field = transFieldVo.getField();
+        String content = translateBiz.getTransResult(transFieldVo.getValue(), lang);
+        if (StringUtils.isNotBlank(content)) {
+            fieldMap.put(field, content);
+            TranslateTrans.autoSaveTransResult(idInfoVo.getTransTypeId(), dataNid, dataSid, field, lang, content);
             if (isTransField) {
-                ReflectUtil.setFieldValue(obj, field, content);
+                ReflectUtil.setFieldValue(transFieldVo.getObj(), field, content);
             }
         }
     }

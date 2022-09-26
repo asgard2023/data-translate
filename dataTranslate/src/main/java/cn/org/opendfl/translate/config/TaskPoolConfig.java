@@ -1,5 +1,6 @@
 package cn.org.opendfl.translate.config;
 
+import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -7,9 +8,10 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
 import java.util.concurrent.Executor;
 
+@Data
 @Configuration
-@ConfigurationProperties(prefix = "async.pool")
-public class ExecutorConfig {
+@ConfigurationProperties(prefix = "task-pool")
+public class TaskPoolConfig {
     /**
      * Set the ThreadPoolExecutor's core pool size.
      */

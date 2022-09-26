@@ -10,6 +10,12 @@ translate:
 #  transType: google
 #  securityKey: xxxx
 
+#异步线程池
+task-pool:
+  corePoolSize: 5
+  maxPoolSize: 10
+  queueCapacity: 50
+  threadNamePrefix: async-
 
 spring:
   redis:

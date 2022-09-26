@@ -10,8 +10,8 @@ translate:
 #  securityKey: xxxx
 
 #异步线程池
-async:
-  corePoolSize: 10
+task-pool:
+  corePoolSize: 5
   maxPoolSize: 10
   queueCapacity: 50
   threadNamePrefix: async-

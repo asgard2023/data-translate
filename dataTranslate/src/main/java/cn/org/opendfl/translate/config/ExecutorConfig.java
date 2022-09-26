@@ -17,7 +17,7 @@ public class ExecutorConfig {
     /**
      * Set the ThreadPoolExecutor's maximum pool size.
      */
-    private int maxPoolSize = 200;
+    private int maxPoolSize = 10;
     /**
      * Set the capacity for the ThreadPoolExecutor's BlockingQueue.
      */

@@ -2,6 +2,8 @@ package cn.org.opendfl.translate.dflsystem.controller;
 
 import cn.org.opendfl.translate.base.RequestUtils;
 import cn.org.opendfl.translate.config.DataTranslateConfiguration;
+import cn.org.opendfl.translate.config.TaskPoolConfig;
+import cn.org.opendfl.translate.config.vo.TaskPoolVo;
 import cn.org.opendfl.translate.dflsystem.translate.TranslateTrans;
 import cn.org.opendfl.translate.dflsystem.vo.AppInfoVo;
 import cn.org.opendfl.translate.dflsystem.vo.AppTransDataInfoVo;
@@ -28,6 +30,9 @@ import javax.servlet.http.HttpServletRequest;
 public class TransInfoController {
     @Resource
     private DataTranslateConfiguration dataTranslateConfiguration;
+
+    @Resource
+    private TaskPoolConfig taskPoolConfig;
     private static final long startTime = System.currentTimeMillis();
 
     @ApiOperation(value = "baseInfo", notes = "baseInfo")
@@ -42,6 +47,9 @@ public class TransInfoController {
         appInfoVo.setTransType(dataTranslateConfiguration.getTransType());
         appInfoVo.setTypeDists(dataTranslateConfiguration.getTypeDists());
         appInfoVo.setDefaultLang(dataTranslateConfiguration.getDefaultLang());
+
+        appInfoVo.setTaskPool(new TaskPoolVo(taskPoolConfig));
+
         AppTransDataInfoVo transDataInfoVo = new AppTransDataInfoVo();
         appInfoVo.setTransData(transDataInfoVo);
         transDataInfoVo.setLocalCacheSize(TranslateTrans.getTransDataCacheSize());

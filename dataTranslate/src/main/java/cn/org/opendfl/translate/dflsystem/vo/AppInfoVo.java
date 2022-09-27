@@ -1,5 +1,6 @@
 package cn.org.opendfl.translate.dflsystem.vo;
 
+import cn.org.opendfl.translate.config.vo.TaskPoolVo;
 import lombok.Data;
 
 /**
@@ -35,5 +36,7 @@ public class AppInfoVo {
     private long systemTime;
 
     private AppTransDataInfoVo transData;
+
+    private TaskPoolVo taskPool;
 
 }

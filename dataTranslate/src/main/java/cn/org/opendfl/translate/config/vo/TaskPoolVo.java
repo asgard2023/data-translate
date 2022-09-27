@@ -9,10 +9,10 @@ public class TaskPoolVo {
 
     }
     public TaskPoolVo(TaskPoolConfig taskPoolConfig){
-        this.corePoolSize=corePoolSize;
-        this.maxPoolSize=maxPoolSize;
-        this.queueCapacity=queueCapacity;
-        this.threadNamePrefix=threadNamePrefix;
+        this.corePoolSize=taskPoolConfig.getCorePoolSize();
+        this.maxPoolSize=taskPoolConfig.getMaxPoolSize();
+        this.queueCapacity=taskPoolConfig.getQueueCapacity();
+        this.threadNamePrefix=taskPoolConfig.getThreadNamePrefix();
     }
 
     private int corePoolSize = 10;

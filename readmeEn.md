@@ -11,6 +11,7 @@ springboot, springmvc data translation tool, supports the function of enabling d
 * Support initial translation with translation api and save to database.
 * It is supported to modify the translation results, and the modified results shall prevail.
 * It is recommended to use numbers as id
+* Support for multi-threaded concurrent translation of content (may be limited by vendor API frequency)
 
 ## Relevant information
 * Baidu translation api https://fanyi-api.baidu.com/doc/21
@@ -27,7 +28,7 @@ http://localhost:8080/doc.html
 <dependency>
     <groupId>cn.org.opendfl</groupId>
     <artifactId>data-translate</artifactId>
-    <version>1.2</version>
+    <version>1.4</version>
 </dependency>
 ```
 * 2, in the PO class to be translated, add @TranslateType, @TranslateField to get started quickly

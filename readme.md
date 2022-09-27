@@ -11,7 +11,7 @@ springboot,springmvc数据翻译工具，即支持通过注解开启数据翻译
 * 支持用翻译api进行初始翻译，并保存到数据库。
 * 支持对翻译结果进行修改，并以修改后的结果为准。
 * 建议使用数字做id
-* 支持异步并发翻译(可能会受api的频率限制)
+* 支持多线程并发翻译内容(可能会受供应商api的频率限制)
 
 ## 相关资料
 * 百度翻译api https://fanyi-api.baidu.com/doc/21
@@ -28,7 +28,7 @@ http://localhost:8080/doc.html
 <dependency>
     <groupId>cn.org.opendfl</groupId>
     <artifactId>data-translate</artifactId>
-    <version>1.2</version>
+    <version>1.4</version>
 </dependency>
 ```
 * 2,在要翻译的PO类，加上@TranslateType，@TranslateField快速上手

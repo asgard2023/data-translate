@@ -241,7 +241,9 @@ public class TranslateUtil {
             String key = id + "_" + lang;
             Map<String, String> fieldMap = dataIdFieldMap.computeIfAbsent(key, k -> new HashMap<>());
             List<TransFieldVo> transFieldVos = needTransField(idInfoVo, id, fieldMap, obj);
-            transFieldList.addAll(transFieldVos);
+            if (CollectionUtils.isNotEmpty(transFieldVos)) {
+                transFieldList.addAll(transFieldVos);
+            }
         }
 
         TransErrorVo transErrorVo = translateFieldContentAsync(isTransField, lang, idInfoVo, dataIdFieldMap, transFieldList);
@@ -286,6 +288,9 @@ public class TranslateUtil {
      */
     private static TransErrorVo translateFieldContentAsync(boolean isTransField, String lang, IdInfoVo idInfoVo, Map<String, Map<String, String>> dataIdFieldMap, List<TransFieldVo> transFieldList) {
         final TransErrorVo transErrorVo = new TransErrorVo();
+        if (CollectionUtils.isEmpty(transFieldList)) {
+            return transErrorVo;
+        }
         CompletableFuture[] futureArray = transFieldList.stream()
                 .map(data -> CompletableFuture
                         .runAsync(() -> {
@@ -296,9 +301,8 @@ public class TranslateUtil {
                             } catch (Exception e) {
                                 log.warn("----transform--lang={} className={} field={} id={} error={}", lang, idInfoVo.getCode(), data.getId(), e.getMessage());
                                 if (transErrorVo.getErrorMsg() == null) {
-                                    transErrorVo.setErrorMsg(lang + ":" + data.getField() + ":" + e.getMessage());
+                                    transErrorVo.setErrorMsg(lang + ":" + data.getField() + ":" + data.getId() + ":" + e.getMessage());
                                 }
-                                transErrorVo.setErrorTime(System.currentTimeMillis());
                             }
                         }, asyncExecutor)).toArray(CompletableFuture[]::new);
         CompletableFuture.allOf(futureArray).join();

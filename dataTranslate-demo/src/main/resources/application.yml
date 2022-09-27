@@ -3,7 +3,7 @@ translate:
   typeDists: en,ja,tw
   transType: baidu
   appid: 20220905001332382
-  securityKey: 1IsDra4XKFRYI2D5BlY9
+  securityKey: xxxx
   apiUrl: https://fanyi-api.baidu.com/api/trans/vip/translate
 
 #  transType: google

@@ -1,10 +1,12 @@
 package cn.org.opendfl.translate.dflsystem.translate;
 
+import cn.hutool.core.map.MapUtil;
 import cn.org.opendfl.translate.dflsystem.biz.ITrTransDataBiz;
 import cn.org.opendfl.translate.dflsystem.po.TrTransDataPo;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.collections4.MapUtils;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
@@ -131,7 +133,8 @@ public class TranslateTrans {
 
         if (MapUtils.isNotEmpty(idContentMap)) {
             redisTemplateString.opsForHash().putAll(redisKeyField, idContentMap);
-            expireTimeHashCache(redisKeyField, TRANS_DATA_REDIS_CACHE_MINUTE);
+            //缓存时间*2，以便于能取上次的redis缓存
+            expireTimeHashCache(redisKeyField, TRANS_DATA_REDIS_CACHE_MINUTE * 2);
         }
     }
 
@@ -141,8 +144,8 @@ public class TranslateTrans {
 
     public static void evictDataIdFieldCache(final String transTypeCode, final String field, final String lang, final int timeValue, final List<Object> idList) {
         String redisKey = getRedisKeyField(transTypeCode, field, lang, timeValue);
-        for(Object id: idList) {
-            redisTemplateString.opsForHash().delete(redisKey, ""+id);
+        for (Object id : idList) {
+            redisTemplateString.opsForHash().delete(redisKey, "" + id);
         }
 
     }
@@ -168,6 +171,7 @@ public class TranslateTrans {
     public static void expireTimeHashCache(String redisKey, int minute) {
         if (redisKeyMap.getIfPresent(redisKey) == null) {
             redisKeyMap.put(redisKey, System.currentTimeMillis());
+
             redisTemplateString.expire(redisKey, minute, TimeUnit.MINUTES);
         }
     }
@@ -177,7 +181,8 @@ public class TranslateTrans {
         List<String> fields = idInfoVo.getTransFields();
         Map<String, Map<String, String>> dataIdFieldResultMap = new HashMap<>(idList.size());
         Map<String, Map<String, String>> dataIdFieldDbMap = null;
-        int timeValue = getTimeValue(System.currentTimeMillis());
+        long curTime = System.currentTimeMillis();
+        int timeValue = getTimeValue(curTime);
 
         //支持本地缓存
         Map<String, Map<String, String>> dataIdFieldLocalMap = TranslateTrans.dataIdFieldMap.getAllPresent(idLangList);
@@ -190,8 +195,12 @@ public class TranslateTrans {
             //支持redis缓存
             Map<String, Map<String, String>> dataIdFieldRedisMap = getDataIdFieldCache(idInfoVo, field, lang, unexistIdList, timeValue);
 
-            //查询数据库
+            //支持查上次缓存的redis并同步到当前redis缓存
             unexistIdList = unexistIdList.stream().filter(id -> !dataIdFieldRedisMap.containsKey(id + "_" + lang)).collect(Collectors.toList());
+            Map<String, Map<String, String>> dataIdFieldRedis2Map = copyDataIdFieldLastRedis(idInfoVo, field, lang, curTime, unexistIdList);
+
+            //查询数据库
+            unexistIdList = unexistIdList.stream().filter(id -> !dataIdFieldRedis2Map.containsKey(id + "_" + lang)).collect(Collectors.toList());
             if (idInfoVo.getIdType() == IdType.STRING.getType()) {
                 dataIdFieldDbMap = getBiz().getValueMapCacheByIdStr(idInfoVo.getTransTypeId(), lang, Arrays.asList(field), unexistIdList);
             } else {
@@ -213,9 +222,37 @@ public class TranslateTrans {
                 putDataIdFieldAll(dataIdFieldResultMap, dataIdFieldRedisMap);
                 putDataIdFieldAll(dataIdFieldRedisMap);
             }
+
+            //redis查到后，更新本地缓存
+            if (MapUtils.isNotEmpty(dataIdFieldRedis2Map)) {
+                putDataIdFieldAll(dataIdFieldResultMap, dataIdFieldRedis2Map);
+                putDataIdFieldAll(dataIdFieldRedis2Map);
+            }
         }
 
         return dataIdFieldResultMap;
+    }
+
+    /**
+     * 支持查上次缓存的redis并同步到本次redis缓存
+     *
+     * @param idInfoVo
+     * @param field
+     * @param lang
+     * @param curTime
+     * @param unexistIdList
+     * @return
+     */
+    public static Map<String, Map<String, String>> copyDataIdFieldLastRedis(final IdInfoVo idInfoVo, String field, final String lang, long curTime, List<Object> unexistIdList) {
+        if (CollectionUtils.isEmpty(unexistIdList)) {
+            return MapUtil.empty();
+        }
+        long lastTime = curTime - TRANS_DATA_REDIS_CACHE_MINUTE * TIME_MINUTE_IN_MILLIS;
+        int timeValue = getTimeValue(curTime);
+        int timeValueLast = getTimeValue(lastTime);
+        Map<String, Map<String, String>> dataIdFieldRedisMapLast = getDataIdFieldCache(idInfoVo, field, lang, unexistIdList, timeValueLast);
+        putDataIdFieldCache(idInfoVo, field, lang, timeValue, unexistIdList, dataIdFieldRedisMapLast);
+        return dataIdFieldRedisMapLast;
     }
 
     public static void putDataIdFieldAll(Map<String, Map<String, String>> dataIdFieldDbMap) {

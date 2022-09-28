@@ -203,7 +203,7 @@ public class TrTransDataBiz extends BaseService<TrTransDataPo> implements ITrTra
 
     public Map<String, Map<String, String>> getValueMapCacheByIdStr(final Integer dataTypeId, final String lang, final List<String> fields, final List<Object> idList) {
         if (CollUtil.isEmpty(fields) || CollUtil.isEmpty(idList)) {
-            return new HashMap<>();
+            return MapUtil.empty();
         }
         List<TrTransDataPo> list = findDataTransListByIds(dataTypeId, lang, IdType.STRING, fields, idList);
         int fieldSie = fields.size();

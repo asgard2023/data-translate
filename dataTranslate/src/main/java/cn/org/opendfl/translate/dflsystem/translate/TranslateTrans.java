@@ -183,6 +183,10 @@ public class TranslateTrans {
         }).collect(Collectors.toList());
     }
 
+    public static List<Object> getUnexistFieldListForKey(final List<Object> idList, final String lang, final Map<String, Map<String, String>> dataIdFieldCacheMap) {
+        return   idList.stream().filter(id -> !dataIdFieldCacheMap.containsKey(id + "_" + lang)).collect(Collectors.toList());
+    }
+
 
     public static Map<String, Map<String, String>> getDataIdFieldMap(final IdInfoVo idInfoVo, final String lang, final List<Object> idList, final List<String> idLangList) {
         List<String> fields = idInfoVo.getTransFields();
@@ -200,11 +204,11 @@ public class TranslateTrans {
             Map<String, Map<String, String>> dataIdFieldRedisMap = getDataIdFieldCache(idInfoVo, field, lang, unexistIdList, timeValue);
 
             //支持查上次缓存的redis并同步到当前redis缓存
-            unexistIdList = getUnexistFieldList(unexistIdList, field, lang, dataIdFieldRedisMap);
+            unexistIdList = getUnexistFieldListForKey(unexistIdList, lang, dataIdFieldRedisMap);
             Map<String, Map<String, String>> dataIdFieldRedis2Map = copyDataIdFieldLastRedis(idInfoVo, field, lang, curTime, unexistIdList);
 
             //查询数据库
-            unexistIdList = getUnexistFieldList(unexistIdList, field, lang, dataIdFieldRedis2Map);
+            unexistIdList = getUnexistFieldListForKey(unexistIdList, lang, dataIdFieldRedis2Map);
             if (idInfoVo.getIdType() == IdType.STRING.getType()) {
                 dataIdFieldDbMap = getBiz().getValueMapCacheByIdStr(idInfoVo.getTransTypeId(), lang, Arrays.asList(field), unexistIdList);
             } else {

@@ -3,19 +3,19 @@ package cn.org.opendfl.translate.config;
 
 import cn.org.opendfl.translate.base.MyPageInfo;
 import cn.org.opendfl.translate.base.PageVO;
-import cn.org.opendfl.translate.base.RequestParams;
-import cn.org.opendfl.translate.dflsystem.translate.LangType;
+import cn.org.opendfl.translate.base.RequestUtils;
 import cn.org.opendfl.translate.dflsystem.translate.TranslateUtil;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.catalina.connector.RequestFacade;
 import org.apache.commons.lang3.StringUtils;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
-import org.springframework.aop.aspectj.MethodInvocationProceedingJoinPoint;
 import org.springframework.stereotype.Component;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -37,37 +37,27 @@ public class TranslateAspect {
 
     @AfterReturning(pointcut = "translateCut()", returning = "result")
     public void doAfterReturning(JoinPoint joinPoint, Object result) {
-        MethodInvocationProceedingJoinPoint proceedingJoinPoint = (MethodInvocationProceedingJoinPoint) joinPoint;
-        Object[] args = proceedingJoinPoint.getArgs();
-        String lang = null;
-        String uri = null;
-        String firstStringParam = null;
-        for (Object arg : args) {
-            if (arg instanceof RequestFacade) {
-                RequestFacade request = ((RequestFacade) arg);
-                uri = request.getRequestURI();
-                lang = (request.getParameter(RequestParams.LANG));
-                if (StringUtils.isBlank(lang)) {
-                    lang = request.getHeader(RequestParams.LANG);
-                }
-            } else if (arg instanceof String && LangType.SUPPORT_LANG.indexOf(arg + ",") >= 0) {
-                firstStringParam = (String) arg;
-            }
+        HttpServletRequest request = getRequest();
+        if (request == null) {
+            return;
         }
-
-        if (StringUtils.isBlank(lang)) {
-            lang = firstStringParam;
-        }
-
-        String source = uri;
+        String lang = RequestUtils.getLang(request, null);
+        String source = request.getRequestURI();
         try {
-            if (source == null) {
-                source = joinPoint.getSignature().getName();
+            if (source != null) {
+                translateResultByLang(source, lang, result);
             }
-            translateResultByLang(source, lang, result);
         } catch (Exception e) {
             log.warn("-----translateResultByLang--lang={} uri={} error={}", lang, source, e.getMessage());
         }
+    }
+
+    public HttpServletRequest getRequest() {
+        ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+        if (attributes == null) {
+            return null;
+        }
+        return attributes.getRequest();
     }
 
     /**

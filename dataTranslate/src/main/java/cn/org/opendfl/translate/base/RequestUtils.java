@@ -5,12 +5,22 @@ import cn.org.opendfl.translate.dflsystem.translate.LangCodes;
 import javax.servlet.http.HttpServletRequest;
 
 public class RequestUtils {
+    private RequestUtils() {
+
+    }
 
     public static String getLang(HttpServletRequest request) {
+        return getLang(request, LangCodes.ZH);
+    }
+
+    public static String getLang(HttpServletRequest request, String defaultLang) {
         String lang = request.getHeader(RequestParams.LANG);
         if (lang == null) {
+            lang = request.getParameter(RequestParams.LANG);
+        }
+        if (lang == null) {
             //默认中文
-            return LangCodes.ZH;
+            return defaultLang;
         }
         if (lang.indexOf('-') != -1) {
             //如en-CN

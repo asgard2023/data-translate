@@ -20,7 +20,8 @@ springboot, springmvc data translation tool, supports the function of enabling d
 
 ## Quick Start
 http://localhost:8080/index.html  
-http://localhost:8080/doc.html
+http://localhost:8080/doc.html  
+http://translate-demo.opendfl.org.cn/index.html
 
 ## use
 * 1, import ddependency for maven

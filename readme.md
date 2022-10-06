@@ -20,7 +20,8 @@ springboot,springmvc数据翻译工具，即支持通过注解开启数据翻译
 
 ## Quick Start
 http://localhost:8080/index.html  
-http://localhost:8080/doc.html
+http://localhost:8080/doc.html  
+http://translate-demo.opendfl.org.cn/index.html
 
 ## 使用
 * 1 maven引入依赖包

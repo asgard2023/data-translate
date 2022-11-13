@@ -1,17 +1,17 @@
 package cn.org.opendfl.translate.dflsystem.controller;
 
-import cn.org.opendfl.translate.base.BaseController;
-import cn.org.opendfl.translate.base.MyPageInfo;
-import cn.org.opendfl.translate.base.PageVO;
+import cn.org.opendfl.base.BaseController;
+import cn.org.opendfl.base.MyPageInfo;
+import cn.org.opendfl.base.PageVO;
+import cn.org.opendfl.exception.PermissionDeniedException;
+import cn.org.opendfl.exception.ResultData;
+import cn.org.opendfl.exception.ValidateUtils;
 import cn.org.opendfl.translate.config.DataTranslateConfiguration;
 import cn.org.opendfl.translate.dflsystem.biz.ITrTransTypeBiz;
 import cn.org.opendfl.translate.dflsystem.po.TrTransTypePo;
 import cn.org.opendfl.translate.dflsystem.translate.IdInfoVo;
 import cn.org.opendfl.translate.dflsystem.translate.TranslateUtil;
 import cn.org.opendfl.translate.dflsystem.vo.TransTypeCountVo;
-import cn.org.opendfl.translate.exception.PermissionDeniedException;
-import cn.org.opendfl.translate.exception.ResultData;
-import cn.org.opendfl.translate.exception.ValidateUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang3.StringUtils;

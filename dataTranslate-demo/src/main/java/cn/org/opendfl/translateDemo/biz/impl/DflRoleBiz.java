@@ -1,8 +1,8 @@
 package cn.org.opendfl.translateDemo.biz.impl;
 
-import cn.org.opendfl.translate.base.BaseService;
-import cn.org.opendfl.translate.base.BeanUtils;
-import cn.org.opendfl.translate.base.MyPageInfo;
+import cn.org.opendfl.base.BaseService;
+import cn.org.opendfl.base.BeanUtils;
+import cn.org.opendfl.base.MyPageInfo;
 import cn.org.opendfl.translateDemo.biz.IDflRoleBiz;
 import cn.org.opendfl.translateDemo.mapper.DflRoleMapper;
 import cn.org.opendfl.translateDemo.po.DflRolePo;

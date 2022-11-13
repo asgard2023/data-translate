@@ -1,5 +1,7 @@
-package cn.org.opendfl.translate.base;
+package cn.org.opendfl.translate.utils;
 
+
+import cn.org.opendfl.translate.constant.RequestParams;
 import cn.org.opendfl.translate.dflsystem.translate.LangCodes;
 
 import javax.servlet.http.HttpServletRequest;

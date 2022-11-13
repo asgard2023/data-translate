@@ -2,9 +2,9 @@ package cn.org.opendfl.translate.dflsystem.biz.impl;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.map.MapUtil;
-import cn.org.opendfl.translate.base.BaseService;
-import cn.org.opendfl.translate.base.BeanUtils;
-import cn.org.opendfl.translate.base.MyPageInfo;
+import cn.org.opendfl.base.BaseService;
+import cn.org.opendfl.base.BeanUtils;
+import cn.org.opendfl.base.MyPageInfo;
 import cn.org.opendfl.translate.dflsystem.biz.ITrTransDataBiz;
 import cn.org.opendfl.translate.dflsystem.biz.ITrTransTypeBiz;
 import cn.org.opendfl.translate.dflsystem.mapper.TrTransDataMapper;

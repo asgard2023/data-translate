@@ -1,9 +1,9 @@
 package cn.org.opendfl.translate.clients;
 
+import cn.org.opendfl.exception.FailedException;
+import cn.org.opendfl.exception.ParamErrorException;
 import cn.org.opendfl.translate.config.DataTranslateConfiguration;
 import cn.org.opendfl.translate.dflsystem.translate.LangType;
-import cn.org.opendfl.translate.exception.FailedException;
-import cn.org.opendfl.translate.exception.ParamErrorException;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;

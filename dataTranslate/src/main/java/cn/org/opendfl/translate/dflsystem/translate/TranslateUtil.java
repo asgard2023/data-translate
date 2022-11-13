@@ -3,7 +3,6 @@ package cn.org.opendfl.translate.dflsystem.translate;
 
 import cn.hutool.core.map.MapUtil;
 import cn.hutool.core.util.ReflectUtil;
-import cn.org.opendfl.translate.base.RequestUtils;
 import cn.org.opendfl.translate.dflsystem.biz.ITrTransTypeBiz;
 import cn.org.opendfl.translate.dflsystem.biz.ITranslateBiz;
 import cn.org.opendfl.translate.dflsystem.po.TrTransTypePo;
@@ -11,6 +10,7 @@ import cn.org.opendfl.translate.dflsystem.translate.annotation.TranslateField;
 import cn.org.opendfl.translate.dflsystem.translate.annotation.TranslateType;
 import cn.org.opendfl.translate.dflsystem.vo.TransCountVo;
 import cn.org.opendfl.translate.utils.CommUtils;
+import cn.org.opendfl.translate.utils.RequestUtils;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import lombok.extern.slf4j.Slf4j;

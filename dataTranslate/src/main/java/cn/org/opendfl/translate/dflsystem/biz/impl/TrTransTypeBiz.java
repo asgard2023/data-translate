@@ -1,8 +1,8 @@
 package cn.org.opendfl.translate.dflsystem.biz.impl;
 
-import cn.org.opendfl.translate.base.BaseService;
-import cn.org.opendfl.translate.base.BeanUtils;
-import cn.org.opendfl.translate.base.MyPageInfo;
+import cn.org.opendfl.base.BaseService;
+import cn.org.opendfl.base.BeanUtils;
+import cn.org.opendfl.base.MyPageInfo;
 import cn.org.opendfl.translate.dflsystem.biz.ITrTransTypeBiz;
 import cn.org.opendfl.translate.dflsystem.mapper.TrTransTypeMapper;
 import cn.org.opendfl.translate.dflsystem.po.TrTransTypePo;

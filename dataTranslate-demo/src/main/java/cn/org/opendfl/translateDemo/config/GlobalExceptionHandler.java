@@ -2,7 +2,7 @@ package cn.org.opendfl.translateDemo.config;
 
 
 import cn.hutool.extra.servlet.ServletUtil;
-import cn.org.opendfl.translate.exception.*;
+import cn.org.opendfl.exception.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;

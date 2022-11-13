@@ -1,6 +1,6 @@
 package cn.org.opendfl.translate.dflsystem.biz;
 
-import cn.org.opendfl.translate.base.IBaseService;
+import cn.org.opendfl.base.IBaseService;
 import cn.org.opendfl.translate.dflsystem.po.TrTransDataPo;
 import cn.org.opendfl.translate.dflsystem.vo.TransDataCountVo;
 import cn.org.opendfl.translate.dflsystem.vo.TransRepeatVo;

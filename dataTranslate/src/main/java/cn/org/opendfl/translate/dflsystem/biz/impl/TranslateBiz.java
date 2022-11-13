@@ -6,7 +6,7 @@ import cn.org.opendfl.translate.config.DataTranslateConfiguration;
 import cn.org.opendfl.translate.dflsystem.biz.ITranslateBiz;
 import cn.org.opendfl.translate.dflsystem.translate.LangType;
 import cn.org.opendfl.translate.dflsystem.translate.TransType;
-import cn.org.opendfl.translate.exception.FailedException;
+import cn.org.opendfl.exception.FailedException;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;

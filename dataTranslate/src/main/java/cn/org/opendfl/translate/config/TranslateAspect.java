@@ -1,10 +1,10 @@
 package cn.org.opendfl.translate.config;
 
 
-import cn.org.opendfl.translate.base.MyPageInfo;
-import cn.org.opendfl.translate.base.PageVO;
-import cn.org.opendfl.translate.base.RequestUtils;
+import cn.org.opendfl.base.MyPageInfo;
+import cn.org.opendfl.base.PageVO;
 import cn.org.opendfl.translate.dflsystem.translate.TranslateUtil;
+import cn.org.opendfl.translate.utils.RequestUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.aspectj.lang.JoinPoint;

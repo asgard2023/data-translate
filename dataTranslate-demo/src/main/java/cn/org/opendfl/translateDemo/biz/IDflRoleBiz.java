@@ -1,6 +1,6 @@
 package cn.org.opendfl.translateDemo.biz;
 
-import cn.org.opendfl.translate.base.IBaseService;
+import cn.org.opendfl.base.IBaseService;
 import cn.org.opendfl.translateDemo.po.DflRolePo;
 
 import java.util.List;

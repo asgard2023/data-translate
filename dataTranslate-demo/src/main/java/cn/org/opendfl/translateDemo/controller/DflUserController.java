@@ -1,13 +1,13 @@
 package cn.org.opendfl.translateDemo.controller;
 
-import cn.org.opendfl.translate.base.BaseController;
-import cn.org.opendfl.translate.base.MyPageInfo;
-import cn.org.opendfl.translate.base.PageVO;
-import cn.org.opendfl.translate.base.RequestParams;
+import cn.org.opendfl.base.BaseController;
+import cn.org.opendfl.base.MyPageInfo;
+import cn.org.opendfl.base.PageVO;
+import cn.org.opendfl.exception.ResultData;
+import cn.org.opendfl.exception.ValidateUtils;
+import cn.org.opendfl.translate.constant.RequestParams;
 import cn.org.opendfl.translate.dflsystem.translate.TranslateUtil;
 import cn.org.opendfl.translate.dflsystem.translate.annotation.Translate;
-import cn.org.opendfl.translate.exception.ResultData;
-import cn.org.opendfl.translate.exception.ValidateUtils;
 import cn.org.opendfl.translateDemo.biz.IDflUserBiz;
 import cn.org.opendfl.translateDemo.po.DflUserPo;
 import io.swagger.annotations.Api;

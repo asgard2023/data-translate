@@ -8,4 +8,5 @@ public class TransErrorVo {
      * 最新错误信息
      */
     private String errorMsg;
+    private Long errorTime;
 }

@@ -1,12 +1,12 @@
 package cn.org.opendfl.translate.clients;
 
 import cn.hutool.json.JSONUtil;
+import cn.org.opendfl.exception.FailedException;
+import cn.org.opendfl.exception.ParamErrorException;
+import cn.org.opendfl.exception.UnknownException;
 import cn.org.opendfl.translate.clients.vo.BaiduTransVo;
 import cn.org.opendfl.translate.config.DataTranslateConfiguration;
 import cn.org.opendfl.translate.dflsystem.translate.LangType;
-import cn.org.opendfl.translate.exception.FailedException;
-import cn.org.opendfl.translate.exception.ParamErrorException;
-import cn.org.opendfl.translate.exception.UnknownException;
 import cn.org.opendfl.translate.utils.CommUtils;
 import cn.org.opendfl.translate.utils.MD5;
 import cn.org.opendfl.translate.utils.TransApiBaidu;
@@ -116,7 +116,7 @@ public class TranslateBaiduRest {
         BaiduTransVo baiduTransVo = JSONUtil.toBean(body, BaiduTransVo.class);
         if (StringUtils.isNotBlank(baiduTransVo.getError_code()) && !BaiduTransVo.SUCCESS_CODE.equals(baiduTransVo.getError_code())) {
             log.warn("---getTransResult--query={} to={} body={}", query, to, body);
-            throw new FailedException(baiduTransVo.getError_code()+","+body);
+            throw new FailedException(baiduTransVo.getError_code() + "," + body);
         }
         if (CollectionUtils.isNotEmpty(baiduTransVo.getTrans_result())) {
             return baiduTransVo.getTrans_result().get(0).get("dst");

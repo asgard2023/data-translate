@@ -1,12 +1,12 @@
 package cn.org.opendfl.translate.dflsystem.controller;
 
-import cn.org.opendfl.translate.base.RequestUtils;
 import cn.org.opendfl.translate.config.DataTranslateConfiguration;
 import cn.org.opendfl.translate.config.TaskPoolConfig;
 import cn.org.opendfl.translate.config.vo.TaskPoolVo;
 import cn.org.opendfl.translate.dflsystem.translate.TranslateTrans;
 import cn.org.opendfl.translate.dflsystem.vo.AppInfoVo;
 import cn.org.opendfl.translate.dflsystem.vo.AppTransDataInfoVo;
+import cn.org.opendfl.translate.utils.RequestUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;

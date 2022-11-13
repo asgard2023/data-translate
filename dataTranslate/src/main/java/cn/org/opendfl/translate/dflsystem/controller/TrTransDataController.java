@@ -1,17 +1,17 @@
 package cn.org.opendfl.translate.dflsystem.controller;
 
-import cn.org.opendfl.translate.base.BaseController;
-import cn.org.opendfl.translate.base.MyPageInfo;
-import cn.org.opendfl.translate.base.PageVO;
+import cn.org.opendfl.base.BaseController;
+import cn.org.opendfl.base.MyPageInfo;
+import cn.org.opendfl.base.PageVO;
 import cn.org.opendfl.translate.dflsystem.biz.ITrTransDataBiz;
 import cn.org.opendfl.translate.dflsystem.biz.ITrTransTypeBiz;
 import cn.org.opendfl.translate.dflsystem.po.TrTransDataPo;
 import cn.org.opendfl.translate.dflsystem.translate.TransDto;
 import cn.org.opendfl.translate.dflsystem.vo.TransDataCountVo;
 import cn.org.opendfl.translate.dflsystem.vo.TransRepeatVo;
-import cn.org.opendfl.translate.exception.FailedException;
-import cn.org.opendfl.translate.exception.ResultData;
-import cn.org.opendfl.translate.exception.ValidateUtils;
+import cn.org.opendfl.exception.FailedException;
+import cn.org.opendfl.exception.ResultData;
+import cn.org.opendfl.exception.ValidateUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.collections.CollectionUtils;

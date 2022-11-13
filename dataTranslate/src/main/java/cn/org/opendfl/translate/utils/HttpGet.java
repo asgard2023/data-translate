@@ -1,5 +1,7 @@
 package cn.org.opendfl.translate.utils;
 
+import lombok.extern.slf4j.Slf4j;
+
 import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManager;
@@ -15,7 +17,15 @@ import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 import java.util.Map;
 
+/**
+ * @author chenjh
+ */
+@Slf4j
 class HttpGet {
+    private HttpGet() {
+
+    }
+
     protected static final int SOCKET_TIMEOUT = 10000; // 10S
     protected static final String GET = "GET";
 
@@ -27,7 +37,6 @@ class HttpGet {
 
             String sendUrl = getUrlWithQueryString(host, params);
 
-            // System.out.println("URL:" + sendUrl);
 
             URL uri = new URL(sendUrl); // 创建URL对象
             HttpURLConnection conn = (HttpURLConnection) uri.openConnection();
@@ -39,7 +48,7 @@ class HttpGet {
             conn.setRequestMethod(GET);
             int statusCode = conn.getResponseCode();
             if (statusCode != HttpURLConnection.HTTP_OK) {
-                System.out.println("Http错误码：" + statusCode);
+                log.warn("----get--host={} statusCode={}", host, statusCode);
             }
 
             // 读取服务器的数据
@@ -59,13 +68,13 @@ class HttpGet {
 
             return text;
         } catch (MalformedURLException e) {
-            e.printStackTrace();
+            log.error("----get--host={} error.malformed={}", host, e.getMessage(), e);
         } catch (IOException e) {
-            e.printStackTrace();
+            log.error("----get--host={} error.io={}", host, e.getMessage(), e);
         } catch (KeyManagementException e) {
-            e.printStackTrace();
+            log.error("----get--host={} error.keyMg={}", host, e.getMessage(), e);
         } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
+            log.error("----get--host={} error.NoSuchAg={}", host, e.getMessage(), e);
         }
 
         return null;
@@ -84,8 +93,8 @@ class HttpGet {
         }
 
         int i = 0;
-        for (String key : params.keySet()) {
-            String value = params.get(key);
+        for (Map.Entry<String, String> entity : params.entrySet()) {
+            String value = entity.getValue();
             if (value == null) { // 过滤空的key
                 continue;
             }
@@ -94,7 +103,7 @@ class HttpGet {
                 builder.append('&');
             }
 
-            builder.append(key);
+            builder.append(entity.getKey());
             builder.append('=');
             builder.append(encode(value));
 
@@ -109,7 +118,7 @@ class HttpGet {
             try {
                 closeable.close();
             } catch (IOException e) {
-                e.printStackTrace();
+                log.error("----close--error.io={}", e.getMessage(), e);
             }
         }
     }
@@ -128,7 +137,7 @@ class HttpGet {
         try {
             return URLEncoder.encode(input, "utf-8");
         } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
+            log.error("----encode--error.unsupportEncode={}", e.getMessage(), e);
         }
 
         return input;
@@ -143,10 +152,12 @@ class HttpGet {
 
         @Override
         public void checkServerTrusted(X509Certificate[] chain, String authType) throws CertificateException {
+            return;
         }
 
         @Override
         public void checkClientTrusted(X509Certificate[] chain, String authType) throws CertificateException {
+            return;
         }
     };
 

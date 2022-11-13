@@ -20,7 +20,7 @@ public class TransApiBaidu {
     }
 
     private Map<String, String> buildParams(String query, String from, String to) {
-        Map<String, String> params = new HashMap<String, String>();
+        Map<String, String> params = new HashMap<>();
         params.put("q", query);
         params.put("from", from);
         params.put("to", to);

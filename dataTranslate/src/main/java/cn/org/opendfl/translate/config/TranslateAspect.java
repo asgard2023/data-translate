@@ -66,11 +66,11 @@ public class TranslateAspect {
      */
     private static void translateResultByLang(String source, String lang, Object result) {
         if (StringUtils.isNotBlank(lang)) {
-            List list = null;
+            List<Object> list = null;
             if (result instanceof MyPageInfo) {
                 list = ((MyPageInfo) result).getList();
             } else if (result instanceof PageVO) {
-                Collection collection = ((PageVO) result).getRows();
+                Collection<Object> collection = ((PageVO) result).getRows();
                 list = new ArrayList(collection);
             } else if (result instanceof List) {
                 list = (List) result;

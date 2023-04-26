@@ -383,9 +383,9 @@ public class TranslateUtil {
             String[] langs = transTypeDist.split(",");
             List<CompletableFuture<Void>> futures = new ArrayList<>(langs.length);
             for (String lang : langs) {
-                CompletableFuture<Void> future = CompletableFuture.runAsync(() -> {
-                    TranslateUtil.transform(uri, lang, list, false);
-                }, asyncExecutor);
+                CompletableFuture<Void> future = CompletableFuture.runAsync(() ->
+                    TranslateUtil.transform(uri, lang, list, false),
+                 asyncExecutor);
                 futures.add(future);
             }
             CompletableFuture.allOf(futures.toArray(new CompletableFuture[futures.size()])).join();

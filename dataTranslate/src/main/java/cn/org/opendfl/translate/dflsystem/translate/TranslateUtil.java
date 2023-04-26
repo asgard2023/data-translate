@@ -291,7 +291,7 @@ public class TranslateUtil {
         if (CollectionUtils.isEmpty(transFieldList)) {
             return transErrorVo;
         }
-        CompletableFuture[] futureArray = transFieldList.stream()
+        List<CompletableFuture<Void>> futures =transFieldList.stream()
                 .map(data -> CompletableFuture
                         .runAsync(() -> {
                             try {
@@ -304,8 +304,8 @@ public class TranslateUtil {
                                     transErrorVo.setErrorMsg(lang + ":" + data.getField() + ":" + data.getId() + ":" + e.getMessage());
                                 }
                             }
-                        }, asyncExecutor)).toArray(CompletableFuture[]::new);
-        CompletableFuture.allOf(futureArray).join();
+                        }, asyncExecutor)).collect(Collectors.toList());
+        CompletableFuture.allOf(futures.toArray(new CompletableFuture[futures.size()])).join();
         return transErrorVo;
     }
 
@@ -381,9 +381,14 @@ public class TranslateUtil {
         String uri = request.getRequestURI();
         if (StringUtils.isNotBlank(transTypeDist)) {
             String[] langs = transTypeDist.split(",");
+            List<CompletableFuture<Void>> futures = new ArrayList<>(langs.length);
             for (String lang : langs) {
-                TranslateUtil.transform(uri, lang, list, false);
+                CompletableFuture<Void> future = CompletableFuture.runAsync(() -> {
+                    TranslateUtil.transform(uri, lang, list, false);
+                }, asyncExecutor);
+                futures.add(future);
             }
+            CompletableFuture.allOf(futures.toArray(new CompletableFuture[futures.size()])).join();
         }
     }
 

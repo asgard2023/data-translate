@@ -92,7 +92,10 @@
     var transTypeCode = 'DflResourcePo';
     var $;
     function doneFn(res, curr, count){
-
+        var transFieldParam=getQueryString('transFields');
+        if(transFieldParam){
+            transFields = transFieldParam;
+        }
     }
     function doSearch(form, table){
         trans_getTypeDists();

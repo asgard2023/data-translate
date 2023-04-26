@@ -9,6 +9,10 @@ var rowIds = '';
 var transTypeCode = 'DflRolePo';
 $(function () {
     // doSearch();
+    var transFieldParam=getQueryString('transFields');
+    if(transFieldParam){
+        transFields = transFieldParam;
+    }
 });
 
 function dataLoader(param, success, error) {

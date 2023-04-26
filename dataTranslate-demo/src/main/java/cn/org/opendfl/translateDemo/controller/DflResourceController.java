@@ -2,11 +2,11 @@ package cn.org.opendfl.translateDemo.controller;
 
 import cn.org.opendfl.base.BaseController;
 import cn.org.opendfl.base.MyPageInfo;
-import cn.org.opendfl.base.PageResult;
 import cn.org.opendfl.base.PageVO;
 import cn.org.opendfl.exception.ResultData;
 import cn.org.opendfl.exception.ValidateUtils;
 import cn.org.opendfl.translate.dflsystem.translate.TranslateUtil;
+import cn.org.opendfl.translate.dflsystem.vo.PageResult;
 import cn.org.opendfl.translateDemo.biz.IDflResourceBiz;
 import cn.org.opendfl.translateDemo.po.DflResourcePo;
 import io.swagger.annotations.Api;

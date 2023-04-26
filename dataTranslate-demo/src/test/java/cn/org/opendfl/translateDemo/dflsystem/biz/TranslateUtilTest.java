@@ -1,11 +1,11 @@
 package cn.org.opendfl.translateDemo.dflsystem.biz;
 
+import cn.hutool.json.JSONUtil;
 import cn.org.opendfl.translate.dflsystem.translate.IdInfoVo;
 import cn.org.opendfl.translate.dflsystem.translate.TranslateTrans;
 import cn.org.opendfl.translate.dflsystem.translate.TranslateUtil;
 import cn.org.opendfl.translateDemo.DataTranslateDemoApplication;
 import cn.org.opendfl.translateDemo.po.DflUserPo;
-import com.alibaba.fastjson.JSON;
 import com.google.common.collect.Lists;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
@@ -27,7 +27,7 @@ public class TranslateUtilTest {
     @Test
     void getTranslateType() {
         IdInfoVo idInfoVo = TranslateUtil.getTranslateType(DflUserPo.class);
-        System.out.println(JSON.toJSONString(idInfoVo));
+        System.out.println(JSONUtil.toJsonStr(idInfoVo));
     }
 
     @Test
@@ -37,13 +37,13 @@ public class TranslateUtilTest {
         List<Object> idList = Arrays.asList(5, 7);
         List<String> idLangList = idList.stream().map(id -> id + "_" + lang).collect(Collectors.toList());
         Map<String, Map<String, String>> dataIdFieldMap = TranslateTrans.getDataIdFieldMap(idInfoVo, lang, idList, idLangList);
-        System.out.println(JSON.toJSONString(dataIdFieldMap));
+        System.out.println(JSONUtil.toJsonStr(dataIdFieldMap));
 
         dataIdFieldMap = TranslateTrans.getDataIdFieldMap(idInfoVo, lang, idList, idLangList);
-        System.out.println(JSON.toJSONString(dataIdFieldMap));
+        System.out.println(JSONUtil.toJsonStr(dataIdFieldMap));
 
         dataIdFieldMap = TranslateTrans.getDataIdFieldMap(idInfoVo, lang, idList, idLangList);
-        System.out.println(JSON.toJSONString(dataIdFieldMap));
+        System.out.println(JSONUtil.toJsonStr(dataIdFieldMap));
     }
 
     @Test
